@@ -134,6 +134,12 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+
+    SmartDashboard.putData("Field", m_field);  
+    SmartDashboard.putNumber("Gyro YAW: ", m_gyro.getYaw()); 
+    SmartDashboard.putNumber("Gyro YAW: ", m_gyro.getPitch()); 
+ 
   }
 
   /**
