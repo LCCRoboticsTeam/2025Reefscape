@@ -63,6 +63,24 @@ public final class Constants {
     public static final boolean kGyroReversed = false;
   }
 
+  public static final class LEDConstants {
+    public static final int PWM_PORT = 0;
+    public static final double SOLID_DARK_GREEN = 0.75;
+    public static final double SOLID_GREEN = 0.77;
+    public static final double SOLID_SKY_BLUE = 0.83;
+    public static final double SOLID_BLUE = 0.85;
+    public static final double SOLID_DARK_BLUE = 0.87;
+    public static final double SOLID_BLUE_VIOLET = 0.89;
+    public static final double FIXED_PALETTE_PATTERN_FIRE_MEDIUM = -0.59;
+    public static final double FIXED_PALETTE_PATTERN_FIRE_LARGE = -0.57;
+  }
+
+  public enum LEDColorState {
+    NOTE_LESS,
+    NOTE_DETECTED,
+    SHOOTING;
+  }
+
   public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
