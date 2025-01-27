@@ -63,6 +63,14 @@ public final class Constants {
     public static final boolean kGyroReversed = false;
   }
 
+  public static final class EndEffectorConstants {
+    public static final int kLeftEndEfMotorCanID = 5;
+    public static final int kRightEndEfMotorCanID = 6;
+
+    public static final int kLCReefsideCanID = 7;
+    public static final int kLCHoppersideCanID = 8;
+  }
+
   public static final class LEDConstants {
     public static final int PWM_PORT = 0;
     public static final double SOLID_DARK_GREEN = 0.75;
@@ -105,5 +113,8 @@ public final class Constants {
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
+  }
+  public final class ClimberConstants {
+    public static final int kClimberCanID = 19;
   }
 }
