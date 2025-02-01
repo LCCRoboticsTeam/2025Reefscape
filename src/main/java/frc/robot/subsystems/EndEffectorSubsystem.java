@@ -42,10 +42,12 @@ public class EndEffectorSubsystem extends SubsystemBase {
     leftMotor = new SparkMax(EndEffectorConstants.kLeftEndEfMotorCanID, MotorType.kBrushless);
     leftClosedLoopController = leftMotor.getClosedLoopController();
     leftEncoder = leftMotor.getEncoder();
+    leftEncoder.setPosition(0);
 
     rightMotor = new SparkMax(EndEffectorConstants.kRightEndEfMotorCanID, MotorType.kBrushless);
     rightClosedLoopController = rightMotor.getClosedLoopController();
     rightEncoder = rightMotor.getEncoder();
+    rightEncoder.setPosition(0);
 
     leftMotorConfig = new SparkMaxConfig();
 
@@ -108,14 +110,11 @@ public class EndEffectorSubsystem extends SubsystemBase {
       }
 
     // Initialize dashboard values
-    SmartDashboard.setDefaultNumber("Left Target Position", 0);
+   
     SmartDashboard.setDefaultNumber("Left Target Velocity", 0);
-    SmartDashboard.setDefaultBoolean("Left Control Mode", false);
     SmartDashboard.setDefaultBoolean("Left Reset Encoder", false);
 
-    SmartDashboard.setDefaultNumber("Right Target Position", 0);
     SmartDashboard.setDefaultNumber("Right Target Velocity", 0);
-    SmartDashboard.setDefaultBoolean("Right Control Mode", false);
     SmartDashboard.setDefaultBoolean("Right Reset Encoder", false);
   }
 

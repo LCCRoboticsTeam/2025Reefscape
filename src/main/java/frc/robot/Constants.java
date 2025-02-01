@@ -74,6 +74,8 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kLeftElevatorCanId = 3;
     public static final int kRightElevatorCanId = 4;
+    public static final double kmaxOutRange = 0.2;
+    public static final double kminOutRange = -0.2;
   }
 
   public static final class LEDConstants {
