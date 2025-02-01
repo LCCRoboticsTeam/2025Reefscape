@@ -7,6 +7,8 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OIConstants;
@@ -17,6 +19,9 @@ public class SwerveGamepadDriveCommand extends Command {
   private final DriveSubsystem swerveDriveTrain;
   private final DoubleSupplier xSpeedSupplier, ySpeedSupplier, rotateSpeedSupplier;
   private final BooleanSupplier fieldOrientedDrive;
+
+  private PhotonCamera frontsidePhotonCamera;
+  private PhotonCamera backsidePhotonCamera;
 
   /** Creates a new SwerveControllerDrive. */
   public SwerveGamepadDriveCommand(DriveSubsystem swerveDriveTrain, DoubleSupplier ySpeedSupplier,
@@ -63,4 +68,13 @@ public class SwerveGamepadDriveCommand extends Command {
   public boolean isFinished() {
     return false;
   }
+
+  public void setfrontsidePhotonCamera(PhotonCamera camera) {
+    this.frontsidePhotonCamera = camera;
+  }
+
+  public void setbacksidePhotonCamera(PhotonCamera camera) {
+    this.backsidePhotonCamera = camera;
+  }
+
 }

@@ -42,6 +42,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
     leftMotor = new SparkMax(EndEffectorConstants.kLeftEndEfMotorCanID, MotorType.kBrushless);
     leftClosedLoopController = leftMotor.getClosedLoopController();
     leftEncoder = leftMotor.getEncoder();
+    
 
     rightMotor = new SparkMax(EndEffectorConstants.kRightEndEfMotorCanID, MotorType.kBrushless);
     rightClosedLoopController = rightMotor.getClosedLoopController();
