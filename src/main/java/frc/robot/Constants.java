@@ -71,6 +71,11 @@ public final class Constants {
     public static final int kLCHoppersideCanID = 8;
   }
 
+  public static final class ElevatorConstants {
+    public static final int kLeftElevatorCanId = 3;
+    public static final int kRightElevatorCanId = 4;
+  }
+
   public static final class LEDConstants {
     public static final int PWM_PORT = 0;
     public static final double SOLID_DARK_GREEN = 0.75;
