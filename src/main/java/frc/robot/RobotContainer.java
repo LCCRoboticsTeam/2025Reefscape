@@ -46,7 +46,8 @@ public class RobotContainer {
 
   // Subsystems defined here...
   ////private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-     private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
+  private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
+
   // Commands defined here...
 
   // The driver's controllers
@@ -61,8 +62,8 @@ public class RobotContainer {
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(0);
   // We maybe able to just use backsidePhotonCamera to view climber alignment
   //UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(1);
-  PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
-  PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
+  //PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
+  //PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -77,6 +78,9 @@ public class RobotContainer {
     fieldRelativeChooser.addOption("Robot Relative", false);
     SmartDashboard.putData(fieldRelativeChooser);
     ////SmartDashboard.putData(autoChooser);
+    /// 
+    // Example of putting a command button in dashboard
+    // SmartDashboard.putData("Walk To Distance Command", new ExampleCommand(m_exampleSubsystem));
 
     // Configure default commands
     ////driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, commandXboxController::getLeftX,

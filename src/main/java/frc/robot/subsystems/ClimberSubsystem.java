@@ -32,6 +32,8 @@ public class ClimberSubsystem extends SubsystemBase {
     encoder = motor.getEncoder();
     motorConfig = new SparkMaxConfig();
 
+    encoder.setPosition(0);
+
     /*
      * Configure the encoder. For this specific example, we are using the
      * integrated encoder of the NEO, and we don't need to configure it. If
@@ -53,13 +55,13 @@ public class ClimberSubsystem extends SubsystemBase {
         .p(0.1)
         .i(0)
         .d(0)
-        .outputRange(-1, 1)
+        .outputRange(ClimberConstants.kminOutRange, ClimberConstants.kmaxOutRange)
         // Set PID values for velocity control in slot 1
         .p(0.0001, ClosedLoopSlot.kSlot1)
         .i(0, ClosedLoopSlot.kSlot1)
         .d(0, ClosedLoopSlot.kSlot1)
         .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-        .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
+        .outputRange(ClimberConstants.kminOutRange, ClimberConstants.kmaxOutRange, ClosedLoopSlot.kSlot1);
 
     /*
      * Apply the configuration to the SPARK MAX.
@@ -75,8 +77,6 @@ public class ClimberSubsystem extends SubsystemBase {
 
     // Initialize dashboard values
     SmartDashboard.setDefaultNumber("Target Position", 0);
-    SmartDashboard.setDefaultNumber("Target Velocity", 0);
-    SmartDashboard.setDefaultBoolean("Control Mode", false);
     SmartDashboard.setDefaultBoolean("Reset Encoder", false);
   }
 

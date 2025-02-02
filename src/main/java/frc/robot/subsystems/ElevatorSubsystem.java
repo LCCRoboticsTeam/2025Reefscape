@@ -35,9 +35,13 @@ public class ElevatorSubsystem extends SubsystemBase {
   private SparkClosedLoopController rightClosedLoopController;
   private RelativeEncoder rightEncoder;
 
+  double targetPosition;
 
   /** Creates a new EndEffectorSubsystem. */
   public ElevatorSubsystem() {
+
+    targetPosition = 0;
+
     leftMotor = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
     leftClosedLoopController = leftMotor.getClosedLoopController();
     leftEncoder = leftMotor.getEncoder();
@@ -91,8 +95,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, 
       PersistMode.kNoPersistParameters);
     
-    
-
     // Initialize dashboard values
     SmartDashboard.setDefaultNumber("Left Target Position", 0);
     SmartDashboard.setDefaultBoolean("Left Reset Encoder", false);
@@ -115,11 +117,17 @@ public class ElevatorSubsystem extends SubsystemBase {
         });
   }
 
-  public void changeLevel() {
-
+  public void setTargetPosition(double targetPosition) {
+    this.targetPosition=targetPosition;
   }
 
+  public double getLeftActualPosition() {
+   return leftEncoder.getPosition();
+  }
 
+  public double getRightActualPosition() {
+    return rightEncoder.getPosition();
+   }
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
@@ -130,13 +138,15 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double targetPosition = SmartDashboard.getNumber("Left Target Position", 0);
-    leftClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("Left Actual Position", leftEncoder.getPosition());
+    targetPosition = SmartDashboard.getNumber("Elevator Target Position", 0);
 
-    targetPosition = SmartDashboard.getNumber("Right Target Position", 0);
-    rightClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("Right Actual Position", rightEncoder.getPosition());
+    //FIXME: Need to confirm which one is negative, left or right, starting with right
+    leftClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot1);
+    rightClosedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot1);
+
+    SmartDashboard.putNumber("Elevator Left Actual Position", leftEncoder.getPosition());
+    SmartDashboard.putNumber("Elevator Right Actual Position", rightEncoder.getPosition());
+
   }
 
   @Override
