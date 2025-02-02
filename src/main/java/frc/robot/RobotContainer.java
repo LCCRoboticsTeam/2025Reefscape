@@ -46,7 +46,7 @@ public class RobotContainer {
 
   // Subsystems defined here...
   ////private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-
+     private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
   // Commands defined here...
 
   // The driver's controllers
@@ -58,7 +58,7 @@ public class RobotContainer {
   ////private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
-  //UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(0);
+  UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(0);
   // We maybe able to just use backsidePhotonCamera to view climber alignment
   //UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(1);
   PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
