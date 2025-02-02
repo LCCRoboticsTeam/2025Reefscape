@@ -64,8 +64,8 @@ public final class Constants {
   }
 
   public static final class EndEffectorConstants {
-    public static final int kLeftEndEfMotorCanID = 5;
-    public static final int kRightEndEfMotorCanID = 6;
+    public static final int kLeftEndEfMotorCanID = 6;
+    public static final int kRightEndEfMotorCanID = 5;
 
     public static final int kLCReefsideCanID = 7;
     public static final int kLCHoppersideCanID = 8;

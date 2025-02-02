@@ -111,11 +111,11 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
     // Initialize dashboard values
    
-    SmartDashboard.setDefaultNumber("Left Target Velocity", 0);
-    SmartDashboard.setDefaultBoolean("Left Reset Encoder", false);
+    SmartDashboard.setDefaultNumber("ENDE Left Target Velocity", 0);
+    SmartDashboard.setDefaultBoolean("ENDE Left Reset Encoder", false);
 
-    SmartDashboard.setDefaultNumber("Right Target Velocity", 0);
-    SmartDashboard.setDefaultBoolean("Right Reset Encoder", false);
+    SmartDashboard.setDefaultNumber("ENDE Right Target Velocity", 0);
+    SmartDashboard.setDefaultBoolean("ENDE Right Reset Encoder", false);
   }
 
   /**
@@ -161,13 +161,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double targetVelocity = SmartDashboard.getNumber("Left Target Velocity", 0);
-    leftClosedLoopController.setReference(targetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("Left Actual Velocity", leftEncoder.getVelocity());
+    double leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Velocity", 0);
+    leftClosedLoopController.setReference(leftTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
+    SmartDashboard.putNumber("ENDE Left Actual Velocity", leftEncoder.getVelocity());
 
-    targetVelocity = SmartDashboard.getNumber("Right Target Velocity", 0);
-    rightClosedLoopController.setReference(targetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("Right Actual Velocity", rightEncoder.getVelocity());
+    double rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Velocity", 0);
+    rightClosedLoopController.setReference(rightTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
+    SmartDashboard.putNumber("ENDE Right Actual Velocity", rightEncoder.getVelocity());
   }
 
   @Override
