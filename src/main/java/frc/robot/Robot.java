@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import au.grapplerobotics.CanBridge;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -23,9 +24,14 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
+    // Need for Grapple Hook hardware client for LaserCAN
+    CanBridge.runTCP();
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    enableLiveWindowInTest(true);
   }
 
   /**
