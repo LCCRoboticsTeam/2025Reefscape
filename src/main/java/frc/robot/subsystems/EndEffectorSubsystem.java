@@ -37,8 +37,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
   private LaserCan LCReefside;
   private LaserCan LCHopperside;
 
-  double leftTargetVelocity;
-  double rightTargetVelocity;
+  private double leftTargetVelocity;
+  private double rightTargetVelocity;
 
   /** Creates a new EndEffectorSubsystem. */
   public EndEffectorSubsystem() {
@@ -72,24 +72,24 @@ public class EndEffectorSubsystem extends SubsystemBase {
       .p(0.1)
       .i(0)
       .d(0)
-      .outputRange(EndEffectorConstants.kminOutRange, EndEffectorConstants.kmaxOutRange)
+      .outputRange(EndEffectorConstants.kMinOutRange, EndEffectorConstants.kMaxOutRange)
       .p(0.0001, ClosedLoopSlot.kSlot1)
       .i(0, ClosedLoopSlot.kSlot1)
       .d(0, ClosedLoopSlot.kSlot1)
       .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-      .outputRange(EndEffectorConstants.kminOutRange, EndEffectorConstants.kmaxOutRange, ClosedLoopSlot.kSlot1);
+      .outputRange(EndEffectorConstants.kMinOutRange, EndEffectorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
     
     rightMotorConfig.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .p(0.1)
       .i(0)
       .d(0)
-      .outputRange(EndEffectorConstants.kminOutRange, EndEffectorConstants.kmaxOutRange)
+      .outputRange(EndEffectorConstants.kMinOutRange, EndEffectorConstants.kMaxOutRange)
       .p(0.0001, ClosedLoopSlot.kSlot1)
       .i(0, ClosedLoopSlot.kSlot1)
       .d(0, ClosedLoopSlot.kSlot1)
       .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-      .outputRange(EndEffectorConstants.kminOutRange, EndEffectorConstants.kmaxOutRange, ClosedLoopSlot.kSlot1);
+      .outputRange(EndEffectorConstants.kMinOutRange, EndEffectorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
 
     leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, 
       PersistMode.kNoPersistParameters);
@@ -149,8 +149,14 @@ public class EndEffectorSubsystem extends SubsystemBase {
     return false;
   }
 
-  public boolean coralDetected() {
-    return false;
+  public int getReefsideDistanceMM() {
+    LaserCan.Measurement lcReefsideMeasurement = LCReefside.getMeasurement();
+    return lcReefsideMeasurement.distance_mm;
+  }
+
+  public int getHoppersideDistanceMM() {
+    LaserCan.Measurement lcHoppersideMeasurement = LCHopperside.getMeasurement();
+    return lcHoppersideMeasurement.distance_mm;
   }
 
   /**
@@ -175,11 +181,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
     rightClosedLoopController.setReference(rightTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
     SmartDashboard.putNumber("ENDE Right Actual Velocity", rightEncoder.getVelocity());
 
-    LaserCan.Measurement lcReefsideMeasurement = LCReefside.getMeasurement();
-    SmartDashboard.putNumber("ENDE LCReefside Measurement (mm)", lcReefsideMeasurement.distance_mm);
+    SmartDashboard.putNumber("ENDE LCReefside Measurement (mm)", getReefsideDistanceMM());
 
-    LaserCan.Measurement lcHoppersideMeasurement = LCHopperside.getMeasurement();
-    SmartDashboard.putNumber("ENDE LCHopperside Measurement (mm)", lcHoppersideMeasurement.distance_mm);
+    SmartDashboard.putNumber("ENDE LCHopperside Measurement (mm)", getHoppersideDistanceMM());
   }
 
   @Override

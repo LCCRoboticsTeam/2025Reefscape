@@ -70,24 +70,24 @@ public class ElevatorSubsystem extends SubsystemBase {
       .p(0.1)
       .i(0)
       .d(0)
-      .outputRange(ElevatorConstants.kminOutRange, ElevatorConstants.kmaxOutRange)
+      .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange)
       .p(0.0001, ClosedLoopSlot.kSlot1)
       .i(0, ClosedLoopSlot.kSlot1)
       .d(0, ClosedLoopSlot.kSlot1)
       .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-      .outputRange(ElevatorConstants.kminOutRange, ElevatorConstants.kmaxOutRange, ClosedLoopSlot.kSlot1);
+      .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
     
     rightMotorConfig.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .p(0.1)
       .i(0)
       .d(0)
-      .outputRange(ElevatorConstants.kminOutRange, ElevatorConstants.kmaxOutRange)
+      .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange)
       .p(0.0001, ClosedLoopSlot.kSlot1)
       .i(0, ClosedLoopSlot.kSlot1)
       .d(0, ClosedLoopSlot.kSlot1)
       .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-      .outputRange(ElevatorConstants.kminOutRange, ElevatorConstants.kmaxOutRange, ClosedLoopSlot.kSlot1);
+      .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
 
     leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, 
       PersistMode.kNoPersistParameters);
@@ -141,8 +141,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     targetPosition = SmartDashboard.getNumber("Elevator Target Position", 0);
 
     //FIXME: Need to confirm which one is negative, left or right, starting with right
-    leftClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot1);
-    rightClosedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot1);
+    leftClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    rightClosedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
 
     SmartDashboard.putNumber("Elevator Left Actual Position", leftEncoder.getPosition());
     SmartDashboard.putNumber("Elevator Right Actual Position", rightEncoder.getPosition());
