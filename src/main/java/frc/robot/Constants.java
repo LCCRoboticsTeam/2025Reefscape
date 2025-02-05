@@ -70,15 +70,27 @@ public final class Constants {
     public static final int kLCHoppersideCanID = 7;
     public static final int kLCReefsideCanID = 8;
 
-    public static final double kmaxOutRange = 0.5;
-    public static final double kminOutRange = -0.5;
+    public static final double kMaxOutRange = 0.5;
+    public static final double kMinOutRange = -0.5;
+
+    public static final double kLeftMotorTargetVelocity = 1500;
+    public static final double kRightMotorTargetVelocity = -1500;
+
+    public static final int kCoralDetectedDistance = 30;
   }
 
   public static final class ElevatorConstants {
     public static final int kLeftElevatorCanId = 3;
     public static final int kRightElevatorCanId = 4;
-    public static final double kmaxOutRange = 0.2;
-    public static final double kminOutRange = -0.2;
+    public static final double kMaxOutRange = 0.2;
+    public static final double kMinOutRange = -0.2;
+  }
+
+  public static final class AlgaeConstants {
+    public static final int kArmAlgaeMotorCanID = 9;
+    public static final int kWheelAlgaeMotorCanID = 10;
+    public static final double kMaxOutRange = 0.2;
+    public static final double kMinOutRange = -0.2;
   }
 
   public static final class LEDConstants {
