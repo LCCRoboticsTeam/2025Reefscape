@@ -173,11 +173,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Velocity", 0);
+    if (EndEffectorConstants.kLeftTargetVelocityFromDashboard)
+      leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Velocity", 0);
     leftClosedLoopController.setReference(leftTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
     SmartDashboard.putNumber("ENDE Left Actual Velocity", leftEncoder.getVelocity());
 
-    rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Velocity", 0);
+    if (EndEffectorConstants.kRightTargetVelocityFromDashboard)
+      rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Velocity", 0);
     rightClosedLoopController.setReference(rightTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
     SmartDashboard.putNumber("ENDE Right Actual Velocity", rightEncoder.getVelocity());
 

@@ -26,12 +26,16 @@ public class ClimberSubsystem extends SubsystemBase {
   private SparkMaxConfig motorConfig;
   private SparkClosedLoopController closedLoopController;
   private RelativeEncoder encoder;
+
+  private double targetPosition;
+
   public ClimberSubsystem() {
     motor = new SparkMax(ClimberConstants.kClimberCanID, MotorType.kBrushless);
     closedLoopController = motor.getClosedLoopController();
     encoder = motor.getEncoder();
     motorConfig = new SparkMaxConfig();
 
+    targetPosition = 0;
     encoder.setPosition(0);
 
     /*
@@ -76,8 +80,7 @@ public class ClimberSubsystem extends SubsystemBase {
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     // Initialize dashboard values
-    SmartDashboard.setDefaultNumber("Target Position", 0);
-    SmartDashboard.setDefaultBoolean("Reset Encoder", false);
+    SmartDashboard.setDefaultNumber("ARM Target Position", 0);
   }
 
   /**
@@ -104,12 +107,15 @@ public class ClimberSubsystem extends SubsystemBase {
     return false;
   }
 
-  public void ClimberUp() {
-
+  public void setTargetPosition(double targetPosition) {
+    // FIXME: Confirm
+    // POSITIVE Value -> Arm UP
+    // NEGATIVE Value -> Arm DOWN
+    this.targetPosition=targetPosition;
   }
 
-  public void ClimberDown() {
-    
+  public double getActualPosition() {
+   return encoder.getPosition();
   }
 
   public void resetPosition() {
@@ -124,9 +130,10 @@ public class ClimberSubsystem extends SubsystemBase {
        * Get the target position from SmartDashboard and set it as the setpoint
        * for the closed loop controller.
        */
-      double targetPosition = SmartDashboard.getNumber("Target Position", 0);
+      if (ClimberConstants.kTargetPositionFromDashboard) 
+        targetPosition = SmartDashboard.getNumber("ARM Target Position", 0);
       closedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-      SmartDashboard.putNumber("Actual Position", encoder.getPosition());
+      SmartDashboard.putNumber("ARM Actual Position", encoder.getPosition());
   }
 
   @Override

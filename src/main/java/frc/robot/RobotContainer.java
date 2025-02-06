@@ -4,21 +4,38 @@
 
 package frc.robot;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.SwerveGamepadDriveCommand;
 
 // Subsystems - imports
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
 import frc.robot.subsystems.LEDController;
 
 // Commands - imports
+//   Uses DriveSubsystem
+import frc.robot.commands.SwerveGamepadDriveCommand;
+import frc.robot.commands.SwerveSlideCommand;
+//   Uses ElevatorSubsystem
+//import frc.robot.commands.ChangeElevatorLevelCommand;
+//   Uses EndEffector
+import frc.robot.commands.IntakeCommand;
+//import frc.robot.commands.PlaceCoralCommand;
+//   Uses AlgaeSubsystem
+//import frc.robot.commands.RemoveReefAlgaeCommand;
+//import frc.robot.commands.ProcessAlgaeCommand;
+//import frc.robot.commands.PickupAlgaeCommand;
+//   Uses ClimberSubsystem
+//import frc.robot.commands.MoveClimberCommand;
 
 // Cameras and Vision
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
+
 import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -45,31 +62,37 @@ import java.util.List;
 public class RobotContainer {
 
   // Subsystems defined here...
-  ////private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
-
-  // Commands defined here...
+  //private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+  //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  //private final LEDController ledController = new LEDController();
 
   // The driver's controllers
-  ////private final XboxController xboxController = new XboxController(OIConstants.kDriverControllerPort); 
-  ////private final CommandXboxController commandXboxController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
+  private final CommandXboxController driverCommandXboxController = new CommandXboxController(OIConstants.kDriverControllerPort);
+
+  private final XboxController manipulatorXboxController = new XboxController(OIConstants.kManipulatorControllerPort); 
+  private final CommandXboxController manipulatorCommandXboxController = new CommandXboxController(OIConstants.kManipulatorControllerPort);
 
   // Dashboard - Choosers
   private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
-  ////private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(0);
-  // We maybe able to just use backsidePhotonCamera to view climber alignment
   //UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(1);
   //PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
   //PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-     // Register Named Commands (Some examples)
-     //   NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
-     //   NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+     // Register Named Commands
+     NamedCommands.registerCommand("IntakeCoral", new IntakeCommand(endEffectorSubsystem));
+     NamedCommands.registerCommand("SwerveSlideRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed));
+     NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed));
+
 
      // Configure the trigger bindings
     configureBindings();
@@ -77,14 +100,14 @@ public class RobotContainer {
     fieldRelativeChooser.setDefaultOption("Field Relative", true);
     fieldRelativeChooser.addOption("Robot Relative", false);
     SmartDashboard.putData(fieldRelativeChooser);
-    ////SmartDashboard.putData(autoChooser);
-    /// 
-    // Example of putting a command button in dashboard
-    // SmartDashboard.putData("Walk To Distance Command", new ExampleCommand(m_exampleSubsystem));
+    SmartDashboard.putData(autoChooser);
+     
+    // Commands launched from Dashboard
+    SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
 
     // Configure default commands
-    ////driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, commandXboxController::getLeftX,
-    ////commandXboxController::getLeftY, commandXboxController::getRightX, fieldRelativeChooser::getSelected));
+    driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,
+      driverCommandXboxController::getLeftY, driverCommandXboxController::getRightX, fieldRelativeChooser::getSelected));
 
     // Camera settings
     //reefsideUsbCamera.setResolution(640, 480);
@@ -108,6 +131,11 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    driverCommandXboxController.rightBumper().whileTrue(NamedCommands.getCommand("SwerveSlideRight"));
+    driverCommandXboxController.leftBumper().whileTrue(NamedCommands.getCommand("SwerveSlideLeft"));
+
+    manipulatorCommandXboxController.a().onTrue(NamedCommands.getCommand("IntakeCoral"));
+
 
   }
 
