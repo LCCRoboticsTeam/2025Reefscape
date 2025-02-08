@@ -33,9 +33,9 @@ public final class Constants {
     public static final double kRotationalSlewRate = 3; // percent per second (1 = 100%); was .9
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(26.5); // FIXME: Update for 2025Reefscape
+    public static final double kTrackWidth = Units.inchesToMeters(24.5);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(26.5); // FIXME: Update for 2025Reefscape
+    public static final double kWheelBase = Units.inchesToMeters(24.5); 
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -50,32 +50,62 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 11;
-    public static final int kRearLeftDrivingCanId = 13;
-    public static final int kFrontRightDrivingCanId = 15;
-    public static final int kRearRightDrivingCanId = 17;
+    public static final int kFrontLeftDrivingCanId = 17;
+    public static final int kRearLeftDrivingCanId = 15;
+    public static final int kFrontRightDrivingCanId = 11;
+    public static final int kRearRightDrivingCanId = 13;
 
-    public static final int kFrontLeftTurningCanId = 12;
-    public static final int kRearLeftTurningCanId = 14;
-    public static final int kFrontRightTurningCanId = 16;
-    public static final int kRearRightTurningCanId = 18;
+    public static final int kFrontLeftTurningCanId = 18;
+    public static final int kRearLeftTurningCanId = 16;
+    public static final int kFrontRightTurningCanId = 12;
+    public static final int kRearRightTurningCanId = 14;
 
     public static final boolean kGyroReversed = false;
+
+    public static final double kSwerveSlideSpeed = 0.1;
+
   }
 
   public static final class EndEffectorConstants {
-    public static final int kLeftEndEfMotorCanID = 6;
     public static final int kRightEndEfMotorCanID = 5;
+    public static final int kLeftEndEfMotorCanID = 6;
 
-    public static final int kLCReefsideCanID = 7;
-    public static final int kLCHoppersideCanID = 8;
+    public static final int kLCHoppersideCanID = 7;
+    public static final int kLCReefsideCanID = 8;
+
+    public static final double kMaxOutRange = 0.5;
+    public static final double kMinOutRange = -0.5;
+
+    // NOTE: For intaking and placing coral, Motor direction MUST BE:
+    //         LeftMotor -> Positive
+    //         RightMotor -> Negative
+    public static final double kLeftMotorTargetVelocity = 1500;
+    public static final double kRightMotorTargetVelocity = -1500;
+
+    public static final int kCoralDetectedDistance = 40;
+
+    public static final boolean kLeftTargetVelocityFromDashboard = true;
+    public static final boolean kRightTargetVelocityFromDashboard = true;
+
   }
 
   public static final class ElevatorConstants {
     public static final int kLeftElevatorCanId = 3;
     public static final int kRightElevatorCanId = 4;
-    public static final double kmaxOutRange = 0.2;
-    public static final double kminOutRange = -0.2;
+    public static final double kMaxOutRange = 0.2;
+    public static final double kMinOutRange = -0.2;
+
+    public static final boolean kTargetPositionFromDashboard = true;
+
+  }
+
+  public static final class AlgaeConstants {
+    public static final int kArmAlgaeMotorCanID = 9;
+    public static final int kWheelAlgaeMotorCanID = 10;
+    public static final double kMaxOutRange = 0.2;
+    public static final double kMinOutRange = -0.2;
+    public static final boolean kArmTargetPositionFromDashboard = true;
+    public static final boolean kWheelTargetVelocityFromDashboard = true;
   }
 
   public static final class LEDConstants {
@@ -115,7 +145,9 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kManipulatorControllerPort = 1;
     public static final double kDriveDeadband = 0.065;  // was 0.05, 2024Crescendo used 0.065
+
   }
 
   public static final class NeoMotorConstants {
@@ -123,5 +155,17 @@ public final class Constants {
   }
   public final class ClimberConstants {
     public static final int kClimberCanID = 19;
+
+    public static final double kmaxOutRange = 0.5;
+    public static final double kminOutRange = -0.5;
+
+    public static final boolean kTargetPositionFromDashboard = true;
   }
+
+  public enum EndEffectorState {
+    UNKNOWN,
+    CORAL_FREE,
+    CORAL_LOADED;
+  }
+
 }

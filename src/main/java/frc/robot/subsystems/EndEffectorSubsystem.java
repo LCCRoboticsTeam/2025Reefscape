@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.EndEffectorConstants;
+import frc.robot.Constants.EndEffectorState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.RelativeEncoder;
@@ -37,17 +38,26 @@ public class EndEffectorSubsystem extends SubsystemBase {
   private LaserCan LCReefside;
   private LaserCan LCHopperside;
 
+  private double leftTargetVelocity;
+  private double rightTargetVelocity;
+
+  private EndEffectorState endEffectorState;
+
   /** Creates a new EndEffectorSubsystem. */
   public EndEffectorSubsystem() {
+
+    endEffectorState =  EndEffectorState.UNKNOWN;
+
+    leftTargetVelocity=0;
+    rightTargetVelocity=0;
+
     leftMotor = new SparkMax(EndEffectorConstants.kLeftEndEfMotorCanID, MotorType.kBrushless);
     leftClosedLoopController = leftMotor.getClosedLoopController();
     leftEncoder = leftMotor.getEncoder();
-    leftEncoder.setPosition(0);
 
     rightMotor = new SparkMax(EndEffectorConstants.kRightEndEfMotorCanID, MotorType.kBrushless);
     rightClosedLoopController = rightMotor.getClosedLoopController();
     rightEncoder = rightMotor.getEncoder();
-    rightEncoder.setPosition(0);
 
     leftMotorConfig = new SparkMaxConfig();
 
@@ -67,24 +77,24 @@ public class EndEffectorSubsystem extends SubsystemBase {
       .p(0.1)
       .i(0)
       .d(0)
-      .outputRange(-1, 1)
+      .outputRange(EndEffectorConstants.kMinOutRange, EndEffectorConstants.kMaxOutRange)
       .p(0.0001, ClosedLoopSlot.kSlot1)
       .i(0, ClosedLoopSlot.kSlot1)
       .d(0, ClosedLoopSlot.kSlot1)
       .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-      .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
+      .outputRange(EndEffectorConstants.kMinOutRange, EndEffectorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
     
     rightMotorConfig.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .p(0.1)
       .i(0)
       .d(0)
-      .outputRange(-1, 1)
+      .outputRange(EndEffectorConstants.kMinOutRange, EndEffectorConstants.kMaxOutRange)
       .p(0.0001, ClosedLoopSlot.kSlot1)
       .i(0, ClosedLoopSlot.kSlot1)
       .d(0, ClosedLoopSlot.kSlot1)
       .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-      .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
+      .outputRange(EndEffectorConstants.kMinOutRange, EndEffectorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
 
     leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, 
       PersistMode.kNoPersistParameters);
@@ -110,12 +120,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
       }
 
     // Initialize dashboard values
-   
     SmartDashboard.setDefaultNumber("ENDE Left Target Velocity", 0);
-    SmartDashboard.setDefaultBoolean("ENDE Left Reset Encoder", false);
-
     SmartDashboard.setDefaultNumber("ENDE Right Target Velocity", 0);
-    SmartDashboard.setDefaultBoolean("ENDE Right Reset Encoder", false);
   }
 
   /**
@@ -132,20 +138,52 @@ public class EndEffectorSubsystem extends SubsystemBase {
         });
   }
 
-  public void intake() {
-
+  public void setTargetVelocity(double leftTargetVelocity, double rightTargetVelocity) {
+    setLeftTargetVelocity(leftTargetVelocity);
+    setRightTargetVelocity(rightTargetVelocity);
   }
 
-  public void reverseIntake() {
-
+  public void setLeftTargetVelocity(double leftTargetVelocity) {
+    this.leftTargetVelocity=leftTargetVelocity;
   }
-
-  public void outtake() {
-
+  public void setRightTargetVelocity(double rightTargetVelocity) {
+    this.rightTargetVelocity=rightTargetVelocity;
   }
 
   public boolean reefDetected() {
     return false;
+  }
+
+  public int getReefsideDistanceMM() {
+    LaserCan.Measurement lcReefsideMeasurement = LCReefside.getMeasurement();
+    return lcReefsideMeasurement.distance_mm;
+  }
+
+  public int getHoppersideDistanceMM() {
+    LaserCan.Measurement lcHoppersideMeasurement = LCHopperside.getMeasurement();
+    return lcHoppersideMeasurement.distance_mm;
+  }
+
+  public EndEffectorState getEndEffectorState() {
+    return this.endEffectorState;
+  }
+
+  public void setEndEffectorState(EndEffectorState endEffectorState) {
+    this.endEffectorState =  endEffectorState;
+  }
+
+  public boolean isCoralLoaded() {
+    if (this.endEffectorState==EndEffectorState.CORAL_LOADED)
+      return true;
+    else
+      return false;
+  }
+
+  public boolean isCoralNotLoaded() {
+    if (this.endEffectorState!=EndEffectorState.CORAL_LOADED)
+      return true;
+    else
+      return false;
   }
 
   /**
@@ -161,13 +199,20 @@ public class EndEffectorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Velocity", 0);
+
+    if (EndEffectorConstants.kLeftTargetVelocityFromDashboard)
+      leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Velocity", 0);
     leftClosedLoopController.setReference(leftTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
     SmartDashboard.putNumber("ENDE Left Actual Velocity", leftEncoder.getVelocity());
 
-    double rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Velocity", 0);
+    if (EndEffectorConstants.kRightTargetVelocityFromDashboard)
+      rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Velocity", 0);
     rightClosedLoopController.setReference(rightTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
     SmartDashboard.putNumber("ENDE Right Actual Velocity", rightEncoder.getVelocity());
+
+    SmartDashboard.putNumber("ENDE LCReefside Measurement (mm)", getReefsideDistanceMM());
+
+    SmartDashboard.putNumber("ENDE LCHopperside Measurement (mm)", getHoppersideDistanceMM());
   }
 
   @Override
