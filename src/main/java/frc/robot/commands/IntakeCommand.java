@@ -4,6 +4,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.EndEffectorConstants;
+import frc.robot.Constants.EndEffectorState;
 
 public class IntakeCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -25,6 +26,7 @@ public class IntakeCommand extends Command {
   @Override
   public void initialize() {
     coralDetected = false;
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,6 +39,8 @@ public class IntakeCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_subsystem.setTargetVelocity(0, 0);
+    if (!interrupted)
+        m_subsystem.setEndEffectorState(EndEffectorState.CORAL_LOADED);
   }
 
   // Returns true when the command should end.

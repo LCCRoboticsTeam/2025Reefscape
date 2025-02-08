@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -46,6 +48,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     armMotor = new SparkMax(AlgaeConstants.kArmAlgaeMotorCanID, MotorType.kBrushless);
     armClosedLoopController = armMotor.getClosedLoopController();
     armEncoder = armMotor.getEncoder();
+    armEncoder.setPosition(0);
 
     wheelMotor = new SparkMax(AlgaeConstants.kWheelAlgaeMotorCanID, MotorType.kBrushless);
     wheelClosedLoopController = wheelMotor.getClosedLoopController();
@@ -113,26 +116,45 @@ public class AlgaeSubsystem extends SubsystemBase {
         });
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+  public void setArmTargetPosition(double armTargetPosition) {
+    // FIXME: Confirm
+    // POSITIVE Value -> Arm UP
+    // NEGATIVE Value -> Arm DOWN
+    this.armTargetPosition=armTargetPosition;
+  }
+
+  public double getArmActualPosition() {
+   return armEncoder.getPosition();
+  }
+
+  public void resetArmPosition() {
+    // Reset the encoder position to 0
+    armEncoder.setPosition(0);
+ }
+
+  public void setWheelTargetVelocity(double wheelTargetVelocity) {
+    // FIXME: Confirm
+    // POSITIVE Value -> Wheels Spin UP
+    // NEGATIVE Value -> Wheels Spin DOWN
+    this.wheelTargetVelocity=wheelTargetVelocity;
+  }
+
+  public double getWheelActualVelocity() {
+   return wheelEncoder.getVelocity();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    armTargetPosition = SmartDashboard.getNumber("ENDE Arm Target Position", 0);
+    if (AlgaeConstants.kArmTargetPositionFromDashboard)
+      armTargetPosition = SmartDashboard.getNumber("ALGAE Arm Target Position", 0);
     armClosedLoopController.setReference(armTargetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-    SmartDashboard.putNumber("ENDE Arm Actual Position", armEncoder.getVelocity());
+    SmartDashboard.putNumber("ALGAE Arm Actual Position", armEncoder.getPosition());
 
-    wheelTargetVelocity = SmartDashboard.getNumber("ENDE Wheel Target Velocity", 0);
+    if (AlgaeConstants.kWheelTargetVelocityFromDashboard)
+      wheelTargetVelocity = SmartDashboard.getNumber("ALGAE Wheel Target Velocity", 0);
     wheelClosedLoopController.setReference(wheelTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("ENDE Wheel Actual Velocity", wheelEncoder.getVelocity());
+    SmartDashboard.putNumber("ALGAE Wheel Actual Velocity", wheelEncoder.getVelocity());
   }
 
   @Override
