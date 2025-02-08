@@ -168,4 +168,29 @@ public final class Constants {
     CORAL_LOADED;
   }
 
+  public enum ElevatorState{
+    UNKNOWN,
+    P1(0),
+    P2(200),
+    P3(300),
+    P4(400);
+    
+
+    private int elevatorPosition;
+    ElevatorState(int elevatorPosition) {
+      this.elevatorPosition = elevatorPosition;
+    }
+
+    ElevatorState() {
+    }
+
+    public int getPosition() {
+      return elevatorPosition;
+    }
+
+    
+
+
+  }
 }
+
