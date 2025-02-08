@@ -14,23 +14,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class SwerveGamepadDriveCommand extends Command {
+public class SwerveSlideCommand extends Command {
 
   private final DriveSubsystem swerveDriveTrain;
-  private final DoubleSupplier xSpeedSupplier, ySpeedSupplier, rotateSpeedSupplier;
-  private final BooleanSupplier fieldOrientedDrive;
-
-  private PhotonCamera frontsidePhotonCamera;
-  private PhotonCamera backsidePhotonCamera;
+  boolean rightDirection;
+  double ySpeed;
 
   /** Creates a new SwerveControllerDrive. */
-  public SwerveGamepadDriveCommand(DriveSubsystem swerveDriveTrain, DoubleSupplier ySpeedSupplier,
-      DoubleSupplier xSpeedSupplier, DoubleSupplier rotateSpeedSupplier, BooleanSupplier fieldOrientedDrive) {
+  public SwerveSlideCommand(DriveSubsystem swerveDriveTrain, boolean rightDirection, double ySpeed) {
     this.swerveDriveTrain = swerveDriveTrain;
-    this.ySpeedSupplier = ySpeedSupplier;
-    this.xSpeedSupplier = xSpeedSupplier;
-    this.rotateSpeedSupplier = rotateSpeedSupplier;
-    this.fieldOrientedDrive = fieldOrientedDrive;
+    this.rightDirection = rightDirection;
+    if (rightDirection)
+      this.ySpeed=-ySpeed;
+    else
+      this.ySpeed=ySpeed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.swerveDriveTrain);
   }
@@ -38,22 +35,17 @@ public class SwerveGamepadDriveCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    swerveDriveTrain.zeroHeading();
     
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = xSpeedSupplier.getAsDouble();
-    double ySpeed = ySpeedSupplier.getAsDouble();
-    double rotateSpeed = rotateSpeedSupplier.getAsDouble();
-
     swerveDriveTrain.drive(
-                -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
+                0,
                 -MathUtil.applyDeadband(ySpeed, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
-                fieldOrientedDrive.getAsBoolean(), 
+                0,
+                false, 
                 true);
   }
 
@@ -67,14 +59,6 @@ public class SwerveGamepadDriveCommand extends Command {
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  public void setfrontsidePhotonCamera(PhotonCamera camera) {
-    this.frontsidePhotonCamera = camera;
-  }
-
-  public void setbacksidePhotonCamera(PhotonCamera camera) {
-    this.backsidePhotonCamera = camera;
   }
 
 }

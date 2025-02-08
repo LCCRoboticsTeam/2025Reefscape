@@ -26,11 +26,17 @@ public class ClimberSubsystem extends SubsystemBase {
   private SparkMaxConfig motorConfig;
   private SparkClosedLoopController closedLoopController;
   private RelativeEncoder encoder;
+
+  private double targetPosition;
+
   public ClimberSubsystem() {
     motor = new SparkMax(ClimberConstants.kClimberCanID, MotorType.kBrushless);
     closedLoopController = motor.getClosedLoopController();
     encoder = motor.getEncoder();
     motorConfig = new SparkMaxConfig();
+
+    targetPosition = 0;
+    encoder.setPosition(0);
 
     /*
      * Configure the encoder. For this specific example, we are using the
@@ -53,13 +59,13 @@ public class ClimberSubsystem extends SubsystemBase {
         .p(0.1)
         .i(0)
         .d(0)
-        .outputRange(-1, 1)
+        .outputRange(ClimberConstants.kminOutRange, ClimberConstants.kmaxOutRange)
         // Set PID values for velocity control in slot 1
         .p(0.0001, ClosedLoopSlot.kSlot1)
         .i(0, ClosedLoopSlot.kSlot1)
         .d(0, ClosedLoopSlot.kSlot1)
         .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-        .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
+        .outputRange(ClimberConstants.kminOutRange, ClimberConstants.kmaxOutRange, ClosedLoopSlot.kSlot1);
 
     /*
      * Apply the configuration to the SPARK MAX.
@@ -74,10 +80,7 @@ public class ClimberSubsystem extends SubsystemBase {
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     // Initialize dashboard values
-    SmartDashboard.setDefaultNumber("Target Position", 0);
-    SmartDashboard.setDefaultNumber("Target Velocity", 0);
-    SmartDashboard.setDefaultBoolean("Control Mode", false);
-    SmartDashboard.setDefaultBoolean("Reset Encoder", false);
+    SmartDashboard.setDefaultNumber("ARM Target Position", 0);
   }
 
   /**
@@ -104,12 +107,12 @@ public class ClimberSubsystem extends SubsystemBase {
     return false;
   }
 
-  public void ClimberUp() {
-
+  public void setTargetPosition(double targetPosition) {
+    this.targetPosition=targetPosition;
   }
 
-  public void ClimberDown() {
-    
+  public double getActualPosition() {
+   return encoder.getPosition();
   }
 
   public void resetPosition() {
@@ -124,9 +127,17 @@ public class ClimberSubsystem extends SubsystemBase {
        * Get the target position from SmartDashboard and set it as the setpoint
        * for the closed loop controller.
        */
-      double targetPosition = SmartDashboard.getNumber("Target Position", 0);
-      closedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-      SmartDashboard.putNumber("Actual Position", encoder.getPosition());
+      if (ClimberConstants.kTargetPositionFromDashboard) 
+        targetPosition = SmartDashboard.getNumber("ARM Target Position", 0);
+
+      // Since we reset to Postion 0, which is when the climber is down,
+      // we should NEVER allow a position that is negative.
+      if (targetPosition>=0) {  
+        // NOTE: The actual value for position to result in the climber to go UP is NEGATIVE,
+        // Thus we will make the value passed in setReferene a negative number
+        closedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+      }
+      SmartDashboard.putNumber("ARM Actual Position", encoder.getPosition());
   }
 
   @Override
