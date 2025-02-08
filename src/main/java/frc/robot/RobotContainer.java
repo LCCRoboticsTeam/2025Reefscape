@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.EndEffectorState;
 import frc.robot.Constants.OIConstants;
 
 // Subsystems - imports
@@ -73,8 +74,8 @@ public class RobotContainer {
   private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
   private final CommandXboxController driverCommandXboxController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
-  //private final XboxController manipulatorXboxController = new XboxController(OIConstants.kManipulatorControllerPort); 
-  //private final CommandXboxController manipulatorCommandXboxController = new CommandXboxController(OIConstants.kManipulatorControllerPort);
+  private final XboxController manipulatorXboxController = new XboxController(OIConstants.kManipulatorControllerPort); 
+  private final CommandXboxController manipulatorCommandXboxController = new CommandXboxController(OIConstants.kManipulatorControllerPort);
 
   // Dashboard - Choosers
   private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
@@ -90,6 +91,7 @@ public class RobotContainer {
   public RobotContainer() {
      // Register Named Commands
      ////NamedCommands.registerCommand("IntakeCoral", new IntakeCommand(endEffectorSubsystem));
+     ////NamedCommands.registerCommand("PlaceCoral", new PlaceCommand(endEffectorSubsystem));
      NamedCommands.registerCommand("SwerveSlideRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed));
      NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed));
 
@@ -103,7 +105,8 @@ public class RobotContainer {
     //SmartDashboard.putData(autoChooser);
      
     // Commands launched from Dashboard
-    SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
+    //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
+    //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("PlaceCoral"));
 
     // Configure default commands
     driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,
@@ -134,9 +137,8 @@ public class RobotContainer {
     driverCommandXboxController.rightBumper().whileTrue(NamedCommands.getCommand("SwerveSlideRight"));
     driverCommandXboxController.leftBumper().whileTrue(NamedCommands.getCommand("SwerveSlideLeft"));
 
-    //manipulatorCommandXboxController.a().onTrue(NamedCommands.getCommand("IntakeCoral"));
-
-
+    //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralNotLoaded)).onTrue(NamedCommands.getCommand("IntakeCoral"));
+    //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralLoaded)).onTrue(NamedCommands.getCommand("PlaceCoralCommand"));
   }
 
   /**

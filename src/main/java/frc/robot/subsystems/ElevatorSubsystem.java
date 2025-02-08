@@ -147,9 +147,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     if (ElevatorConstants.kTargetPositionFromDashboard)
       targetPosition = SmartDashboard.getNumber("Elevator Target Position", 0);
 
-    //FIXME: Need to confirm which one is negative, left or right, starting with right
-    leftClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-    rightClosedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    // Since we reset to Postion 0, which is when the elevator is down,
+    // we should NEVER allow a position that is negative
+    if (targetPosition>=0) {
+      leftClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+      rightClosedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    }
 
     SmartDashboard.putNumber("Elevator Left Actual Position", leftEncoder.getPosition());
     SmartDashboard.putNumber("Elevator Right Actual Position", rightEncoder.getPosition());

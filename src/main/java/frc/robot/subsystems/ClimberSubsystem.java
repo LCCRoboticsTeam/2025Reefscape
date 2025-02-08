@@ -108,9 +108,6 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void setTargetPosition(double targetPosition) {
-    // FIXME: Confirm
-    // POSITIVE Value -> Arm UP
-    // NEGATIVE Value -> Arm DOWN
     this.targetPosition=targetPosition;
   }
 
@@ -132,7 +129,14 @@ public class ClimberSubsystem extends SubsystemBase {
        */
       if (ClimberConstants.kTargetPositionFromDashboard) 
         targetPosition = SmartDashboard.getNumber("ARM Target Position", 0);
-      closedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+
+      // Since we reset to Postion 0, which is when the climber is down,
+      // we should NEVER allow a position that is negative.
+      if (targetPosition>=0) {  
+        // NOTE: The actual value for position to result in the climber to go UP is NEGATIVE,
+        // Thus we will make the value passed in setReferene a negative number
+        closedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+      }
       SmartDashboard.putNumber("ARM Actual Position", encoder.getPosition());
   }
 

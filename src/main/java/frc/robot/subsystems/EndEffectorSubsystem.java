@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.EndEffectorConstants;
+import frc.robot.Constants.EndEffectorState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.RelativeEncoder;
@@ -40,8 +41,12 @@ public class EndEffectorSubsystem extends SubsystemBase {
   private double leftTargetVelocity;
   private double rightTargetVelocity;
 
+  private EndEffectorState endEffectorState;
+
   /** Creates a new EndEffectorSubsystem. */
   public EndEffectorSubsystem() {
+
+    endEffectorState =  EndEffectorState.UNKNOWN;
 
     leftTargetVelocity=0;
     rightTargetVelocity=0;
@@ -157,6 +162,28 @@ public class EndEffectorSubsystem extends SubsystemBase {
   public int getHoppersideDistanceMM() {
     LaserCan.Measurement lcHoppersideMeasurement = LCHopperside.getMeasurement();
     return lcHoppersideMeasurement.distance_mm;
+  }
+
+  public EndEffectorState getEndEffectorState() {
+    return this.endEffectorState;
+  }
+
+  public void setEndEffectorState(EndEffectorState endEffectorState) {
+    this.endEffectorState =  endEffectorState;
+  }
+
+  public boolean isCoralLoaded() {
+    if (this.endEffectorState==EndEffectorState.CORAL_LOADED)
+      return true;
+    else
+      return false;
+  }
+
+  public boolean isCoralNotLoaded() {
+    if (this.endEffectorState!=EndEffectorState.CORAL_LOADED)
+      return true;
+    else
+      return false;
   }
 
   /**

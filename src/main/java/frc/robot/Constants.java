@@ -33,7 +33,7 @@ public final class Constants {
     public static final double kRotationalSlewRate = 3; // percent per second (1 = 100%); was .9
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(24.5)
+    public static final double kTrackWidth = Units.inchesToMeters(24.5);
     // Distance between centers of right and left wheels on robot
     public static final double kWheelBase = Units.inchesToMeters(24.5); 
     // Distance between front and back wheels on robot
@@ -76,6 +76,9 @@ public final class Constants {
     public static final double kMaxOutRange = 0.5;
     public static final double kMinOutRange = -0.5;
 
+    // NOTE: For intaking and placing coral, Motor direction MUST BE:
+    //         LeftMotor -> Positive
+    //         RightMotor -> Negative
     public static final double kLeftMotorTargetVelocity = 1500;
     public static final double kRightMotorTargetVelocity = -1500;
 
@@ -158,4 +161,11 @@ public final class Constants {
 
     public static final boolean kTargetPositionFromDashboard = true;
   }
+
+  public enum EndEffectorState {
+    UNKNOWN,
+    CORAL_FREE,
+    CORAL_LOADED;
+  }
+
 }
