@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.security.spec.AlgorithmParameterSpec;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -21,8 +19,6 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import au.grapplerobotics.LaserCan;
-import au.grapplerobotics.ConfigurationFailedException;
 
 public class AlgaeSubsystem extends SubsystemBase {
 
@@ -117,7 +113,6 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void setArmTargetPosition(double armTargetPosition) {
-    // FIXME: Confirm
     // POSITIVE Value -> Arm UP
     // NEGATIVE Value -> Arm DOWN
     this.armTargetPosition=armTargetPosition;
@@ -133,7 +128,6 @@ public class AlgaeSubsystem extends SubsystemBase {
  }
 
   public void setWheelTargetVelocity(double wheelTargetVelocity) {
-    // FIXME: Confirm
     // POSITIVE Value -> Wheels Spin UP
     // NEGATIVE Value -> Wheels Spin DOWN
     this.wheelTargetVelocity=wheelTargetVelocity;

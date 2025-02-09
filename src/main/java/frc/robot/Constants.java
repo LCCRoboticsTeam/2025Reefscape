@@ -84,6 +84,8 @@ public final class Constants {
 
     public static final int kCoralDetectedDistance = 40;
 
+    public static final int kPlaceCoralCommandRuntimeInMs = 1500;
+
     public static final boolean kLeftTargetVelocityFromDashboard = true;
     public static final boolean kRightTargetVelocityFromDashboard = true;
 

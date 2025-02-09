@@ -30,7 +30,8 @@ import frc.robot.commands.SwerveSlideCommand;
 //import frc.robot.commands.ProcessAlgaeCommand;
 //import frc.robot.commands.PickupAlgaeCommand;
 //   Uses ClimberSubsystem
-//import frc.robot.commands.MoveClimberCommand;
+//import frc.robot.commands.MoveClimberUpCommand;
+//import frc.robot.commands.MoveClimberDownCommand;
 
 // Cameras and Vision
 import edu.wpi.first.cameraserver.CameraServer;
@@ -106,7 +107,7 @@ public class RobotContainer {
      
     // Commands launched from Dashboard
     //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
-    //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("PlaceCoral"));
+    //SmartDashboard.putData("PlaceCoral", NamedCommands.getCommand("PlaceCoral"));
 
     // Configure default commands
     driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,

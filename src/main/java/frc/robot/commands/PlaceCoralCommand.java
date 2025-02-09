@@ -5,17 +5,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.Constants.EndEffectorState;
 
-public class IntakeCommand extends Command {
+public class PlaceCoralCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final EndEffectorSubsystem m_subsystem;
+  private int isFinishedDelayCountInMs;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  private boolean coralDetected;
 
-  public IntakeCommand(EndEffectorSubsystem subsystem) {
+  public PlaceCoralCommand(EndEffectorSubsystem subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -24,14 +25,14 @@ public class IntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    coralDetected = false;
-
+    isFinishedDelayCountInMs=0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorTargetVelocity, EndEffectorConstants.kRightMotorTargetVelocity);
+    isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }
 
   // Called once the command ends or is interrupted.
@@ -39,17 +40,15 @@ public class IntakeCommand extends Command {
   public void end(boolean interrupted) {
     m_subsystem.setTargetVelocity(0, 0);
     if (!interrupted)
-        m_subsystem.setEndEffectorState(EndEffectorState.CORAL_LOADED);
+        m_subsystem.setEndEffectorState(EndEffectorState.CORAL_FREE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_subsystem.getHoppersideDistanceMM() < EndEffectorConstants.kCoralDetectedDistance) {
-        coralDetected = true;
-    } else if (coralDetected == true) {
-        return true;
-    }
-    return false;
+    if (isFinishedDelayCountInMs>EndEffectorConstants.kPlaceCoralCommandRuntimeInMs)
+      return true;
+    else
+      return false;
   }
 }
