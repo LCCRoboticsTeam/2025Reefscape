@@ -157,6 +157,8 @@ public final class Constants {
   }
   public final class ClimberConstants {
     public static final int kClimberCanID = 19;
+    public static final int kClimberPositionUp = 500;
+    public static final int kClimberPositionDown = 0;
 
     public static final double kmaxOutRange = 0.5;
     public static final double kminOutRange = -0.5;
@@ -169,5 +171,35 @@ public final class Constants {
     CORAL_FREE,
     CORAL_LOADED;
   }
+  public enum ClimberState {
+    UNKOWN,
+    CLIMBER_UP,
+    CLIMBER_DOWN
+  }
 
+  public enum ElevatorState{
+    UNKNOWN,
+    P1(0),
+    P2(200),
+    P3(300),
+    P4(400);
+    
+
+    private int elevatorPosition;
+    ElevatorState(int elevatorPosition) {
+      this.elevatorPosition = elevatorPosition;
+    }
+
+    ElevatorState() {
+    }
+
+    public int getPosition() {
+      return elevatorPosition;
+    }
+
+    
+
+
+  }
 }
+

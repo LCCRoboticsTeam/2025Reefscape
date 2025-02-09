@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.EndEffectorConstants;
+import frc.robot.Constants.ElevatorState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.RelativeEncoder;
@@ -32,12 +32,14 @@ public class ElevatorSubsystem extends SubsystemBase {
   private SparkMaxConfig rightMotorConfig;
   private SparkClosedLoopController rightClosedLoopController;
   private RelativeEncoder rightEncoder;
+  private ElevatorState elevatorState;
 
   double targetPosition;
 
   /** Creates a new EndEffectorSubsystem. */
   public ElevatorSubsystem() {
 
+    elevatorState = ElevatorState.UNKNOWN;
     targetPosition = 0;
 
     leftMotor = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
@@ -117,6 +119,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void setTargetPosition(double targetPosition) {
     this.targetPosition=targetPosition;
+  }
+
+  public void setElevatorState(ElevatorState state){
+    this.elevatorState = state;
+  }
+
+  public ElevatorState getElevatorState(){
+    return this.elevatorState;
   }
 
   public double getLeftActualPosition() {
