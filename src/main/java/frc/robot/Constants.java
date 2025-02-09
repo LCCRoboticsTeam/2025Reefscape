@@ -28,9 +28,9 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond = 3.0;  // Orig 4.8, 2024Crecendo it was 4.0, 2025Reefscape trying slower
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
-    public static final double kDirectionalSlewRate = 4; // radians per second; was .6
-    public static final double kMagnitudeSlewRate = 3; // percent per second (1 = 100%); was .9
-    public static final double kRotationalSlewRate = 3; // percent per second (1 = 100%); was .9
+    public static final double kDirectionalSlewRate = 3; // radians per second; was .6
+    public static final double kMagnitudeSlewRate = 1.5; // percent per second (1 = 100%); was .9
+    public static final double kRotationalSlewRate = 1.5; // percent per second (1 = 100%); was .9
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
@@ -82,12 +82,15 @@ public final class Constants {
     public static final double kLeftMotorTargetVelocity = 1500;
     public static final double kRightMotorTargetVelocity = -1500;
 
+    public static final double kLeftMotorPlaceCoralTargetVelocity = 2000;
+    public static final double kRightMotorPlaceCoralTargetVelocity = -2000;
+
     public static final int kCoralDetectedDistance = 40;
 
     public static final int kPlaceCoralCommandRuntimeInMs = 1500;
 
-    public static final boolean kLeftTargetVelocityFromDashboard = true;
-    public static final boolean kRightTargetVelocityFromDashboard = true;
+    public static final boolean kLeftTargetVelocityFromDashboard = false;
+    public static final boolean kRightTargetVelocityFromDashboard = false;
 
   }
 
@@ -148,7 +151,7 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kManipulatorControllerPort = 1;
-    public static final double kDriveDeadband = 0.065;  // was 0.05, 2024Crescendo used 0.065
+    public static final double kDriveDeadband = 0.095;  // was 0.05, 2024Crescendo used 0.065
 
   }
 

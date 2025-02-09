@@ -213,7 +213,12 @@ public class EndEffectorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ENDE LCReefside Measurement (mm)", getReefsideDistanceMM());
 
     SmartDashboard.putNumber("ENDE LCHopperside Measurement (mm)", getHoppersideDistanceMM());
+
+    SmartDashboard.putBoolean("ENDE Coral Loaded", isCoralLoaded());
+    SmartDashboard.putBoolean("ENDE Coral NOT Loaded", isCoralNotLoaded());
+
   }
+
 
   @Override
   public void simulationPeriodic() {

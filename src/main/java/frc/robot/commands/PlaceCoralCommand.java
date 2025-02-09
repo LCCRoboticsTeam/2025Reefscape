@@ -31,7 +31,7 @@ public class PlaceCoralCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorTargetVelocity, EndEffectorConstants.kRightMotorTargetVelocity);
+    m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralTargetVelocity*1.5, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
     isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }
 
