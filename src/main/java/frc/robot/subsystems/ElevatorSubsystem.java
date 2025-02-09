@@ -20,8 +20,6 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import au.grapplerobotics.LaserCan;
-import au.grapplerobotics.ConfigurationFailedException;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
