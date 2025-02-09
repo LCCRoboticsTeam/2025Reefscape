@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.ClimberState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,6 +30,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private double targetPosition;
 
+  private ClimberState climberState;
+
   public ClimberSubsystem() {
     motor = new SparkMax(ClimberConstants.kClimberCanID, MotorType.kBrushless);
     closedLoopController = motor.getClosedLoopController();
@@ -36,6 +39,7 @@ public class ClimberSubsystem extends SubsystemBase {
     motorConfig = new SparkMaxConfig();
 
     targetPosition = 0;
+    climberState = ClimberState.UNKOWN;
     encoder.setPosition(0);
 
     /*
@@ -118,6 +122,14 @@ public class ClimberSubsystem extends SubsystemBase {
   public void resetPosition() {
      // Reset the encoder position to 0
      encoder.setPosition(0);
+  }
+
+   public ClimberState getClimberState() {
+    return this.climberState;
+  }
+
+  public void setClimberState(ClimberState climberState) {
+    this.climberState =  climberState;
   }
 
   @Override
