@@ -14,7 +14,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+//import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -75,7 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
   private final SwerveDrivePoseEstimator m_poseEstimator =
       new SwerveDrivePoseEstimator(
           DriveConstants.kDriveKinematics,
-          Rotation2d.fromDegrees(-1*m_gyro.getYaw()),
+          //Rotation2d.fromDegrees(-1*m_gyro.getYaw()),
+          Rotation2d.fromDegrees((DriveConstants.kGyroReversed ? -1.0 : 1.0)*m_gyro.getAngle()),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -147,7 +148,8 @@ public class DriveSubsystem extends SubsystemBase {
     // Update the odometry in the periodic block
     m_poseEstimator.update(
         //Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
-        Rotation2d.fromDegrees(-1*m_gyro.getYaw()),
+        //Rotation2d.fromDegrees(-1*m_gyro.getYaw()),
+        Rotation2d.fromDegrees((DriveConstants.kGyroReversed ? -1.0 : 1.0)*m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -157,8 +159,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putData("Field", m_field);  
     SmartDashboard.putNumber("Gyro Heading: ", getHeading()); 
-    SmartDashboard.putNumber("Gyro Yaw: ", (-1*m_gyro.getYaw())); 
-    SmartDashboard.putNumber("Gyro Pitch: ", m_gyro.getPitch()); 
+    SmartDashboard.putNumber("Gyro Yaw: ", ((DriveConstants.kGyroReversed ? -1.0 : 1.0)*m_gyro.getYaw())); 
+    SmartDashboard.putNumber("Gyro Angle: ", ((DriveConstants.kGyroReversed ? -1.0 : 1.0)*m_gyro.getYaw())); 
  
   }
 
@@ -191,7 +193,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     m_poseEstimator.resetPosition(
         //Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
-        Rotation2d.fromDegrees(-1*m_gyro.getYaw()),
+        //Rotation2d.fromDegrees(-1*m_gyro.getYaw()),
+        Rotation2d.fromDegrees((DriveConstants.kGyroReversed ? -1.0 : 1.0)*m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -265,9 +268,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     // Convert the commanded speeds into the correct units for the drivetrain
-    double xSpeedDelivered = xSpeed * DriveConstants.kMaxSpeedMetersPerSecond;
-    double ySpeedDelivered = ySpeed * DriveConstants.kMaxSpeedMetersPerSecond;
-    double rotDelivered = rot * DriveConstants.kMaxAngularSpeed;
+    double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
+    double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
+    double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
          fieldRelative
@@ -335,7 +338,8 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getHeading() {
     //return Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)).getDegrees();
-    return Rotation2d.fromDegrees(-1*m_gyro.getYaw()).getDegrees();
+    //return Rotation2d.fromDegrees(-1*m_gyro.getYaw()).getDegrees();
+    return Rotation2d.fromDegrees((DriveConstants.kGyroReversed ? -1.0 : 1.0)*m_gyro.getAngle()).getDegrees();
   }
 
   /**

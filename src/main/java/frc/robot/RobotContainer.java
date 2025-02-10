@@ -7,7 +7,7 @@ package frc.robot;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.EndEffectorState;
 import frc.robot.Constants.OIConstants;
-
+import frc.robot.Constants.PlaceCoralDirection;
 // Subsystems - imports
 import frc.robot.subsystems.DriveSubsystem;
 ////import frc.robot.subsystems.ElevatorSubsystem;
@@ -92,7 +92,10 @@ public class RobotContainer {
   public RobotContainer() {
      // Register Named Commands
      NamedCommands.registerCommand("IntakeCoral", new IntakeCommand(endEffectorSubsystem));
-     NamedCommands.registerCommand("PlaceCoral", new PlaceCoralCommand(endEffectorSubsystem));
+     NamedCommands.registerCommand("PlaceCoralStraight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_STRAIGHT));
+     NamedCommands.registerCommand("PlaceCoralRight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_RIGHT));
+     NamedCommands.registerCommand("PlaceCoralLeft", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_LEFT));
+
      NamedCommands.registerCommand("SwerveSlideRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed));
      NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed));
 
@@ -138,8 +141,13 @@ public class RobotContainer {
     driverCommandXboxController.rightBumper().whileTrue(NamedCommands.getCommand("SwerveSlideRight"));
     driverCommandXboxController.leftBumper().whileTrue(NamedCommands.getCommand("SwerveSlideLeft"));
 
-    manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralNotLoaded)).onTrue(NamedCommands.getCommand("IntakeCoral"));
-    manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralLoaded)).onTrue(NamedCommands.getCommand("PlaceCoral"));
+    //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralNotLoaded)).onTrue(NamedCommands.getCommand("IntakeCoral"));
+    manipulatorCommandXboxController.a().onTrue(NamedCommands.getCommand("IntakeCoral"));
+    //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralLoaded)).onTrue(NamedCommands.getCommand("PlaceCoral"));
+    manipulatorCommandXboxController.x().onTrue(NamedCommands.getCommand("PlaceCoralLeft"));
+    manipulatorCommandXboxController.y().onTrue(NamedCommands.getCommand("PlaceCoralStraight"));
+    manipulatorCommandXboxController.b().onTrue(NamedCommands.getCommand("PlaceCoralRight"));
+
 
   }
 

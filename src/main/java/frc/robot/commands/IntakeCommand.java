@@ -32,7 +32,12 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorTargetVelocity, EndEffectorConstants.kRightMotorTargetVelocity);
+    // Slowdown once we know we have coral coming into the EndEffector so that it stops
+    // at a more repeatable position when this command ends.
+    if (coralDetected==true)
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorIntakeTargetVelocity/2, EndEffectorConstants.kRightMotorIntakeTargetVelocity/2);
+    else
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorIntakeTargetVelocity, EndEffectorConstants.kRightMotorIntakeTargetVelocity);
   }
 
   // Called once the command ends or is interrupted.
@@ -48,7 +53,7 @@ public class IntakeCommand extends Command {
   public boolean isFinished() {
     if (m_subsystem.getHoppersideDistanceMM() < EndEffectorConstants.kCoralDetectedDistance) {
       coreDetectedCount++;
-      if (coreDetectedCount>20) {
+      if (coreDetectedCount>EndEffectorConstants.kCorelDetectedCountThreshold) {
         coralDetected=true;
       }
     } else if (coralDetected == true) {

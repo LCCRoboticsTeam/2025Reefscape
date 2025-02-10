@@ -48,22 +48,22 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftEncoder.setPosition(0);
 
     rightMotor = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
-    rightClosedLoopController = rightMotor.getClosedLoopController();
-    rightEncoder = rightMotor.getEncoder();
-    rightEncoder.setPosition(0);
+    //rightClosedLoopController = rightMotor.getClosedLoopController();
+    //rightEncoder = rightMotor.getEncoder();
+    //rightEncoder.setPosition(0);
 
     leftMotorConfig = new SparkMaxConfig();
 
-    rightMotorConfig = new SparkMaxConfig();
+    //rightMotorConfig = new SparkMaxConfig();
 
     leftMotorConfig.encoder
       .positionConversionFactor(1)
       .velocityConversionFactor(1);
     
-    rightMotorConfig.encoder
-      .positionConversionFactor(1)
-      .velocityConversionFactor(1);
-    
+    //rightMotorConfig.encoder
+    //  .positionConversionFactor(1)
+    //  .velocityConversionFactor(1);
+   
     // Set up PID closed loop
     leftMotorConfig.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -77,30 +77,33 @@ public class ElevatorSubsystem extends SubsystemBase {
       .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
       .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
     
-    rightMotorConfig.closedLoop
-      .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-      .p(0.1)
-      .i(0)
-      .d(0)
-      .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange)
-      .p(0.0001, ClosedLoopSlot.kSlot1)
-      .i(0, ClosedLoopSlot.kSlot1)
-      .d(0, ClosedLoopSlot.kSlot1)
-      .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-      .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
+    //rightMotorConfig.closedLoop
+    //  .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+    //  .p(0.1)
+    //  .i(0)
+    //  .d(0)
+    //  .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange)
+    //  .p(0.0001, ClosedLoopSlot.kSlot1)
+    //  .i(0, ClosedLoopSlot.kSlot1)
+    //  .d(0, ClosedLoopSlot.kSlot1)
+    //  .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
+    //  .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
 
     leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, 
       PersistMode.kNoPersistParameters);
     
-    rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, 
+    //rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, 
+    //  PersistMode.kNoPersistParameters);
+
+    rightMotor.configure(leftMotorConfig.follow(leftMotor, true), ResetMode.kResetSafeParameters, 
       PersistMode.kNoPersistParameters);
     
     // Initialize dashboard values
-    SmartDashboard.setDefaultNumber("Left Target Position", 0);
-    SmartDashboard.setDefaultBoolean("Left Reset Encoder", false);
+    SmartDashboard.setDefaultNumber("ELEV Target Pos", 0);
+    //SmartDashboard.setDefaultBoolean("Reset Encoder", false);
 
-    SmartDashboard.setDefaultNumber("Right Target Position", 0);
-    SmartDashboard.setDefaultBoolean("Right Reset Encoder", false);
+    //SmartDashboard.setDefaultNumber("Right Target Position", 0);
+    //SmartDashboard.setDefaultBoolean("Right Reset Encoder", false);
   }
 
   /**
@@ -133,14 +136,14 @@ public class ElevatorSubsystem extends SubsystemBase {
    return leftEncoder.getPosition();
   }
 
-  public double getRightActualPosition() {
-    return rightEncoder.getPosition();
-   }
+  //public double getRightActualPosition() {
+  //  return rightEncoder.getPosition();
+  // }
 
    public void resetPosition() {
     // Reset the encoder position to 0
     leftEncoder.setPosition(0);
-    rightEncoder.setPosition(0);
+    //rightEncoder.setPosition(0);
  }
 
   /**
@@ -153,17 +156,24 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if (ElevatorConstants.kTargetPositionFromDashboard)
-      targetPosition = SmartDashboard.getNumber("Elevator Target Position", 0);
+      targetPosition = SmartDashboard.getNumber("ELEV Target Pos", 0);
 
     // Since we reset to Postion 0, which is when the elevator is down,
     // we should NEVER allow a position that is negative
     if (targetPosition>=0) {
       leftClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-      rightClosedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+      //rightClosedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 
-    SmartDashboard.putNumber("Elevator Left Actual Position", leftEncoder.getPosition());
-    SmartDashboard.putNumber("Elevator Right Actual Position", rightEncoder.getPosition());
+    SmartDashboard.putNumber("ELEV Actual Pos", leftEncoder.getPosition());
+    //SmartDashboard.putNumber("Elevator Left Actual Position", leftEncoder.getPosition());
+    //SmartDashboard.putNumber("Elevator Right Actual Position", rightEncoder.getPosition());
+
+    SmartDashboard.putNumber("ELEV Left Amps", leftMotor.getOutputCurrent());
+    SmartDashboard.putNumber("ELEV Right Amps", rightMotor.getOutputCurrent());
+    SmartDashboard.putNumber("ELEV Left DutyCycle", leftMotor.getAppliedOutput());
+    SmartDashboard.putNumber("ELEV Right DutyCycle", rightMotor.getAppliedOutput());
+
 
   }
 

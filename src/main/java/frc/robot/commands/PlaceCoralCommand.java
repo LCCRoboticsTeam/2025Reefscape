@@ -4,11 +4,13 @@ import frc.robot.subsystems.EndEffectorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.Constants.EndEffectorState;
+import frc.robot.Constants.PlaceCoralDirection;
 
 public class PlaceCoralCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final EndEffectorSubsystem m_subsystem;
   private int isFinishedDelayCountInMs;
+  private PlaceCoralDirection placeCoralDirection;
 
   /**
    * Creates a new ExampleCommand.
@@ -16,8 +18,9 @@ public class PlaceCoralCommand extends Command {
    * @param subsystem The subsystem used by this command.
    */
 
-  public PlaceCoralCommand(EndEffectorSubsystem subsystem) {
+  public PlaceCoralCommand(EndEffectorSubsystem subsystem, PlaceCoralDirection placeCoralDirection) {
     m_subsystem = subsystem;
+    this.placeCoralDirection = placeCoralDirection;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -31,7 +34,13 @@ public class PlaceCoralCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralTargetVelocity*1.5, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
+    if (placeCoralDirection==PlaceCoralDirection.PLACE_CORAL_RIGHT)
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralRightTargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralRightTargetVelocity);
+    else if (placeCoralDirection==PlaceCoralDirection.PLACE_CORAL_LEFT)
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralLeftTargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralLeftTargetVelocity);
+    else
+    m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralTargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
+
     isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }
 
