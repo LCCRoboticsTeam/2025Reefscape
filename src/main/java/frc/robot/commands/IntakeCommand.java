@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.EndEffectorSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.Constants.EndEffectorState;
@@ -46,6 +47,9 @@ public class IntakeCommand extends Command {
     m_subsystem.setTargetVelocity(0, 0);
     if (!interrupted)
         m_subsystem.setEndEffectorState(EndEffectorState.CORAL_LOADED);
+
+    SmartDashboard.putNumber("coreDetectedCount", coreDetectedCount);
+
   }
 
   // Returns true when the command should end.

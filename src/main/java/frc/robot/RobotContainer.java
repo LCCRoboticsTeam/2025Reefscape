@@ -10,7 +10,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PlaceCoralDirection;
 // Subsystems - imports
 import frc.robot.subsystems.DriveSubsystem;
-////import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 ////import frc.robot.subsystems.AlgaeSubsystem;
 ////import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
@@ -65,7 +65,7 @@ public class RobotContainer {
 
   // Subsystems defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
   //private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();

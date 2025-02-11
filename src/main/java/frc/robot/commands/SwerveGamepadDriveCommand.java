@@ -53,7 +53,8 @@ public class SwerveGamepadDriveCommand extends Command {
                 -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(ySpeed, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
-                fieldOrientedDrive.getAsBoolean(), 
+                //fieldOrientedDrive.getAsBoolean(),
+                true, 
                 true);
   }
 

@@ -62,7 +62,7 @@ public final class Constants {
 
     public static final boolean kGyroReversed = true;
 
-    public static final double kSwerveSlideSpeed = 0.1;
+    public static final double kSwerveSlideSpeed = 0.15;
 
   }
 
@@ -79,20 +79,20 @@ public final class Constants {
     // NOTE: For intaking and placing coral, Motor direction MUST BE:
     //         LeftMotor -> Positive
     //         RightMotor -> Negative
-    public static final double kLeftMotorIntakeTargetVelocity = 1500;
-    public static final double kRightMotorIntakeTargetVelocity = -1500;
+    public static final double kLeftMotorIntakeTargetVelocity = 2000;
+    public static final double kRightMotorIntakeTargetVelocity = -2000;
 
-    public static final double kLeftMotorPlaceCoralTargetVelocity = 2000;
-    public static final double kRightMotorPlaceCoralTargetVelocity = -2000;
+    public static final double kLeftMotorPlaceCoralTargetVelocity = 2500;
+    public static final double kRightMotorPlaceCoralTargetVelocity = -2500;
 
-    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 2000;
-    public static final double kRightMotorPlaceCoralRightTargetVelocity = -3000;
+    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 2500;
+    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -3500;
 
-    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 3000;
-    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -2000;
+    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 3500;
+    public static final double kRightMotorPlaceCoralRightTargetVelocity = -2500;
 
     public static final int kCoralDetectedDistance = 40;
-    public static final int kCorelDetectedCountThreshold = 20;
+    public static final int kCorelDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 1500;
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;

@@ -25,9 +25,10 @@ public class SwerveSlideCommand extends Command {
     this.swerveDriveTrain = swerveDriveTrain;
     this.rightDirection = rightDirection;
     if (rightDirection)
-      this.ySpeed=-ySpeed;
-    else
       this.ySpeed=ySpeed;
+    else
+      this.ySpeed=-ySpeed;
+      
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.swerveDriveTrain);
   }
@@ -52,7 +53,7 @@ public class SwerveSlideCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    swerveDriveTrain.drive(0, 0, 0, interrupted, interrupted);
+    swerveDriveTrain.drive(0, 0, 0, true, true);
   }
 
   // Returns true when the command should end.
