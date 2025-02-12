@@ -38,7 +38,7 @@ public class SwerveGamepadDriveCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    swerveDriveTrain.zeroHeading();
+    //swerveDriveTrain.zeroHeading();
     
   }
 

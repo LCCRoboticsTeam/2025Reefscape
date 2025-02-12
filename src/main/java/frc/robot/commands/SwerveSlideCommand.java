@@ -6,12 +6,14 @@ package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
 
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class SwerveSlideCommand extends Command {
@@ -19,11 +21,16 @@ public class SwerveSlideCommand extends Command {
   private final DriveSubsystem swerveDriveTrain;
   boolean rightDirection;
   double ySpeed;
+  boolean automateReefAlignment;
+  IntSupplier reefDistanceSupplier;
+  
 
   /** Creates a new SwerveControllerDrive. */
-  public SwerveSlideCommand(DriveSubsystem swerveDriveTrain, boolean rightDirection, double ySpeed) {
+  public SwerveSlideCommand(DriveSubsystem swerveDriveTrain, boolean rightDirection, double ySpeed, boolean automateReefAlignment, IntSupplier reefDistanceSupplier) {
     this.swerveDriveTrain = swerveDriveTrain;
     this.rightDirection = rightDirection;
+    this.automateReefAlignment = automateReefAlignment;
+    this.reefDistanceSupplier = reefDistanceSupplier;
     if (rightDirection)
       this.ySpeed=ySpeed;
     else
@@ -59,7 +66,10 @@ public class SwerveSlideCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if ((automateReefAlignment) && (reefDistanceSupplier.getAsInt()<EndEffectorConstants.kReeflDetectedDistance))
+      return true;
+    else
+      return false;
   }
 
 }

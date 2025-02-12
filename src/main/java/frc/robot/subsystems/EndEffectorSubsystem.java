@@ -120,8 +120,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
       }
 
     // Initialize dashboard values
-    SmartDashboard.setDefaultNumber("ENDE Left Target Velocity", 0);
-    SmartDashboard.setDefaultNumber("ENDE Right Target Velocity", 0);
+    SmartDashboard.setDefaultNumber("ENDE Left Target Vel", 0);
+    SmartDashboard.setDefaultNumber("ENDE Right Target Vel", 0);
   }
 
   /**
@@ -201,18 +201,18 @@ public class EndEffectorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
     if (EndEffectorConstants.kLeftTargetVelocityFromDashboard)
-      leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Velocity", 0);
+      leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Vel", 0);
     leftClosedLoopController.setReference(leftTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
     SmartDashboard.putNumber("ENDE Left Actual Velocity", leftEncoder.getVelocity());
 
     if (EndEffectorConstants.kRightTargetVelocityFromDashboard)
-      rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Velocity", 0);
+      rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Vel", 0);
     rightClosedLoopController.setReference(rightTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("ENDE Right Actual Velocity", rightEncoder.getVelocity());
+    SmartDashboard.putNumber("ENDE Right Actual Vel", rightEncoder.getVelocity());
 
-    SmartDashboard.putNumber("ENDE LCReefside Measurement (mm)", getReefsideDistanceMM());
+    SmartDashboard.putNumber("ENDE LCReefside Dist (mm)", getReefsideDistanceMM());
 
-    SmartDashboard.putNumber("ENDE LCHopperside Measurement (mm)", getHoppersideDistanceMM());
+    SmartDashboard.putNumber("ENDE LCHopperside Dist (mm)", getHoppersideDistanceMM());
 
     SmartDashboard.putBoolean("ENDE Coral Loaded", isCoralLoaded());
     SmartDashboard.putBoolean("ENDE Coral NOT Loaded", isCoralNotLoaded());

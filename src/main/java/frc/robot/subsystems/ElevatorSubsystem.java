@@ -29,9 +29,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private RelativeEncoder leftEncoder;
 
   private SparkMax rightMotor;
-  private SparkMaxConfig rightMotorConfig;
-  private SparkClosedLoopController rightClosedLoopController;
-  private RelativeEncoder rightEncoder;
+
   private ElevatorState elevatorState;
 
   double targetPosition;
@@ -42,27 +40,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorState = ElevatorState.UNKNOWN;
     targetPosition = 0;
 
+    // Left Motor is the leader
     leftMotor = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
     leftClosedLoopController = leftMotor.getClosedLoopController();
     leftEncoder = leftMotor.getEncoder();
     leftEncoder.setPosition(0);
 
-    rightMotor = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
-    //rightClosedLoopController = rightMotor.getClosedLoopController();
-    //rightEncoder = rightMotor.getEncoder();
-    //rightEncoder.setPosition(0);
-
     leftMotorConfig = new SparkMaxConfig();
-
-    //rightMotorConfig = new SparkMaxConfig();
 
     leftMotorConfig.encoder
       .positionConversionFactor(1)
-      .velocityConversionFactor(1);
-    
-    //rightMotorConfig.encoder
-    //  .positionConversionFactor(1)
-    //  .velocityConversionFactor(1);
+      .velocityConversionFactor(1);  
    
     // Set up PID closed loop
     leftMotorConfig.closedLoop
@@ -77,33 +65,18 @@ public class ElevatorSubsystem extends SubsystemBase {
       .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
       .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
     
-    //rightMotorConfig.closedLoop
-    //  .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-    //  .p(0.1)
-    //  .i(0)
-    //  .d(0)
-    //  .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange)
-    //  .p(0.0001, ClosedLoopSlot.kSlot1)
-    //  .i(0, ClosedLoopSlot.kSlot1)
-    //  .d(0, ClosedLoopSlot.kSlot1)
-    //  .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-    //  .outputRange(ElevatorConstants.kMinOutRange, ElevatorConstants.kMaxOutRange, ClosedLoopSlot.kSlot1);
-
     leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, 
       PersistMode.kNoPersistParameters);
-    
-    //rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, 
-    //  PersistMode.kNoPersistParameters);
+
+    // Right Motor is the follower
+    rightMotor = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
 
     rightMotor.configure(leftMotorConfig.follow(leftMotor, true), ResetMode.kResetSafeParameters, 
       PersistMode.kNoPersistParameters);
     
     // Initialize dashboard values
     SmartDashboard.setDefaultNumber("ELEV Target Pos", 0);
-    //SmartDashboard.setDefaultBoolean("Reset Encoder", false);
 
-    //SmartDashboard.setDefaultNumber("Right Target Position", 0);
-    //SmartDashboard.setDefaultBoolean("Right Reset Encoder", false);
   }
 
   /**
@@ -136,14 +109,9 @@ public class ElevatorSubsystem extends SubsystemBase {
    return leftEncoder.getPosition();
   }
 
-  //public double getRightActualPosition() {
-  //  return rightEncoder.getPosition();
-  // }
-
    public void resetPosition() {
     // Reset the encoder position to 0
     leftEncoder.setPosition(0);
-    //rightEncoder.setPosition(0);
  }
 
   /**
@@ -162,18 +130,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     // we should NEVER allow a position that is negative
     if (targetPosition>=0) {
       leftClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-      //rightClosedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 
     SmartDashboard.putNumber("ELEV Actual Pos", leftEncoder.getPosition());
-    //SmartDashboard.putNumber("Elevator Left Actual Position", leftEncoder.getPosition());
-    //SmartDashboard.putNumber("Elevator Right Actual Position", rightEncoder.getPosition());
 
     SmartDashboard.putNumber("ELEV Left Amps", leftMotor.getOutputCurrent());
     SmartDashboard.putNumber("ELEV Right Amps", rightMotor.getOutputCurrent());
     SmartDashboard.putNumber("ELEV Left DutyCycle", leftMotor.getAppliedOutput());
     SmartDashboard.putNumber("ELEV Right DutyCycle", rightMotor.getAppliedOutput());
-
 
   }
 

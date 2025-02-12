@@ -12,7 +12,7 @@ import frc.robot.Constants.PlaceCoralDirection;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 ////import frc.robot.subsystems.AlgaeSubsystem;
-////import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
 ////import frc.robot.subsystems.LEDController;
 
@@ -24,14 +24,15 @@ import frc.robot.commands.SwerveSlideCommand;
 //import frc.robot.commands.ChangeElevatorLevelCommand;
 //   Uses EndEffector
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.MoveClimberUpCommand;
 import frc.robot.commands.PlaceCoralCommand;
 //   Uses AlgaeSubsystem
 //import frc.robot.commands.RemoveReefAlgaeCommand;
 //import frc.robot.commands.ProcessAlgaeCommand;
 //import frc.robot.commands.PickupAlgaeCommand;
 //   Uses ClimberSubsystem
-//import frc.robot.commands.MoveClimberUpCommand;
-//import frc.robot.commands.MoveClimberDownCommand;
+import frc.robot.commands.MoveClimberUpCommand;
+import frc.robot.commands.MoveClimberDownCommand;
 
 // Cameras and Vision
 import edu.wpi.first.cameraserver.CameraServer;
@@ -68,7 +69,7 @@ public class RobotContainer {
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
   //private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
-  //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   //private final LEDController ledController = new LEDController();
 
   // The driver's controllers
@@ -84,7 +85,7 @@ public class RobotContainer {
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(0);
-  //UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(1);
+  UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(1);
   //PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
   //PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
 
@@ -95,10 +96,11 @@ public class RobotContainer {
      NamedCommands.registerCommand("PlaceCoralStraight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_STRAIGHT));
      NamedCommands.registerCommand("PlaceCoralRight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_RIGHT));
      NamedCommands.registerCommand("PlaceCoralLeft", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_LEFT));
+     NamedCommands.registerCommand("ClimberUp", new MoveClimberUpCommand(climberSubsystem));
+     NamedCommands.registerCommand("ClimberDown", new MoveClimberDownCommand(climberSubsystem));
 
-     NamedCommands.registerCommand("SwerveSlideRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed));
-     NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed));
-
+     NamedCommands.registerCommand("SwerveSlideRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed, false, endEffectorSubsystem::getReefsideDistanceMM));
+     NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, false, endEffectorSubsystem::getReefsideDistanceMM));
 
      // Configure the trigger bindings
     configureBindings();

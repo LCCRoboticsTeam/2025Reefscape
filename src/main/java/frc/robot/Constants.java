@@ -95,6 +95,8 @@ public final class Constants {
     public static final int kCorelDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 1500;
 
+    public static final int kReeflDetectedDistance = 40;
+
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
 
@@ -105,6 +107,16 @@ public final class Constants {
     public static final int kRightElevatorCanId = 4;
     public static final double kMaxOutRange = 0.2;
     public static final double kMinOutRange = -0.2;
+
+    // From REEFSCAPE Game Manual
+    //   L1 = Trough
+    //   L2 = 2 ft. 7⅞ in. (~81 cm) from the carpet
+    //   L3 = 3 ft. 11⅝ in. (~121 cm) from the carpet
+    //   L4 = 6 ft. (~183 cm) from the carpet
+    public static final double kElevatorReefL1Position = 1.0;
+    public static final double kElevatorReefL2Position = 11.0;
+    public static final double kElevatorReefL3Position = 28.0;
+    public static final double kElevatorReefL4Position = 57.0;
 
     public static final boolean kTargetPositionFromDashboard = true;
 
@@ -193,27 +205,23 @@ public final class Constants {
 
   public enum ElevatorState{
     UNKNOWN,
-    P1(0),
-    P2(200),
-    P3(300),
-    P4(400);
-    
+    P1(1.0),
+    P2(11.0),
+    P3(28.0),
+    P4(57.0);  
 
-    private int elevatorPosition;
-    ElevatorState(int elevatorPosition) {
+    private double elevatorPosition;
+    ElevatorState(double elevatorPosition) {
       this.elevatorPosition = elevatorPosition;
     }
 
     ElevatorState() {
     }
 
-    public int getPosition() {
+    public double getPosition() {
       return elevatorPosition;
     }
-
-    
-
-
   }
+
 }
 

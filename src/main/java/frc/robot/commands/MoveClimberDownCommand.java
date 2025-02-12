@@ -18,7 +18,7 @@ public class MoveClimberDownCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveClimberDownCommand(ClimberSubsystem subsystem, ClimberState m_ClimberState) {
+  public MoveClimberDownCommand(ClimberSubsystem subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);

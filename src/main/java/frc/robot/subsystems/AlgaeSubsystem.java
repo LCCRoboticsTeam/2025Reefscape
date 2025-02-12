@@ -93,8 +93,8 @@ public class AlgaeSubsystem extends SubsystemBase {
   wheelMotor.configure(wheelMotorConfig, ResetMode.kResetSafeParameters, 
     PersistMode.kNoPersistParameters);
   
-  SmartDashboard.setDefaultNumber("ALGAE Arm Target Position", 0);
-  SmartDashboard.setDefaultNumber("ALGAE Wheel Target Velocity", 0);
+  SmartDashboard.setDefaultNumber("ALGE Arm Target Pos", 0);
+  SmartDashboard.setDefaultNumber("ALGE Wheel Target Vel", 0);
   
   }
 
@@ -141,14 +141,19 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if (AlgaeConstants.kArmTargetPositionFromDashboard)
-      armTargetPosition = SmartDashboard.getNumber("ALGAE Arm Target Position", 0);
+      armTargetPosition = SmartDashboard.getNumber("ALGAE Arm Target Pos", 0);
     armClosedLoopController.setReference(armTargetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-    SmartDashboard.putNumber("ALGAE Arm Actual Position", armEncoder.getPosition());
+    SmartDashboard.putNumber("ALGE Arm Actual Pos", armEncoder.getPosition());
 
     if (AlgaeConstants.kWheelTargetVelocityFromDashboard)
-      wheelTargetVelocity = SmartDashboard.getNumber("ALGAE Wheel Target Velocity", 0);
+      wheelTargetVelocity = SmartDashboard.getNumber("ALGAE Wheel Target Vel", 0);
     wheelClosedLoopController.setReference(wheelTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("ALGAE Wheel Actual Velocity", wheelEncoder.getVelocity());
+    SmartDashboard.putNumber("ALGE Wheel Actual Vel", wheelEncoder.getVelocity());
+
+    SmartDashboard.putNumber("ALGE Arm Amps", armMotor.getOutputCurrent());
+    SmartDashboard.putNumber("ALGE Wheel Amps", wheelMotor.getOutputCurrent());
+    SmartDashboard.putNumber("ALGE Arm DutyCycle", armMotor.getAppliedOutput());
+    SmartDashboard.putNumber("ALGE Wheel DutyCycle", wheelMotor.getAppliedOutput());
   }
 
   @Override
