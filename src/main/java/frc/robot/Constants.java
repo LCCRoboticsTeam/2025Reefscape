@@ -95,7 +95,7 @@ public final class Constants {
     public static final int kCorelDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 1500;
 
-    public static final int kReeflDetectedDistance = 40;
+    public static final int kReeflDetectedDistance = 150;
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
