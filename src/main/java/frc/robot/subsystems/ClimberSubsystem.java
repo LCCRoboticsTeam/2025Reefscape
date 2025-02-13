@@ -20,6 +20,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
@@ -37,6 +38,8 @@ public class ClimberSubsystem extends SubsystemBase {
     closedLoopController = motor.getClosedLoopController();
     encoder = motor.getEncoder();
     motorConfig = new SparkMaxConfig();
+
+    motorConfig.idleMode(IdleMode.kBrake);
 
     targetPosition = 0;
     climberState = ClimberState.UNKOWN;

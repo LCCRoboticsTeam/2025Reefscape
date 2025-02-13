@@ -84,8 +84,8 @@ public class RobotContainer {
   //private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
-  UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(0);
-  UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(1);
+  UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
+  UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(0);
   //PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
   //PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
 

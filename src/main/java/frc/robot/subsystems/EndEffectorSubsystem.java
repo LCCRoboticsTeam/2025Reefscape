@@ -203,7 +203,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
     if (EndEffectorConstants.kLeftTargetVelocityFromDashboard)
       leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Vel", 0);
     leftClosedLoopController.setReference(leftTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("ENDE Left Actual Velocity", leftEncoder.getVelocity());
+    SmartDashboard.putNumber("ENDE Left Actual Vel", leftEncoder.getVelocity());
 
     if (EndEffectorConstants.kRightTargetVelocityFromDashboard)
       rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Vel", 0);

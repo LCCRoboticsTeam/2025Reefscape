@@ -20,6 +20,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
@@ -47,6 +48,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftEncoder.setPosition(0);
 
     leftMotorConfig = new SparkMaxConfig();
+
+    leftMotorConfig.idleMode(IdleMode.kBrake);
 
     leftMotorConfig.encoder
       .positionConversionFactor(1)

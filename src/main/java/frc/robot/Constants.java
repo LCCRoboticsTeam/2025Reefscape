@@ -178,7 +178,7 @@ public final class Constants {
   }
   public final class ClimberConstants {
     public static final int kClimberCanID = 19;
-    public static final int kClimberPositionUp = 500;
+    public static final int kClimberPositionUp = 68;
     public static final int kClimberPositionDown = 0;
 
     public static final double kmaxOutRange = 0.5;
