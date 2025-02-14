@@ -108,25 +108,29 @@ public final class Constants {
     public static final double kMaxOutRange = 0.2;
     public static final double kMinOutRange = -0.2;
 
-    // From REEFSCAPE Game Manual
-    //   L1 = Trough
-    //   L2 = 2 ft. 7⅞ in. (~81 cm) from the carpet
-    //   L3 = 3 ft. 11⅝ in. (~121 cm) from the carpet
-    //   L4 = 6 ft. (~183 cm) from the carpet
-    public static final double kElevatorReefL1Position = 1.0;
-    public static final double kElevatorReefL2Position = 11.0;
-    public static final double kElevatorReefL3Position = 28.0;
-    public static final double kElevatorReefL4Position = 57.0;
-
-    public static final boolean kTargetPositionFromDashboard = true;
+    public static final boolean kTargetPositionFromDashboard = false;
 
   }
 
   public static final class AlgaeConstants {
     public static final int kArmAlgaeMotorCanID = 9;
     public static final int kWheelAlgaeMotorCanID = 10;
-    public static final double kMaxOutRange = 0.2;
-    public static final double kMinOutRange = -0.2;
+    public static final double kAlgaeArmMaxOutRange = 0.2;
+    public static final double kAlgaeArmMinOutRange = -0.2;
+
+    public static final double kAlgaeWheelMaxOutRange = 0.4;
+    public static final double kAlgaeWheelMinOutRange = -0.4;
+
+    public static final double kAlgaeWheelAtReefTargetVelocity = 100;
+    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -100;
+    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 100;
+    public static final double kAlgaeWheelAtGroundTargetVelocity = -100;
+
+    public static final double kAlgaeArmPositionUp = 10;
+    public static final double kAlgaeArmPositionDown = 1;
+
+    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
+
     public static final boolean kArmTargetPositionFromDashboard = true;
     public static final boolean kWheelTargetVelocityFromDashboard = true;
   }
@@ -184,7 +188,7 @@ public final class Constants {
     public static final double kmaxOutRange = 0.5;
     public static final double kminOutRange = -0.5;
 
-    public static final boolean kTargetPositionFromDashboard = true;
+    public static final boolean kTargetPositionFromDashboard = false;
   }
 
   public enum PlaceCoralDirection {
@@ -198,11 +202,39 @@ public final class Constants {
     CORAL_LOADED;
   }
   public enum ClimberState {
-    UNKOWN,
+    UNKNOWN,
     CLIMBER_UP,
     CLIMBER_DOWN
   }
+  public enum AlgaeArmState {
+    UNKNOWN,
+    ARM_DOWN(1),
+    ARM_REEF_ALGAE_HOLD(10),
+    ARM_REEF_ALGAE_RELEASE(4),
+    ARM_GROUND_ALGAE_HOLD(6),
+    ARM_GROUND_ALGAE_CATCH(8),
+    ARM_GROUND_ALGAE_RELEASE(12);
 
+    private double algaeArmPosition;
+    AlgaeArmState(double algaeArmPosition) {
+      this.algaeArmPosition = algaeArmPosition;
+    }
+
+    AlgaeArmState() {
+    }
+
+    public double getPosition() {
+      return algaeArmPosition;
+    }
+
+  }
+
+
+  // From REEFSCAPE Game Manual
+  //   L1 = Trough
+  //   L2 = 2 ft. 7-7/8 in. (~81 cm) from the carpet
+  //   L3 = 3 ft. 11-5/8 in. (~121 cm) from the carpet
+  //   L4 = 6 ft. (~183 cm) from the carpet
   public enum ElevatorState{
     UNKNOWN,
     P1(1.0),

@@ -42,7 +42,7 @@ public class ClimberSubsystem extends SubsystemBase {
     motorConfig.idleMode(IdleMode.kBrake);
 
     targetPosition = 0;
-    climberState = ClimberState.UNKOWN;
+    climberState = ClimberState.UNKNOWN;
     encoder.setPosition(0);
 
     /*

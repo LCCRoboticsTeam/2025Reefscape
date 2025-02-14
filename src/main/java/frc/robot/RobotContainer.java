@@ -4,40 +4,14 @@
 
 package frc.robot;
 
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.EndEffectorState;
-import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.PlaceCoralDirection;
-// Subsystems - imports
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
-////import frc.robot.subsystems.AlgaeSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.EndEffectorSubsystem;
-////import frc.robot.subsystems.LEDController;
-
-// Commands - imports
-//   Uses DriveSubsystem
-import frc.robot.commands.SwerveGamepadDriveCommand;
-import frc.robot.commands.SwerveSlideCommand;
-//   Uses ElevatorSubsystem
-//import frc.robot.commands.ChangeElevatorLevelCommand;
-//   Uses EndEffector
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.MoveClimberUpCommand;
-import frc.robot.commands.PlaceCoralCommand;
-//   Uses AlgaeSubsystem
-//import frc.robot.commands.RemoveReefAlgaeCommand;
-//import frc.robot.commands.ProcessAlgaeCommand;
-//import frc.robot.commands.PickupAlgaeCommand;
-//   Uses ClimberSubsystem
-import frc.robot.commands.MoveClimberUpCommand;
-import frc.robot.commands.MoveClimberDownCommand;
+import frc.robot.Constants.*;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 // Cameras and Vision
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.math.controller.ElevatorFeedforward;
+//import edu.wpi.first.math.controller.ElevatorFeedforward;
 
 import org.photonvision.PhotonCamera;
 
@@ -48,11 +22,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import java.util.List;
 
@@ -68,20 +41,21 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
-  //private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+  private final AlgaeArmSubsystem algaeArmSubsystem = new AlgaeArmSubsystem();
+  private final AlgaeWheelSubsystem algaeWheelSubsystem = new AlgaeWheelSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   //private final LEDController ledController = new LEDController();
 
   // The driver's controllers
-  private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
+  //private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
   private final CommandXboxController driverCommandXboxController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
-  private final XboxController manipulatorXboxController = new XboxController(OIConstants.kManipulatorControllerPort); 
+  //private final XboxController manipulatorXboxController = new XboxController(OIConstants.kManipulatorControllerPort); 
   private final CommandXboxController manipulatorCommandXboxController = new CommandXboxController(OIConstants.kManipulatorControllerPort);
 
   // Dashboard - Choosers
   private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
-  //private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
@@ -91,16 +65,38 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // We always start at P1 level
+    elevatorSubsystem.setElevatorState(ElevatorState.P1);
+    // We always start at ARM_DOWN
+    //   FIXME: We need a consistant way to start with ARM in the initial position
+    algaeArmSubsystem.setAlgaeArmState(AlgaeArmState.ARM_DOWN);
+    // We always start with CLIMBER_DOWN
+    //   FIXME: We need a consistant way to start Climber fully down to initial position
+    climberSubsystem.setClimberState(ClimberState.CLIMBER_DOWN);
+
      // Register Named Commands
      NamedCommands.registerCommand("IntakeCoral", new IntakeCommand(endEffectorSubsystem));
      NamedCommands.registerCommand("PlaceCoralStraight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_STRAIGHT));
      NamedCommands.registerCommand("PlaceCoralRight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_RIGHT));
      NamedCommands.registerCommand("PlaceCoralLeft", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_LEFT));
+     NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevatorSubsystem));
+     NamedCommands.registerCommand("ElevatorDown", new ElevatorDownCommand(elevatorSubsystem));
      NamedCommands.registerCommand("ClimberUp", new MoveClimberUpCommand(climberSubsystem));
      NamedCommands.registerCommand("ClimberDown", new MoveClimberDownCommand(climberSubsystem));
-
-     NamedCommands.registerCommand("SwerveSlideRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
-     NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
+     NamedCommands.registerCommand("SwerveSlideRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed, false, endEffectorSubsystem::getReefsideDistanceMM));
+     NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, false, endEffectorSubsystem::getReefsideDistanceMM));
+     NamedCommands.registerCommand("AutoReefAlignmentRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
+     NamedCommands.registerCommand("AutoReefAlignmentLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
+     NamedCommands.registerCommand("GrabAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
+                                                                                        new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
+                                                                                                                 new AlgaeWheelAtReefCommand(algaeWheelSubsystem))));
+     NamedCommands.registerCommand("ProcessAlgaeFromReef", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_RELEASE), 
+                                                                                                                    new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, true)), 
+                                                                                           new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN)));
+     // GrabAlgaeFromGround - This will be a command sequence
+     //NamedCommands.registerCommand("ProcessAlgaeFromGround", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_RELEASE), 
+     //                                                                                                                 new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, false)), 
+     //                                                                                        new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN)));
 
      // Configure the trigger bindings
     configureBindings();
@@ -108,11 +104,10 @@ public class RobotContainer {
     fieldRelativeChooser.setDefaultOption("Field Relative", true);
     fieldRelativeChooser.addOption("Robot Relative", false);
     SmartDashboard.putData(fieldRelativeChooser);
-    //SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
      
-    // Commands launched from Dashboard
+    // Commands launched from Dashboard (Example format below)
     //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
-    //SmartDashboard.putData("PlaceCoral", NamedCommands.getCommand("PlaceCoral"));
 
     // Configure default commands
     driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,
@@ -137,19 +132,29 @@ public class RobotContainer {
     //new Trigger(m_exampleSubsystem::exampleCondition)
     //    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    // XBOX Controller Diagram
+    //   https://gist.github.com/palmerj/586375bcc5bc83ccdaf00c6f5f863e86
+
+    // DRIVER XBOX Controller
+    //   Note: Right stick and Left stick already mapped via SwerveGamepadDriveCommand() in earlier code
     driverCommandXboxController.rightBumper().whileTrue(NamedCommands.getCommand("SwerveSlideRight"));
     driverCommandXboxController.leftBumper().whileTrue(NamedCommands.getCommand("SwerveSlideLeft"));
+    driverCommandXboxController.x().whileTrue(NamedCommands.getCommand("AutoReefAlignmentRight"));
+    driverCommandXboxController.b().whileTrue(NamedCommands.getCommand("AutoReefAlignmentLeft"));
+    driverCommandXboxController.y().onTrue(NamedCommands.getCommand("ElevatorUp"));
+    driverCommandXboxController.a().onTrue(NamedCommands.getCommand("ElevatorDown"));
 
+    // MANIPULATOR XBOX Controller
     //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralNotLoaded)).onTrue(NamedCommands.getCommand("IntakeCoral"));
     manipulatorCommandXboxController.a().onTrue(NamedCommands.getCommand("IntakeCoral"));
     //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralLoaded)).onTrue(NamedCommands.getCommand("PlaceCoral"));
     manipulatorCommandXboxController.x().onTrue(NamedCommands.getCommand("PlaceCoralLeft"));
     manipulatorCommandXboxController.y().onTrue(NamedCommands.getCommand("PlaceCoralStraight"));
     manipulatorCommandXboxController.b().onTrue(NamedCommands.getCommand("PlaceCoralRight"));
-
+    manipulatorCommandXboxController.back().onTrue(NamedCommands.getCommand("ClimberUp"));
+    manipulatorCommandXboxController.start().onTrue(NamedCommands.getCommand("ClimberDown"));
+    //manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1)).whileTrue(NamedCommands.getCommand("GrabAlgaeFromReef"));
+    //manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).onTrue(NamedCommands.getCommand("ProcessAlgaeFromReef"));
 
   }
 
@@ -159,6 +164,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return autoChooser.getSelected();
+    //return null;
   }
 }

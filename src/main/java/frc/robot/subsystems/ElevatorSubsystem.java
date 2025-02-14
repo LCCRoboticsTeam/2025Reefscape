@@ -115,7 +115,20 @@ public class ElevatorSubsystem extends SubsystemBase {
    public void resetPosition() {
     // Reset the encoder position to 0
     leftEncoder.setPosition(0);
- }
+  }
+
+  public boolean isElevatorAtP1() {
+    if (this.elevatorState==ElevatorState.P1)
+      return true;
+    else
+      return false;
+  }
+  public boolean isElevatorNotAtP1() {
+    if (this.elevatorState!=ElevatorState.P1)
+      return true;
+    else
+      return false;
+  }
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
