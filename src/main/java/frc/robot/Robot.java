@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 
+import frc.robot.subsystems.AlgaeArmSubsystem;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -57,7 +58,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.algaeArmSubsystem.setArmMotorIdleModeToCoast();
+  }
 
   @Override
   public void disabledPeriodic() {}

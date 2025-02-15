@@ -82,13 +82,13 @@ public final class Constants {
     public static final double kLeftMotorIntakeTargetVelocity = 2000;
     public static final double kRightMotorIntakeTargetVelocity = -2000;
 
-    public static final double kLeftMotorPlaceCoralTargetVelocity = 2500;
-    public static final double kRightMotorPlaceCoralTargetVelocity = -2500;
+    public static final double kLeftMotorPlaceCoralTargetVelocity = 3500;
+    public static final double kRightMotorPlaceCoralTargetVelocity = -3500;
 
     public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 2500;
-    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -3500;
+    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -4500;
 
-    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 3500;
+    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 4500;
     public static final double kRightMotorPlaceCoralRightTargetVelocity = -2500;
 
     public static final int kCoralDetectedDistance = 40;
@@ -121,18 +121,18 @@ public final class Constants {
     public static final double kAlgaeWheelMaxOutRange = 0.4;
     public static final double kAlgaeWheelMinOutRange = -0.4;
 
-    public static final double kAlgaeWheelAtReefTargetVelocity = 100;
-    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -100;
-    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 100;
-    public static final double kAlgaeWheelAtGroundTargetVelocity = -100;
+    public static final double kAlgaeWheelAtReefTargetVelocity = 400;
+    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -300;
+    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 300;
+    public static final double kAlgaeWheelAtGroundTargetVelocity = -300;
 
     public static final double kAlgaeArmPositionUp = 10;
     public static final double kAlgaeArmPositionDown = 1;
 
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
 
-    public static final boolean kArmTargetPositionFromDashboard = true;
-    public static final boolean kWheelTargetVelocityFromDashboard = true;
+    public static final boolean kArmTargetPositionFromDashboard = false;
+    public static final boolean kWheelTargetVelocityFromDashboard = false;
   }
 
   public static final class LEDConstants {
@@ -208,12 +208,13 @@ public final class Constants {
   }
   public enum AlgaeArmState {
     UNKNOWN,
-    ARM_DOWN(1),
-    ARM_REEF_ALGAE_HOLD(10),
-    ARM_REEF_ALGAE_RELEASE(4),
-    ARM_GROUND_ALGAE_HOLD(6),
-    ARM_GROUND_ALGAE_CATCH(8),
-    ARM_GROUND_ALGAE_RELEASE(12);
+    ARM_STOWED(0),
+    ARM_DOWN(5),
+    ARM_REEF_ALGAE_HOLD(20),
+    ARM_REEF_ALGAE_RELEASE(14),
+    ARM_GROUND_ALGAE_HOLD(35),
+    ARM_GROUND_ALGAE_CATCH(33),
+    ARM_GROUND_ALGAE_RELEASE(40);
 
     private double algaeArmPosition;
     AlgaeArmState(double algaeArmPosition) {

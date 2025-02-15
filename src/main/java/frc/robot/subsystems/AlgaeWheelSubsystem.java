@@ -79,7 +79,7 @@ public class AlgaeWheelSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if (AlgaeConstants.kWheelTargetVelocityFromDashboard)
-      wheelTargetVelocity = SmartDashboard.getNumber("ALGAE Wheel Target Vel", 0);
+      wheelTargetVelocity = SmartDashboard.getNumber("ALGE Wheel Target Vel", 0);
     wheelClosedLoopController.setReference(wheelTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
     SmartDashboard.putNumber("ALGE Wheel Actual Vel", wheelEncoder.getVelocity());
 

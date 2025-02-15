@@ -45,7 +45,7 @@ public class AlgaeArmCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_subsystem.getArmActualPosition()==m_algaeArmState.getPosition())
+    if (Math.abs(m_subsystem.getArmActualPosition()-m_algaeArmState.getPosition())<0.2)
       return true;
     else
       return false;

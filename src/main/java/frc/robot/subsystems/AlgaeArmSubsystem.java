@@ -72,6 +72,10 @@ public class AlgaeArmSubsystem extends SubsystemBase {
   
   }
 
+  public void setArmMotorIdleModeToCoast() {
+    armMotorConfig.idleMode(IdleMode.kCoast);
+  }
+
   public Command setArmMotorIdleModeToBrakeCommand() {
     return runOnce(
         () -> {
@@ -115,7 +119,7 @@ public class AlgaeArmSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if (AlgaeConstants.kArmTargetPositionFromDashboard)
-      armTargetPosition = SmartDashboard.getNumber("ALGAE Arm Target Pos", 0);
+      armTargetPosition = SmartDashboard.getNumber("ALGE Arm Target Pos", 0);
     armClosedLoopController.setReference(armTargetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     SmartDashboard.putNumber("ALGE Arm Actual Pos", armEncoder.getPosition());
 

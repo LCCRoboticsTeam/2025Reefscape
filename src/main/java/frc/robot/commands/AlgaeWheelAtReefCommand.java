@@ -36,7 +36,6 @@ public class AlgaeWheelAtReefCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (interrupted)
     m_subsystem.setWheelTargetVelocity(0);
   }
 
@@ -45,6 +44,6 @@ public class AlgaeWheelAtReefCommand extends Command {
   public boolean isFinished() {
     // FIXME: Will want to stop when we believe we are holding Algae, maybe check for a motor current increase??
     //        OR driver just releases button when they think they have it.
-    return true;
+    return false;
   }
 }

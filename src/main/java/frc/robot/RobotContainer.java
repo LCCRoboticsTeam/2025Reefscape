@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
-  private final AlgaeArmSubsystem algaeArmSubsystem = new AlgaeArmSubsystem();
+  final AlgaeArmSubsystem algaeArmSubsystem = new AlgaeArmSubsystem();
   private final AlgaeWheelSubsystem algaeWheelSubsystem = new AlgaeWheelSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   //private final LEDController ledController = new LEDController();
@@ -55,23 +56,21 @@ public class RobotContainer {
 
   // Dashboard - Choosers
   private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
-  private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  //private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
   UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(0);
-  //PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
-  //PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
+  PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
+  PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // We always start at P1 level
     elevatorSubsystem.setElevatorState(ElevatorState.P1);
     // We always start at ARM_DOWN
-    //   FIXME: We need a consistant way to start with ARM in the initial position
-    algaeArmSubsystem.setAlgaeArmState(AlgaeArmState.ARM_DOWN);
+    algaeArmSubsystem.setAlgaeArmState(AlgaeArmState.ARM_STOWED);
     // We always start with CLIMBER_DOWN
-    //   FIXME: We need a consistant way to start Climber fully down to initial position
     climberSubsystem.setClimberState(ClimberState.CLIMBER_DOWN);
 
      // Register Named Commands
@@ -90,7 +89,7 @@ public class RobotContainer {
      NamedCommands.registerCommand("GrabAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
                                                                                         new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
                                                                                                                  new AlgaeWheelAtReefCommand(algaeWheelSubsystem))));
-     NamedCommands.registerCommand("ProcessAlgaeFromReef", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_RELEASE), 
+     NamedCommands.registerCommand("ProcessAlgaeFromReef", new SequentialCommandGroup(new ParallelRaceGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_RELEASE), 
                                                                                                                     new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, true)), 
                                                                                            new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN)));
      // GrabAlgaeFromGround - This will be a command sequence
@@ -104,7 +103,7 @@ public class RobotContainer {
     fieldRelativeChooser.setDefaultOption("Field Relative", true);
     fieldRelativeChooser.addOption("Robot Relative", false);
     SmartDashboard.putData(fieldRelativeChooser);
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    //SmartDashboard.putData("Auto Chooser", autoChooser);
      
     // Commands launched from Dashboard (Example format below)
     //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
@@ -154,6 +153,7 @@ public class RobotContainer {
     manipulatorCommandXboxController.back().onTrue(NamedCommands.getCommand("ClimberUp"));
     manipulatorCommandXboxController.start().onTrue(NamedCommands.getCommand("ClimberDown"));
     //manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1)).whileTrue(NamedCommands.getCommand("GrabAlgaeFromReef"));
+    manipulatorCommandXboxController.leftBumper().whileTrue(NamedCommands.getCommand("GrabAlgaeFromReef"));
     //manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).onTrue(NamedCommands.getCommand("ProcessAlgaeFromReef"));
 
   }
@@ -164,7 +164,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-    //return null;
+    //return autoChooser.getSelected();
+    return null;
   }
 }
