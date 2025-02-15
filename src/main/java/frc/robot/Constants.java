@@ -170,21 +170,22 @@ public final class Constants {
 
   public enum ElevatorState{
     UNKNOWN,
+    MOVING,
     P1(0),
     P2(200),
     P3(300),
     P4(400);
     
 
-    private int elevatorPosition;
-    ElevatorState(int elevatorPosition) {
+    private double elevatorPosition;
+    ElevatorState(double elevatorPosition) {
       this.elevatorPosition = elevatorPosition;
     }
 
     ElevatorState() {
     }
 
-    public int getPosition() {
+    public double getPosition() {
       return elevatorPosition;
     }
 

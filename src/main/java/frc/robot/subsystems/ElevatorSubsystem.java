@@ -119,12 +119,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         });
   }
 
-  public void setTargetPosition(double targetPosition) {
-    this.targetPosition=targetPosition;
-  }
+  //public void setTargetPosition(double targetPosition) {
+    //this.targetPosition=targetPosition;
+  //}
 
   public void setElevatorState(ElevatorState state){
     this.elevatorState = state;
+    targetPosition = elevatorState.getPosition();
   }
 
   public ElevatorState getElevatorState(){
