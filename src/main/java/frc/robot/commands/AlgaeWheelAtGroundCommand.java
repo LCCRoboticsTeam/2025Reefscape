@@ -4,21 +4,20 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.ClimberState;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.Constants.AlgaeConstants;
+import frc.robot.subsystems.AlgaeWheelSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class MoveClimberDownCommand extends Command {
+public class AlgaeWheelAtGroundCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ClimberSubsystem m_subsystem;
+  private final AlgaeWheelSubsystem m_subsystem;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveClimberDownCommand(ClimberSubsystem subsystem) {
+  public AlgaeWheelAtGroundCommand(AlgaeWheelSubsystem subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -31,22 +30,19 @@ public class MoveClimberDownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_subsystem.setTargetPosition(ClimberConstants.kClimberPositionDown);
+    m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtGroundTargetVelocity);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!interrupted)
-      m_subsystem.setClimberState(ClimberState.CLIMBER_DOWN);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_subsystem.getActualPosition()==ClimberConstants.kClimberPositionDown)
-      return true;
-    else
-      return false;
+    // FIXME: Will want to stop when we believe we are holding Algae, maybe check for a motor current increase??
+    return true;
   }
 }

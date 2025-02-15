@@ -4,22 +4,23 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.ClimberState;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.Constants.AlgaeArmState;
+import frc.robot.subsystems.AlgaeArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class MoveClimberDownCommand extends Command {
+public class AlgaeArmCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ClimberSubsystem m_subsystem;
+  private final AlgaeArmSubsystem m_subsystem;
+  private AlgaeArmState m_algaeArmState;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveClimberDownCommand(ClimberSubsystem subsystem) {
+  public AlgaeArmCommand(AlgaeArmSubsystem subsystem, AlgaeArmState algaeArmState) {
     m_subsystem = subsystem;
+    m_algaeArmState = algaeArmState;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -31,20 +32,20 @@ public class MoveClimberDownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_subsystem.setTargetPosition(ClimberConstants.kClimberPositionDown);
+    m_subsystem.setArmTargetPosition(m_algaeArmState.getPosition());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     if (!interrupted)
-      m_subsystem.setClimberState(ClimberState.CLIMBER_DOWN);
+      m_subsystem.setAlgaeArmState(m_algaeArmState);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_subsystem.getActualPosition()==ClimberConstants.kClimberPositionDown)
+    if (Math.abs(m_subsystem.getArmActualPosition()-m_algaeArmState.getPosition())<0.2)
       return true;
     else
       return false;

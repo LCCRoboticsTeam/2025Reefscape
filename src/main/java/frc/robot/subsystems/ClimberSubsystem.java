@@ -20,6 +20,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
@@ -38,8 +39,10 @@ public class ClimberSubsystem extends SubsystemBase {
     encoder = motor.getEncoder();
     motorConfig = new SparkMaxConfig();
 
+    motorConfig.idleMode(IdleMode.kBrake);
+
     targetPosition = 0;
-    climberState = ClimberState.UNKOWN;
+    climberState = ClimberState.UNKNOWN;
     encoder.setPosition(0);
 
     /*
@@ -84,7 +87,7 @@ public class ClimberSubsystem extends SubsystemBase {
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     // Initialize dashboard values
-    SmartDashboard.setDefaultNumber("ARM Target Position", 0);
+    SmartDashboard.setDefaultNumber("CLMB Target Pos", 0);
   }
 
   /**
@@ -140,7 +143,7 @@ public class ClimberSubsystem extends SubsystemBase {
        * for the closed loop controller.
        */
       if (ClimberConstants.kTargetPositionFromDashboard) 
-        targetPosition = SmartDashboard.getNumber("ARM Target Position", 0);
+        targetPosition = SmartDashboard.getNumber("CLMB Target Pos", 0);
 
       // Since we reset to Postion 0, which is when the climber is down,
       // we should NEVER allow a position that is negative.
@@ -149,7 +152,9 @@ public class ClimberSubsystem extends SubsystemBase {
         // Thus we will make the value passed in setReferene a negative number
         closedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
       }
-      SmartDashboard.putNumber("ARM Actual Position", encoder.getPosition());
+      SmartDashboard.putNumber("CLMB Actual Pos", encoder.getPosition());
+      SmartDashboard.putNumber("CLMB Amps", motor.getOutputCurrent());
+      SmartDashboard.putNumber("CLMB DutyCycle", motor.getAppliedOutput());
   }
 
   @Override
