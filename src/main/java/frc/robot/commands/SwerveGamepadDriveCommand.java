@@ -38,7 +38,7 @@ public class SwerveGamepadDriveCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    swerveDriveTrain.zeroHeading();
+    //swerveDriveTrain.zeroHeading();
     
   }
 
@@ -53,7 +53,8 @@ public class SwerveGamepadDriveCommand extends Command {
                 -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(ySpeed, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
-                fieldOrientedDrive.getAsBoolean(), 
+                fieldOrientedDrive.getAsBoolean(),
+                //true, 
                 true);
   }
 

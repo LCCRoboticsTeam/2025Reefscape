@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.EndEffectorConstants;
+import frc.robot.Constants.EndEffectorState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.RelativeEncoder;
@@ -40,8 +41,12 @@ public class EndEffectorSubsystem extends SubsystemBase {
   private double leftTargetVelocity;
   private double rightTargetVelocity;
 
+  private EndEffectorState endEffectorState;
+
   /** Creates a new EndEffectorSubsystem. */
   public EndEffectorSubsystem() {
+
+    endEffectorState =  EndEffectorState.UNKNOWN;
 
     leftTargetVelocity=0;
     rightTargetVelocity=0;
@@ -115,8 +120,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
       }
 
     // Initialize dashboard values
-    SmartDashboard.setDefaultNumber("ENDE Left Target Velocity", 0);
-    SmartDashboard.setDefaultNumber("ENDE Right Target Velocity", 0);
+    SmartDashboard.setDefaultNumber("ENDE Left Target Vel", 0);
+    SmartDashboard.setDefaultNumber("ENDE Right Target Vel", 0);
   }
 
   /**
@@ -159,6 +164,28 @@ public class EndEffectorSubsystem extends SubsystemBase {
     return lcHoppersideMeasurement.distance_mm;
   }
 
+  public EndEffectorState getEndEffectorState() {
+    return this.endEffectorState;
+  }
+
+  public void setEndEffectorState(EndEffectorState endEffectorState) {
+    this.endEffectorState =  endEffectorState;
+  }
+
+  public boolean isCoralLoaded() {
+    if (this.endEffectorState==EndEffectorState.CORAL_LOADED)
+      return true;
+    else
+      return false;
+  }
+
+  public boolean isCoralNotLoaded() {
+    if (this.endEffectorState!=EndEffectorState.CORAL_LOADED)
+      return true;
+    else
+      return false;
+  }
+
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
@@ -173,18 +200,25 @@ public class EndEffectorSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Velocity", 0);
+    if (EndEffectorConstants.kLeftTargetVelocityFromDashboard)
+      leftTargetVelocity = SmartDashboard.getNumber("ENDE Left Target Vel", 0);
     leftClosedLoopController.setReference(leftTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("ENDE Left Actual Velocity", leftEncoder.getVelocity());
+    SmartDashboard.putNumber("ENDE Left Actual Vel", leftEncoder.getVelocity());
 
-    rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Velocity", 0);
+    if (EndEffectorConstants.kRightTargetVelocityFromDashboard)
+      rightTargetVelocity = SmartDashboard.getNumber("ENDE Right Target Vel", 0);
     rightClosedLoopController.setReference(rightTargetVelocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
-    SmartDashboard.putNumber("ENDE Right Actual Velocity", rightEncoder.getVelocity());
+    SmartDashboard.putNumber("ENDE Right Actual Vel", rightEncoder.getVelocity());
 
-    SmartDashboard.putNumber("ENDE LCReefside Measurement (mm)", getReefsideDistanceMM());
+    SmartDashboard.putNumber("ENDE LCReefside Dist (mm)", getReefsideDistanceMM());
 
-    SmartDashboard.putNumber("ENDE LCHopperside Measurement (mm)", getHoppersideDistanceMM());
+    SmartDashboard.putNumber("ENDE LCHopperside Dist (mm)", getHoppersideDistanceMM());
+
+    SmartDashboard.putBoolean("ENDE Coral Loaded", isCoralLoaded());
+    SmartDashboard.putBoolean("ENDE Coral NOT Loaded", isCoralNotLoaded());
+
   }
+
 
   @Override
   public void simulationPeriodic() {

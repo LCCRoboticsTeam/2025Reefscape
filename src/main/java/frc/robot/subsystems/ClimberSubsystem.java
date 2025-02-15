@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.ClimberState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +20,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
@@ -26,12 +28,21 @@ public class ClimberSubsystem extends SubsystemBase {
   private SparkMaxConfig motorConfig;
   private SparkClosedLoopController closedLoopController;
   private RelativeEncoder encoder;
+
+  private double targetPosition;
+
+  private ClimberState climberState;
+
   public ClimberSubsystem() {
     motor = new SparkMax(ClimberConstants.kClimberCanID, MotorType.kBrushless);
     closedLoopController = motor.getClosedLoopController();
     encoder = motor.getEncoder();
     motorConfig = new SparkMaxConfig();
 
+    motorConfig.idleMode(IdleMode.kBrake);
+
+    targetPosition = 0;
+    climberState = ClimberState.UNKNOWN;
     encoder.setPosition(0);
 
     /*
@@ -76,8 +87,7 @@ public class ClimberSubsystem extends SubsystemBase {
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     // Initialize dashboard values
-    SmartDashboard.setDefaultNumber("Target Position", 0);
-    SmartDashboard.setDefaultBoolean("Reset Encoder", false);
+    SmartDashboard.setDefaultNumber("CLMB Target Pos", 0);
   }
 
   /**
@@ -104,17 +114,25 @@ public class ClimberSubsystem extends SubsystemBase {
     return false;
   }
 
-  public void ClimberUp() {
-
+  public void setTargetPosition(double targetPosition) {
+    this.targetPosition=targetPosition;
   }
 
-  public void ClimberDown() {
-    
+  public double getActualPosition() {
+   return encoder.getPosition();
   }
 
   public void resetPosition() {
      // Reset the encoder position to 0
      encoder.setPosition(0);
+  }
+
+   public ClimberState getClimberState() {
+    return this.climberState;
+  }
+
+  public void setClimberState(ClimberState climberState) {
+    this.climberState =  climberState;
   }
 
   @Override
@@ -124,9 +142,19 @@ public class ClimberSubsystem extends SubsystemBase {
        * Get the target position from SmartDashboard and set it as the setpoint
        * for the closed loop controller.
        */
-      double targetPosition = SmartDashboard.getNumber("Target Position", 0);
-      closedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-      SmartDashboard.putNumber("Actual Position", encoder.getPosition());
+      if (ClimberConstants.kTargetPositionFromDashboard) 
+        targetPosition = SmartDashboard.getNumber("CLMB Target Pos", 0);
+
+      // Since we reset to Postion 0, which is when the climber is down,
+      // we should NEVER allow a position that is negative.
+      if (targetPosition>=0) {  
+        // NOTE: The actual value for position to result in the climber to go UP is NEGATIVE,
+        // Thus we will make the value passed in setReferene a negative number
+        closedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+      }
+      SmartDashboard.putNumber("CLMB Actual Pos", encoder.getPosition());
+      SmartDashboard.putNumber("CLMB Amps", motor.getOutputCurrent());
+      SmartDashboard.putNumber("CLMB DutyCycle", motor.getAppliedOutput());
   }
 
   @Override
