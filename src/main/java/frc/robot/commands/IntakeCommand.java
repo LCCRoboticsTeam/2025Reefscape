@@ -36,7 +36,7 @@ public class IntakeCommand extends Command {
     // Slowdown once we know we have coral coming into the EndEffector so that it stops
     // at a more repeatable position when this command ends.
     if (coralDetected==true)
-      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorIntakeTargetVelocity/1.5, EndEffectorConstants.kRightMotorIntakeTargetVelocity/2);
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorIntakeCoralDetectedTargetVelocity, EndEffectorConstants.kRightMotorIntakeCoralDetectedTargetVelocity);
     else
       m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorIntakeTargetVelocity, EndEffectorConstants.kRightMotorIntakeTargetVelocity);
   }

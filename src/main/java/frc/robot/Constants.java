@@ -81,6 +81,8 @@ public final class Constants {
     //         RightMotor -> Negative
     public static final double kLeftMotorIntakeTargetVelocity = 2000;
     public static final double kRightMotorIntakeTargetVelocity = -2000;
+    public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 1200;
+    public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -1200;
 
     public static final double kLeftMotorPlaceCoralTargetVelocity = 3500;
     public static final double kRightMotorPlaceCoralTargetVelocity = -3500;
@@ -115,8 +117,8 @@ public final class Constants {
   public static final class AlgaeConstants {
     public static final int kArmAlgaeMotorCanID = 9;
     public static final int kWheelAlgaeMotorCanID = 10;
-    public static final double kAlgaeArmMaxOutRange = 0.2;
-    public static final double kAlgaeArmMinOutRange = -0.2;
+    public static final double kAlgaeArmMaxOutRange = 0.3;
+    public static final double kAlgaeArmMinOutRange = -0.3;
 
     public static final double kAlgaeWheelMaxOutRange = 0.4;
     public static final double kAlgaeWheelMinOutRange = -0.4;

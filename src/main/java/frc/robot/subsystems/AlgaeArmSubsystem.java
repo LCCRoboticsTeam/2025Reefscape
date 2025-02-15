@@ -75,12 +75,15 @@ public class AlgaeArmSubsystem extends SubsystemBase {
   public void setArmMotorIdleModeToCoast() {
     armMotorConfig.idleMode(IdleMode.kCoast);
   }
+  public void setArmMotorIdleModeToBrake() {
+    armMotorConfig.idleMode(IdleMode.kBrake);
+  }
 
   public Command setArmMotorIdleModeToBrakeCommand() {
     return runOnce(
         () -> {
           /* one-time action goes here */
-          armMotorConfig.idleMode(IdleMode.kBrake);
+          setArmMotorIdleModeToBrake();
         });
   }
 
@@ -88,7 +91,7 @@ public class AlgaeArmSubsystem extends SubsystemBase {
     return runOnce(
         () -> {
           /* one-time action goes here */
-          armMotorConfig.idleMode(IdleMode.kCoast);
+          setArmMotorIdleModeToCoast();
         });
   }
 
