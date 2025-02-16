@@ -11,6 +11,7 @@ import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -19,18 +20,20 @@ public class SwerveGamepadDriveCommand extends Command {
   private final DriveSubsystem swerveDriveTrain;
   private final DoubleSupplier xSpeedSupplier, ySpeedSupplier, rotateSpeedSupplier;
   private final BooleanSupplier fieldOrientedDrive;
+  private final BooleanSupplier slowMode;
 
   private PhotonCamera frontsidePhotonCamera;
   private PhotonCamera backsidePhotonCamera;
 
   /** Creates a new SwerveControllerDrive. */
   public SwerveGamepadDriveCommand(DriveSubsystem swerveDriveTrain, DoubleSupplier ySpeedSupplier,
-      DoubleSupplier xSpeedSupplier, DoubleSupplier rotateSpeedSupplier, BooleanSupplier fieldOrientedDrive) {
+      DoubleSupplier xSpeedSupplier, DoubleSupplier rotateSpeedSupplier, BooleanSupplier fieldOrientedDrive, BooleanSupplier slowMode) {
     this.swerveDriveTrain = swerveDriveTrain;
     this.ySpeedSupplier = ySpeedSupplier;
     this.xSpeedSupplier = xSpeedSupplier;
     this.rotateSpeedSupplier = rotateSpeedSupplier;
     this.fieldOrientedDrive = fieldOrientedDrive;
+    this.slowMode = slowMode;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.swerveDriveTrain);
   }
@@ -49,12 +52,17 @@ public class SwerveGamepadDriveCommand extends Command {
     double ySpeed = ySpeedSupplier.getAsDouble();
     double rotateSpeed = rotateSpeedSupplier.getAsDouble();
 
+    if (slowMode.getAsBoolean()) {
+      xSpeed = Math.min(xSpeed, DriveConstants.kSwerveSlideSpeed);
+      ySpeed = Math.min(ySpeed, DriveConstants.kSwerveSlideSpeed);
+      rotateSpeed = Math.min(rotateSpeed, DriveConstants.kSwerveSlideSpeed);
+    }
+
     swerveDriveTrain.drive(
                 -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(ySpeed, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
                 fieldOrientedDrive.getAsBoolean(),
-                //true, 
                 true);
   }
 

@@ -140,6 +140,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     else
       return false;
   }
+  public boolean isElevatorAtP4() {
+    if (this.elevatorState==ElevatorState.P4)
+      return true;
+    else
+      return false;
+  }
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).

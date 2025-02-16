@@ -12,14 +12,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ElevatorUpCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ElevatorSubsystem m_subsystem;
+  private boolean m_forceToP1p5;
+
   ElevatorState m_elevatorState = ElevatorState.P1;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ElevatorUpCommand(ElevatorSubsystem subsystem) {
+  public ElevatorUpCommand(ElevatorSubsystem subsystem, boolean forceToP1p5) {
     m_subsystem = subsystem;
+    m_forceToP1p5 = forceToP1p5;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -27,15 +30,19 @@ public class ElevatorUpCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_subsystem.getElevatorState()==ElevatorState.P1)
-      m_elevatorState=ElevatorState.P2;
-    else {
-      if (m_subsystem.getElevatorState()==ElevatorState.P2)
-        m_elevatorState=ElevatorState.P3;
-      else
-        m_elevatorState=ElevatorState.P4; 
+    if (m_forceToP1p5) {
+      m_elevatorState=ElevatorState.P1p5;
     }
-
+    else {
+      if (m_subsystem.getElevatorState()==ElevatorState.P1)
+        m_elevatorState=ElevatorState.P2;
+      else {
+        if (m_subsystem.getElevatorState()==ElevatorState.P2)
+          m_elevatorState=ElevatorState.P3;
+        else
+          m_elevatorState=ElevatorState.P4; 
+      }
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
