@@ -15,7 +15,7 @@ public class IntakeCommand extends Command {
    * @param subsystem The subsystem used by this command.
    */
   private boolean coralDetected;
-  private int coreDetectedCount;
+  private int coralDetectedCount;
 
   public IntakeCommand(EndEffectorSubsystem subsystem) {
     m_subsystem = subsystem;
@@ -27,7 +27,7 @@ public class IntakeCommand extends Command {
   @Override
   public void initialize() {
     coralDetected = false;
-    coreDetectedCount = 0;
+    coralDetectedCount = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,7 +48,7 @@ public class IntakeCommand extends Command {
     if (!interrupted)
         m_subsystem.setEndEffectorState(EndEffectorState.CORAL_LOADED);
 
-    SmartDashboard.putNumber("coreDetectedCount", coreDetectedCount);
+    SmartDashboard.putNumber("coralDetectedCount", coralDetectedCount);
 
   }
 
@@ -56,8 +56,8 @@ public class IntakeCommand extends Command {
   @Override
   public boolean isFinished() {
     if (m_subsystem.getHoppersideDistanceMM() < EndEffectorConstants.kCoralDetectedDistance) {
-      coreDetectedCount++;
-      if (coreDetectedCount>EndEffectorConstants.kCorelDetectedCountThreshold) {
+      coralDetectedCount++;
+      if (coralDetectedCount>EndEffectorConstants.kCoralDetectedCountThreshold) {
         coralDetected=true;
       }
     } else if (coralDetected == true) {

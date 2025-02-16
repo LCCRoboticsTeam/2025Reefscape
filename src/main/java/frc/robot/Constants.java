@@ -94,7 +94,7 @@ public final class Constants {
     public static final double kRightMotorPlaceCoralRightTargetVelocity = -2500;
 
     public static final int kCoralDetectedDistance = 40;
-    public static final int kCorelDetectedCountThreshold = 40;
+    public static final int kCoralDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 1500;
 
     public static final int kReeflDetectedDistance = 150;
@@ -184,13 +184,13 @@ public final class Constants {
   }
   public final class ClimberConstants {
     public static final int kClimberCanID = 19;
-    public static final int kClimberPositionUp = 68;
-    public static final int kClimberPositionDown = 0;
+    public static final int kClimberPositionUp = 54; // Ideally 68
+    public static final int kClimberPositionDown = -2;
 
     public static final double kmaxOutRange = 0.5;
     public static final double kminOutRange = -0.5;
 
-    public static final boolean kTargetPositionFromDashboard = false;
+    public static final boolean kTargetPositionFromDashboard = true;
   }
 
   public enum PlaceCoralDirection {
@@ -243,7 +243,7 @@ public final class Constants {
     P1(1.0),
     P2(11.0),
     P3(28.0),
-    P4(57.0);  
+    P4(55.0);  // was 57
 
     private double elevatorPosition;
     ElevatorState(double elevatorPosition) {
