@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ClimberState;
+import frc.robot.Constants.ElevatorState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -133,6 +134,13 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setClimberState(ClimberState climberState) {
     this.climberState =  climberState;
+  }
+
+    public boolean isClimberUp() {
+    if (this.climberState==ClimberState.CLIMBER_UP)
+      return true;
+    else
+      return false;
   }
 
   @Override

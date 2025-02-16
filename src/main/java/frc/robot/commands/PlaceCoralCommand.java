@@ -1,6 +1,9 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.EndEffectorSubsystem;
+
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.Constants.EndEffectorState;
@@ -9,6 +12,7 @@ import frc.robot.Constants.PlaceCoralDirection;
 public class PlaceCoralCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final EndEffectorSubsystem m_subsystem;
+  private final BooleanSupplier isElevatorAtP4;
   private int isFinishedDelayCountInMs;
   private PlaceCoralDirection placeCoralDirection;
 
@@ -18,9 +22,10 @@ public class PlaceCoralCommand extends Command {
    * @param subsystem The subsystem used by this command.
    */
 
-  public PlaceCoralCommand(EndEffectorSubsystem subsystem, PlaceCoralDirection placeCoralDirection) {
+  public PlaceCoralCommand(EndEffectorSubsystem subsystem, PlaceCoralDirection placeCoralDirection, BooleanSupplier isElevatorAtP4) {
     m_subsystem = subsystem;
     this.placeCoralDirection = placeCoralDirection;
+    this.isElevatorAtP4 = isElevatorAtP4;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -38,8 +43,10 @@ public class PlaceCoralCommand extends Command {
       m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralRightTargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralRightTargetVelocity);
     else if (placeCoralDirection==PlaceCoralDirection.PLACE_CORAL_LEFT)
       m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralLeftTargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralLeftTargetVelocity);
+    else if (isElevatorAtP4.getAsBoolean())
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralL4TargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
     else
-    m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralTargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralL4TargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
 
     isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }

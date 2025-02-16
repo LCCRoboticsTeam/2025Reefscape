@@ -63,6 +63,8 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     public static final double kSwerveSlideSpeed = 0.15;
+    public static final double kSwerveBackupSpeed = 0.15;
+    public static final int kSwerveBackupCommandRuntimeInMs = 500;
 
   }
 
@@ -87,6 +89,9 @@ public final class Constants {
     public static final double kLeftMotorPlaceCoralTargetVelocity = 3500;
     public static final double kRightMotorPlaceCoralTargetVelocity = -3500;
 
+    public static final double kLeftMotorPlaceCoralL4TargetVelocity = 3500;
+    public static final double kRightMotorPlaceCoralL4TargetVelocity = -3500;
+
     public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 2500;
     public static final double kRightMotorPlaceCoralLeftTargetVelocity = -4500;
 
@@ -97,7 +102,7 @@ public final class Constants {
     public static final int kCoralDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 1500;
 
-    public static final int kReeflDetectedDistance = 150;
+    public static final int kReeflDetectedDistance = 305; // ~12 inches
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -234,13 +239,14 @@ public final class Constants {
 
 
   // From REEFSCAPE Game Manual
-  //   L1 = Trough
+  //   L1 = Trough, 1 ft. 6 in. (~46 cm) off the carpet
   //   L2 = 2 ft. 7-7/8 in. (~81 cm) from the carpet
   //   L3 = 3 ft. 11-5/8 in. (~121 cm) from the carpet
   //   L4 = 6 ft. (~183 cm) from the carpet
   public enum ElevatorState{
     UNKNOWN,
     P1(1.0),
+    P1p5(6),   // This is level that allows AlgaeArm to go down
     P2(11.0),
     P3(28.0),
     P4(55.0);  // was 57
