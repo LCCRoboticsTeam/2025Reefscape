@@ -147,7 +147,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
       // Since we reset to Postion 0, which is when the climber is down,
       // we should NEVER allow a position that is negative.
-      if (targetPosition>=0) {  
+      if (targetPosition>=-2) {  
         // NOTE: The actual value for position to result in the climber to go UP is NEGATIVE,
         // Thus we will make the value passed in setReferene a negative number
         closedLoopController.setReference(-1*targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
