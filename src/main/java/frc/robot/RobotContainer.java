@@ -56,7 +56,7 @@ public class RobotContainer {
 
   // Dashboard - Choosers
   private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
-  private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  // private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
@@ -76,9 +76,9 @@ public class RobotContainer {
      // Register Named Commands
      NamedCommands.registerCommand("IntakeCoral", new IntakeCommand(endEffectorSubsystem));
      NamedCommands.registerCommand("PlaceCoralStraight", new SequentialCommandGroup(new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_STRAIGHT, elevatorSubsystem::isElevatorAtP4),
-                                                                                         new ElevatorDownCommand(elevatorSubsystem, true)));
-                                                                                         //new ElevatorDownCommand(elevatorSubsystem, true),
-                                                                                         //new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed)));
+                                                                                         //new ElevatorDownCommand(elevatorSubsystem, true)));
+                                                                                         new ElevatorDownCommand(elevatorSubsystem, true),
+                                                                                         new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed)));
      NamedCommands.registerCommand("PlaceCoralRight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_RIGHT, elevatorSubsystem::isElevatorAtP4));
      NamedCommands.registerCommand("PlaceCoralLeft", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_LEFT, elevatorSubsystem::isElevatorAtP4));
      NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevatorSubsystem, false));
@@ -89,9 +89,10 @@ public class RobotContainer {
      NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, false, endEffectorSubsystem::getReefsideDistanceMM));
      NamedCommands.registerCommand("AutoReefAlignmentRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
      NamedCommands.registerCommand("AutoReefAlignmentLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
-     NamedCommands.registerCommand("GrabAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
-                                                                                        new ParallelRaceGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
-                                                                                                              new AlgaeWheelAtReefCommand(algaeWheelSubsystem))));
+     NamedCommands.registerCommand("GrabAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
+                                                                                   new AlgaeWheelAtReefCommand(algaeWheelSubsystem, 1000),
+                                                                                   new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), new AlgaeWheelAtReefCommand(algaeWheelSubsystem, 10000000)));
+
      NamedCommands.registerCommand("ProcessAlgaeFromReef", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_RELEASE), 
                                                                                                                     new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, true)), 
                                                                                            new ElevatorUpCommand(elevatorSubsystem, true),
@@ -108,7 +109,7 @@ public class RobotContainer {
     fieldRelativeChooser.setDefaultOption("Field Relative", true);
     fieldRelativeChooser.addOption("Robot Relative", false);
     SmartDashboard.putData(fieldRelativeChooser);
-    SmartDashboard.putData(autoChooser);
+    // SmartDashboard.putData(autoChooser);
      
     // Commands launched from Dashboard (Example format below)
     //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
@@ -158,7 +159,7 @@ public class RobotContainer {
     manipulatorCommandXboxController.back().onTrue(NamedCommands.getCommand("ClimberUp"));
     manipulatorCommandXboxController.start().onTrue(NamedCommands.getCommand("ClimberDown"));
     manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1)).whileTrue(NamedCommands.getCommand("GrabAlgaeFromReef"));
-    //manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).onTrue(NamedCommands.getCommand("ProcessAlgaeFromReef"));
+    manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).onTrue(NamedCommands.getCommand("ProcessAlgaeFromReef"));
 
   }
 
@@ -170,7 +171,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // Start with a CORAL in the EndEffector to start
     endEffectorSubsystem.setEndEffectorState(EndEffectorState.CORAL_LOADED);
-    return autoChooser.getSelected();
-    //return null;
+    //return autoChooser.getSelected();
+    return null;
   }
 }

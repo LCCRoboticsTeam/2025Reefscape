@@ -63,8 +63,8 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     public static final double kSwerveSlideSpeed = 0.15;
-    public static final double kSwerveBackupSpeed = 0.15;
-    public static final int kSwerveBackupCommandRuntimeInMs = 500;
+    public static final double kSwerveBackupSpeed = 0.25;
+    public static final int kSwerveBackupCommandRuntimeInMs = 700;
 
   }
 
@@ -92,17 +92,17 @@ public final class Constants {
     public static final double kLeftMotorPlaceCoralL4TargetVelocity = 3500;
     public static final double kRightMotorPlaceCoralL4TargetVelocity = -3500;
 
-    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 2500;
-    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -4500;
+    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 2800;
+    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -4300;
 
-    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 4500;
-    public static final double kRightMotorPlaceCoralRightTargetVelocity = -2500;
+    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 4300;
+    public static final double kRightMotorPlaceCoralRightTargetVelocity = -2800;
 
-    public static final int kCoralDetectedDistance = 40;
+    public static final int kCoralDetectedDistance = 60; //Was 50
     public static final int kCoralDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 1500;
 
-    public static final int kReeflDetectedDistance = 305; // ~12 inches
+    public static final int kReeflDetectedDistance = 380; // ~12 inches
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -189,13 +189,13 @@ public final class Constants {
   }
   public final class ClimberConstants {
     public static final int kClimberCanID = 19;
-    public static final int kClimberPositionUp = 54; // Ideally 68
+    public static final int kClimberPositionUp = 68; // Ideally 68
     public static final int kClimberPositionDown = -2;
 
     public static final double kmaxOutRange = 0.5;
     public static final double kminOutRange = -0.5;
 
-    public static final boolean kTargetPositionFromDashboard = true;
+    public static final boolean kTargetPositionFromDashboard = false;
   }
 
   public enum PlaceCoralDirection {
@@ -247,7 +247,7 @@ public final class Constants {
     UNKNOWN,
     P1(1.0),
     P1p5(6),   // This is level that allows AlgaeArm to go down
-    P2(11.0),
+    P2(10), // Was 11
     P3(28.0),
     P4(55.0);  // was 57
 
