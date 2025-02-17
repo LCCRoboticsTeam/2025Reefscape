@@ -13,48 +13,42 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class AlgaeWheelAtReefCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final AlgaeWheelSubsystem m_subsystem;
-  private int isFinishedDelayCountInMs;
-  private int maxcount;
+  private boolean immediateFinish;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AlgaeWheelAtReefCommand(AlgaeWheelSubsystem subsystem, int maxcount) {
+  public AlgaeWheelAtReefCommand(AlgaeWheelSubsystem subsystem, boolean immediateFinish) {
     m_subsystem = subsystem;
+    this.immediateFinish = immediateFinish;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    this.maxcount = maxcount;
+    //this.maxcount = maxcount;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isFinishedDelayCountInMs=0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefTargetVelocity);
-    isFinishedDelayCountInMs+=20;
+      m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefTargetVelocity);   
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (interrupted) 
-      m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefTargetVelocity/8);
-    else if (maxcount>2000)
-      m_subsystem.setWheelTargetVelocity(0);
-  }
+    if (!immediateFinish)
+      m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefHoldingTargetVelocity);
+    }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // FIXME: Will want to stop when we believe we are holding Algae, maybe check for a motor current increase??
-    //        OR driver just releases button when they think they have it.
-    if (isFinishedDelayCountInMs>maxcount)
+    if ((immediateFinish) || (m_subsystem.getWheelActualVelocity()<10)) // So nearly stopped indicating we have algae
       return true;
     else
       return false;

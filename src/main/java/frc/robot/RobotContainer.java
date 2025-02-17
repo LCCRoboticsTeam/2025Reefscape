@@ -81,7 +81,7 @@ public class RobotContainer {
                                                                                          new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed)));
      NamedCommands.registerCommand("PlaceCoralRight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_RIGHT, elevatorSubsystem::isElevatorAtP4));
      NamedCommands.registerCommand("PlaceCoralLeft", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_LEFT, elevatorSubsystem::isElevatorAtP4));
-     NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevatorSubsystem, false));
+     NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevatorSubsystem, false, endEffectorSubsystem::isCoralLoaded));
      NamedCommands.registerCommand("ElevatorDown", new ElevatorDownCommand(elevatorSubsystem, false));
      NamedCommands.registerCommand("ClimberUp", new MoveClimberUpCommand(climberSubsystem));
      NamedCommands.registerCommand("ClimberDown", new MoveClimberDownCommand(climberSubsystem));
@@ -90,12 +90,12 @@ public class RobotContainer {
      NamedCommands.registerCommand("AutoReefAlignmentRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
      NamedCommands.registerCommand("AutoReefAlignmentLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
      NamedCommands.registerCommand("GrabAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
-                                                                                   new AlgaeWheelAtReefCommand(algaeWheelSubsystem, 1000),
-                                                                                   new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), new AlgaeWheelAtReefCommand(algaeWheelSubsystem, 10000000)));
-
+                                                                                        new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true),
+                                                                                        new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
+                                                                                        new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false)));
      NamedCommands.registerCommand("ProcessAlgaeFromReef", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_RELEASE), 
                                                                                                                     new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, true)), 
-                                                                                           new ElevatorUpCommand(elevatorSubsystem, true),
+                                                                                           new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
                                                                                            new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
                                                                                            new ElevatorDownCommand(elevatorSubsystem, true)));
      // GrabAlgaeFromGround - This will be a command sequence

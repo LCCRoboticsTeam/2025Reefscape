@@ -34,7 +34,7 @@ public class ElevatorDownCommand extends Command {
     else {
       if (m_subsystem.getElevatorState()==ElevatorState.P3)
         m_ElevatorState=ElevatorState.P2;
-      else // At P4
+      else // At P4 or P3p5
         m_ElevatorState=ElevatorState.P3; 
     }
 
