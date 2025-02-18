@@ -48,7 +48,7 @@ public class AlgaeWheelAtReefCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((immediateFinish) || (m_subsystem.getWheelActualVelocity()<10)) // So nearly stopped indicating we have algae
+    if ((immediateFinish) || (m_subsystem.getWheelActualVelocity()<150)) // So nearly stopped indicating we have algae
       return true;
     else
       return false;

@@ -92,7 +92,9 @@ public class RobotContainer {
      NamedCommands.registerCommand("GrabAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
                                                                                         new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true),
                                                                                         new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
-                                                                                        new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false)));
+                                                                                        new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false), 
+                                                                                        new ParallelCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+                                                                                                                 new ElevatorDownCommand(elevatorSubsystem, true))));
      NamedCommands.registerCommand("ProcessAlgaeFromReef", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_RELEASE), 
                                                                                                                     new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, true)), 
                                                                                            new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
