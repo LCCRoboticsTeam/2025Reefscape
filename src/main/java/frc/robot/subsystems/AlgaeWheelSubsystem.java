@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AlgaeWheelState;
+import frc.robot.Constants.EndEffectorState;
+import frc.robot.Constants.AlgaeArmState;
 import frc.robot.Constants.AlgaeConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -29,10 +32,14 @@ public class AlgaeWheelSubsystem extends SubsystemBase {
 
   private double wheelTargetVelocity;
 
+  private AlgaeWheelState algaeWheelState;
+
   /** Creates a new AlgaeSubsystem. */
   public AlgaeWheelSubsystem() {
 
     wheelTargetVelocity=0;
+
+    algaeWheelState=AlgaeWheelState.UNKNOWN;
 
     wheelMotor = new SparkMax(AlgaeConstants.kWheelAlgaeMotorCanID, MotorType.kBrushless);
     wheelClosedLoopController = wheelMotor.getClosedLoopController();
@@ -73,6 +80,26 @@ public class AlgaeWheelSubsystem extends SubsystemBase {
 
   public double getWheelActualVelocity() {
    return wheelEncoder.getVelocity();
+  }
+
+  public AlgaeWheelState getAlgaeWheelState() {
+    return this.algaeWheelState;
+  }
+  public void setAlgaeWheelState(AlgaeWheelState algaeWheelState) {
+    this.algaeWheelState =  algaeWheelState;
+  }
+
+  public boolean isAlgaeLoadedFromReef() {
+    if (this.algaeWheelState==AlgaeWheelState.ALGAE_LOADED_FROM_REEF)
+      return true;
+    else
+      return false;
+  }
+  public boolean isAlgaeLoadedFromGround() {
+    if (this.algaeWheelState==AlgaeWheelState.ALGAE_LOADED_FROM_GROUND)
+      return true;
+    else
+      return false;
   }
 
   @Override

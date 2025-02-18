@@ -119,10 +119,13 @@ public final class Constants {
 
     public static final double kAlgaeWheelAtReefTargetVelocity = 500;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 50;
+    public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
+
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -1200;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 500;
     public static final double kAlgaeWheelAtGroundTargetVelocity = -300;
 
+    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 5000; 
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
 
     public static final boolean kArmTargetPositionFromDashboard = false;
@@ -135,7 +138,7 @@ public final class Constants {
     ARM_REEF_ALGAE_HOLD(15), // Was 20, FIXME: Need to test if works with robot touching reef
     ARM_REEF_ALGAE_RELEASE(18),// was 14
     ARM_GROUND_ALGAE_HOLD(35),
-    ARM_GROUND_ALGAE_CATCH(33),
+    ARM_GROUND_ALGAE_CATCH(30),
     ARM_GROUND_ALGAE_RELEASE(40);
 
     private double algaeArmPosition;
@@ -146,6 +149,12 @@ public final class Constants {
     public double getPosition() {
       return algaeArmPosition;
     }
+  }
+  public enum AlgaeWheelState {
+    UNKNOWN,
+    ALGAE_FREE,
+    ALGAE_LOADED_FROM_REEF,
+    ALGAE_LOADED_FROM_GROUND;
   }
   // ---------------------------------------------
 
