@@ -101,6 +101,9 @@ public class AlgaeWheelSubsystem extends SubsystemBase {
     else
       return false;
   }
+  public boolean isAlgaeLoaded() {
+      return (isAlgaeLoadedFromReef() || isAlgaeLoadedFromGround());
+  }
 
   @Override
   public void periodic() {

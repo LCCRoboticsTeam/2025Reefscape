@@ -118,12 +118,15 @@ public final class Constants {
     public static final double kAlgaeWheelMinOutRange = -0.8;
 
     public static final double kAlgaeWheelAtReefTargetVelocity = 500;
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshhold = 150;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 50;
+
+    public static final double kAlgaeWheelAtGroundTargetVelocity = -500;
+    public static final double kAlgaeWheelAtGroundHoldingVelocityThreshhold = -150;
     public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
 
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -1200;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 500;
-    public static final double kAlgaeWheelAtGroundTargetVelocity = -300;
 
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 5000; 
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
@@ -183,19 +186,29 @@ public final class Constants {
   // -------------------- LED --------------------
   public static final class LEDConstants {
     public static final int PWM_PORT = 0;
+    // You can find full list of LED color support at: 
+    //   https://1166281274-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-ME3KPEhFI6-MDoP9nZD%2Fuploads%2FMOYJvZmWgxCVKJhcV5fn%2FREV-11-1105-LED-Patterns.pdf?alt=media&token=e8227890-6dd3-498d-834a-752fa43413fe 
+    
+    public static final double SOLID_LAWN_GREEN = 0.71;
+    public static final double SOLID_LIME_GREEN = 0.73;
     public static final double SOLID_DARK_GREEN = 0.75;
     public static final double SOLID_GREEN = 0.77;
+    public static final double SOLID_BLUE_GREEN = 0.79;
+    public static final double SOLID_AQUA_BLUE = 0.81;
     public static final double SOLID_SKY_BLUE = 0.83;
     public static final double SOLID_BLUE = 0.85;
     public static final double SOLID_DARK_BLUE = 0.87;
     public static final double SOLID_BLUE_VIOLET = 0.89;
+    public static final double SOLID_WHITE = 0.93;
+
+    public static final double COLOR_WAVES_OCEAN_PALETTE = -0.41;
+    public static final double TWINKLE_OCEAN_PALETTE = -0.51;
+    public static final double BEATS_PER_MIN_OCEAN_PALETTE = -0.65;
+    public static final double SINELON_OCEAN_PALETTE = -0.75;
+    public static final double RAINBOW_OCEAN_PALETTE = -0.95;
+
     public static final double FIXED_PALETTE_PATTERN_FIRE_MEDIUM = -0.59;
     public static final double FIXED_PALETTE_PATTERN_FIRE_LARGE = -0.57;
-  }
-  public enum LEDColorState {
-    NOTE_LESS,
-    NOTE_DETECTED,
-    SHOOTING;
   }
   // ---------------------------------------------
 

@@ -27,7 +27,7 @@ public class MoveClimberUpCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.setServoAngle(ClimberConstants.kServoAngleToDisableRatchet);
+    //m_subsystem.setServoAngle(ClimberConstants.kServoAngleToDisableRatchet);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -16,6 +16,7 @@ public class AlgaeWheelAtReefCommand extends Command {
   private final AlgaeWheelSubsystem m_subsystem;
   private boolean immediateFinish;
   private boolean abortCommand;
+  private boolean gotAlgae;
   private int isFinishedDelayCountInMs;
 
   /**
@@ -35,6 +36,7 @@ public class AlgaeWheelAtReefCommand extends Command {
   public void initialize() {
     isFinishedDelayCountInMs=0;
     abortCommand=false;
+    gotAlgae=false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,20 +50,25 @@ public class AlgaeWheelAtReefCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!immediateFinish) {
+    if (abortCommand) {
+      m_subsystem.setWheelTargetVelocity(0);
+    }
+    else if (gotAlgae) {
       m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefHoldingTargetVelocity);
       m_subsystem.setAlgaeWheelState(AlgaeWheelState.ALGAE_LOADED_FROM_REEF);
-    }
-    else if (abortCommand) {
-      m_subsystem.setWheelTargetVelocity(0);
     }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((immediateFinish) || (m_subsystem.getWheelActualVelocity()<150)) // So nearly stopped indicating we have algae
+    if (immediateFinish) {
       return true;
+    }
+    else if (m_subsystem.getWheelActualVelocity()<AlgaeConstants.kAlgaeWheelAtReefHoldingVelocityThreshhold) {
+      gotAlgae=true;
+      return true;
+    }
     else if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtReefCommandMaxRuntimeInMs) {
       abortCommand=true;
       return true;

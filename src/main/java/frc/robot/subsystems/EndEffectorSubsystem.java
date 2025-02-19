@@ -150,10 +150,6 @@ public class EndEffectorSubsystem extends SubsystemBase {
     this.rightTargetVelocity=rightTargetVelocity;
   }
 
-  public boolean reefDetected() {
-    return false;
-  }
-
   public int getReefsideDistanceMM() {
     LaserCan.Measurement lcReefsideMeasurement = LCReefside.getMeasurement();
     return lcReefsideMeasurement.distance_mm;

@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,7 +38,6 @@ import java.util.List;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-
   // Subsystems defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -45,7 +45,7 @@ public class RobotContainer {
   private final AlgaeArmSubsystem algaeArmSubsystem = new AlgaeArmSubsystem();
   private final AlgaeWheelSubsystem algaeWheelSubsystem = new AlgaeWheelSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  //private final LEDController ledController = new LEDController();
+  private final LEDController ledController;
 
   // The driver's controllers
   //private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
@@ -56,7 +56,7 @@ public class RobotContainer {
 
   // Dashboard - Choosers
   private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
-  // private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  //private final SendableChooser<Command> autoChooser;
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
@@ -65,7 +65,9 @@ public class RobotContainer {
   PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  public RobotContainer(BooleanSupplier isRobotEnabled) {
+    ledController = new LEDController(isRobotEnabled, endEffectorSubsystem::isCoralLoaded, algaeWheelSubsystem::isAlgaeLoaded);
+
     // We always start at P1 level
     elevatorSubsystem.setElevatorState(ElevatorState.P1);
     // We always start at ARM_STOWED
@@ -123,7 +125,9 @@ public class RobotContainer {
     fieldRelativeChooser.setDefaultOption("Field Relative", true);
     fieldRelativeChooser.addOption("Robot Relative", false);
     SmartDashboard.putData(fieldRelativeChooser);
-    // SmartDashboard.putData(autoChooser);
+
+    //autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+    //SmartDashboard.putData("Auto Mode", autoChooser);
      
     // Commands launched from Dashboard (Example format below)
     //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
