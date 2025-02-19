@@ -182,7 +182,7 @@ public final class Constants {
 
   // -------------------- LED --------------------
   public static final class LEDConstants {
-    public static final int PWM_PORT = 0;
+    public static final int PWM_PORT = 1;
     public static final double SOLID_DARK_GREEN = 0.75;
     public static final double SOLID_GREEN = 0.77;
     public static final double SOLID_SKY_BLUE = 0.83;

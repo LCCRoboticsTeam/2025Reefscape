@@ -186,6 +186,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
       return false;
   }
 
+  public boolean isReefDetected() {
+    if (getReefsideDistanceMM()<EndEffectorConstants.kReeflDetectedDistance)
+      return true;
+    else
+      return false;
+  }
+
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
@@ -211,9 +218,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ENDE Right Actual Vel", rightEncoder.getVelocity());
 
     SmartDashboard.putNumber("ENDE LCReefside Dist (mm)", getReefsideDistanceMM());
-
     SmartDashboard.putNumber("ENDE LCHopperside Dist (mm)", getHoppersideDistanceMM());
 
+    SmartDashboard.putBoolean("ENDE Is Reef Detected", isReefDetected());
     SmartDashboard.putBoolean("ENDE Coral Loaded", isCoralLoaded());
     SmartDashboard.putBoolean("ENDE Coral NOT Loaded", isCoralNotLoaded());
 

@@ -45,7 +45,7 @@ public class RobotContainer {
   private final AlgaeArmSubsystem algaeArmSubsystem = new AlgaeArmSubsystem();
   private final AlgaeWheelSubsystem algaeWheelSubsystem = new AlgaeWheelSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  //private final LEDController ledController = new LEDController();
+  private final LEDController ledController = new LEDController();
 
   // The driver's controllers
   //private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
@@ -56,7 +56,7 @@ public class RobotContainer {
 
   // Dashboard - Choosers
   private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
-  // private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  //private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
@@ -123,7 +123,7 @@ public class RobotContainer {
     fieldRelativeChooser.setDefaultOption("Field Relative", true);
     fieldRelativeChooser.addOption("Robot Relative", false);
     SmartDashboard.putData(fieldRelativeChooser);
-    // SmartDashboard.putData(autoChooser);
+    //SmartDashboard.putData(autoChooser);
      
     // Commands launched from Dashboard (Example format below)
     //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
