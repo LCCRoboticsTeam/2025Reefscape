@@ -35,7 +35,6 @@ public class SwerveBackupCommand extends Command {
   @Override
   public void execute() {
     swerveDriveTrain.drive(
-                // FIXME: Assuming needs to be negative to go in reverse direction
                 -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
                 0,
                 0,

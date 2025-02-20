@@ -54,7 +54,7 @@ public final class Constants {
 
     public static final int kCoralDetectedDistance = 60; //Was 50
     public static final int kCoralDetectedCountThreshold = 40;
-    public static final int kPlaceCoralCommandRuntimeInMs = 1500;
+    public static final int kPlaceCoralCommandRuntimeInMs = 750; //Was 1500
 
     public static final int kReeflDetectedDistance = 380; // ~15.2 inches
 
@@ -77,7 +77,7 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kLeftElevatorCanId = 3;
     public static final int kRightElevatorCanId = 4;
-    public static final double kMaxOutRange = 0.4;  // FIXME: Was 0.2, can we speed elevator even more?
+    public static final double kMaxOutRange = 0.4;
     public static final double kMinOutRange = -0.4;
 
     public static final boolean kTargetPositionFromDashboard = false;
@@ -117,21 +117,23 @@ public final class Constants {
     public static final double kAlgaeWheelMaxOutRange = 0.8;
     public static final double kAlgaeWheelMinOutRange = -0.8;
 
-    public static final double kAlgaeWheelAtReefTargetVelocity = 500;
-    public static final double kAlgaeWheelAtReefHoldingVelocityThreshhold = 150;
+    // At Reef
+    public static final double kAlgaeWheelAtReefTargetVelocity = 800; // Was 500
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 150;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 50;
-
-    public static final double kAlgaeWheelAtGroundTargetVelocity = -500;
-    public static final double kAlgaeWheelAtGroundHoldingVelocityThreshhold = -150;
+    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 6000; // Was 7000
+    // At Ground
+    public static final double kAlgaeWheelAtGroundTargetVelocity = -800; // Was -500
+    public static final double kAlgaeWheelAtGroundHoldingVelocityThreshold = -150;
     public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
-
+    public static final int kAlgaeWheelAtGroundCommandMaxRuntimeInMs = 6000; // Was 7000
+    // Processor
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -1200;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 1200;
-
-    public static final double kAlgaeWheelLunchTargetVelocity = -2500;
-
-    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 7000; 
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
+
+    // These are for AlgaeArmCommand which is currently not being used.
+    public static final double kAlgaeWheelLunchTargetVelocity = -2500;
     public static final int kAlgaeWheelCommandMaxRuntimeInMs = 3000; 
 
     public static final boolean kArmTargetPositionFromDashboard = false;
@@ -140,9 +142,9 @@ public final class Constants {
   public enum AlgaeArmState {
     UNKNOWN,
     ARM_STOWED(0),
-    ARM_DOWN(0), // was 5, 3
+    ARM_DOWN(0),
     ARM_REEF_ALGAE_HOLD(15), // Was 20, FIXME: Need to test if works with robot touching reef
-    ARM_REEF_ALGAE_RELEASE(18),// was 14
+    ARM_REEF_ALGAE_RELEASE(18),
     ARM_REEF_ALGAE_LAUNCH(30),
     ARM_GROUND_ALGAE_HOLD(38),
     ARM_GROUND_ALGAE_CATCH(28),
@@ -169,13 +171,13 @@ public final class Constants {
   public final class ClimberConstants {
     public static final int kClimberCanID = 19;
     public static final int kClimberPositionUp = 68; // Ideally 68
-    public static final int kClimberPositionDown = -2; // FIXME: Try 0 once we have ratching gear box
+    public static final int kClimberPositionDown = 0;
 
     public static final double kmaxOutRange = 0.5;
     public static final double kminOutRange = -0.5;
 
-    public static final double kServoAngleToEnableRatchet = 0.0;   // FIXME: Need to test to determine correct value.
-    public static final double kServoAngleToDisableRatchet = 15.0;  // FIXME: Need to test to determine correct value.
+    public static final double kServoAngleToEnableRatchet = 0.0;
+    public static final double kServoAngleToDisableRatchet = 15.0;
 
     public static final boolean kTargetPositionFromDashboard = false;
     public static final boolean kServoAngleFromDashboard = false;

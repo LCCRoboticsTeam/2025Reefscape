@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import java.util.List;
+//import java.util.List;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -55,7 +55,7 @@ public class RobotContainer {
   private final CommandXboxController manipulatorCommandXboxController = new CommandXboxController(OIConstants.kManipulatorControllerPort);
 
   // Dashboard - Choosers
-  private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
+  //private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
   private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
@@ -81,8 +81,8 @@ public class RobotContainer {
      // Register Named Commands
      NamedCommands.registerCommand("IntakeCoral", new IntakeCommand(endEffectorSubsystem));
      NamedCommands.registerCommand("PlaceCoralStraight", new SequentialCommandGroup(new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_STRAIGHT, elevatorSubsystem::isElevatorAtP4),
-                                                                                         new ElevatorDownCommand(elevatorSubsystem, true),
-                                                                                         new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed)));
+                                                                                         new ParallelCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+                                                                                                                  new ElevatorDownCommand(elevatorSubsystem, true))));
      NamedCommands.registerCommand("PlaceCoralRight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_RIGHT, elevatorSubsystem::isElevatorAtP4));
      NamedCommands.registerCommand("PlaceCoralLeft", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_LEFT, elevatorSubsystem::isElevatorAtP4));
      NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevatorSubsystem, false, endEffectorSubsystem::isCoralLoaded));
@@ -116,30 +116,32 @@ public class RobotContainer {
                                                                                                                                             new ElevatorDownCommand(elevatorSubsystem, true)),
                                                                                                                  algaeWheelSubsystem::isAlgaeLoadedFromGround)));
      NamedCommands.registerCommand("ProcessAlgaeFromGround", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_RELEASE), 
+                                                                                                                      algaeArmSubsystem.setArmMotorIdleModeToCoastCommand(),
                                                                                                                       new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, false)), 
+                                                                                             algaeArmSubsystem.setArmMotorIdleModeToBrakeCommand(),
                                                                                              new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
                                                                                              new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
                                                                                              new ElevatorDownCommand(elevatorSubsystem, true)));
-     NamedCommands.registerCommand("LaunchAlgaeIntoBarge", new SequentialCommandGroup(new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, true),
-                                                                                           new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_LAUNCH), 
-                                                                                                                    new AlgaeWheelCommand(algaeWheelSubsystem)), 
-                                                                                           new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
-                                                                                           new ElevatorDownCommand(elevatorSubsystem, true)));
+     //NamedCommands.registerCommand("LaunchAlgaeIntoBarge", new SequentialCommandGroup(new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, true),
+     //                                                                                      new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_LAUNCH), 
+     //                                                                                                               new AlgaeWheelCommand(algaeWheelSubsystem)), 
+     //                                                                                      new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
+     //                                                                                      new ElevatorDownCommand(elevatorSubsystem, true)));
 
      // Configure the trigger bindings
     configureBindings();
 
-    fieldRelativeChooser.setDefaultOption("Field Relative", true);
-    fieldRelativeChooser.addOption("Robot Relative", false);
-    SmartDashboard.putData("Field Relative Chooser", fieldRelativeChooser);
+    //fieldRelativeChooser.setDefaultOption("Field Relative", true);
+    //fieldRelativeChooser.addOption("Robot Relative", false);
+    //SmartDashboard.putData("Field Relative Chooser", fieldRelativeChooser);
     SmartDashboard.putData("Auto Chooser", autoChooser);
      
     // Commands launched from Dashboard (Example format below)
-    SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
+    //SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
 
     // Configure default commands
     driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,
-      driverCommandXboxController::getLeftY, driverCommandXboxController::getRightX, fieldRelativeChooser::getSelected, climberSubsystem::isClimberUp));
+      driverCommandXboxController::getLeftY, driverCommandXboxController::getRightX, climberSubsystem::isClimberUp));
 
     // Camera settings
     //reefsideUsbCamera.setResolution(640, 480);

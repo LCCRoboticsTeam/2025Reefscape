@@ -65,13 +65,17 @@ public class AlgaeWheelAtGroundCommand extends Command {
     if (immediateFinish) {
       return true;
     }
+    // Detect that we have Algae if wheel velocity slows down below a threshold
     else if ((Math.abs(m_subsystem.getWheelActualVelocity())<
-             Math.abs(AlgaeConstants.kAlgaeWheelAtGroundHoldingVelocityThreshhold)) && 
+             Math.abs(AlgaeConstants.kAlgaeWheelAtGroundHoldingVelocityThreshold)) && 
+             // This is a little bit of a hack, as there needs to be some delay before checking 
+             // the Threshold value since it seem like it take a bit longer to spinup wheel
+             // when Velocity is in the negative direction
              (isFinishedDelayCountInMs>500)) {
       gotAlgae=true;
       return true;
     }
-    else if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtReefCommandMaxRuntimeInMs) {
+    else if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtGroundCommandMaxRuntimeInMs) {
       abortCommand=true;
       return true;
     }

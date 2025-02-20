@@ -65,7 +65,8 @@ public class AlgaeWheelAtReefCommand extends Command {
       return true;
     }
     else {
-      if (m_subsystem.getWheelActualVelocity()<AlgaeConstants.kAlgaeWheelAtReefHoldingVelocityThreshhold) {
+      // Detect that we have Algae if wheel velocity slows down below a threshold
+      if (m_subsystem.getWheelActualVelocity()<AlgaeConstants.kAlgaeWheelAtReefHoldingVelocityThreshold) {
         gotAlgae=true;
         return true;
         }

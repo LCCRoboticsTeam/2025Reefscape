@@ -19,7 +19,6 @@ public class SwerveGamepadDriveCommand extends Command {
 
   private final DriveSubsystem swerveDriveTrain;
   private final DoubleSupplier xSpeedSupplier, ySpeedSupplier, rotateSpeedSupplier;
-  private final BooleanSupplier fieldOrientedDrive;
   private final BooleanSupplier slowMode;
 
   private PhotonCamera frontsidePhotonCamera;
@@ -27,12 +26,11 @@ public class SwerveGamepadDriveCommand extends Command {
 
   /** Creates a new SwerveControllerDrive. */
   public SwerveGamepadDriveCommand(DriveSubsystem swerveDriveTrain, DoubleSupplier ySpeedSupplier,
-      DoubleSupplier xSpeedSupplier, DoubleSupplier rotateSpeedSupplier, BooleanSupplier fieldOrientedDrive, BooleanSupplier slowMode) {
+      DoubleSupplier xSpeedSupplier, DoubleSupplier rotateSpeedSupplier, BooleanSupplier slowMode) {
     this.swerveDriveTrain = swerveDriveTrain;
     this.ySpeedSupplier = ySpeedSupplier;
     this.xSpeedSupplier = xSpeedSupplier;
     this.rotateSpeedSupplier = rotateSpeedSupplier;
-    this.fieldOrientedDrive = fieldOrientedDrive;
     this.slowMode = slowMode;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.swerveDriveTrain);
@@ -53,16 +51,25 @@ public class SwerveGamepadDriveCommand extends Command {
     double rotateSpeed = rotateSpeedSupplier.getAsDouble();
 
     if (slowMode.getAsBoolean()) {
-      xSpeed = Math.min(xSpeed, DriveConstants.kSwerveSlideSpeed);
-      ySpeed = Math.min(ySpeed, DriveConstants.kSwerveSlideSpeed);
-      rotateSpeed = Math.min(rotateSpeed, DriveConstants.kSwerveSlideSpeed);
+      if (xSpeed<0)
+        xSpeed = Math.max(xSpeed, -1*DriveConstants.kSwerveSlideSpeed);
+      else
+        xSpeed = Math.min(xSpeed, DriveConstants.kSwerveSlideSpeed);
+      if (ySpeed<0)
+        ySpeed = Math.max(ySpeed, -1*DriveConstants.kSwerveSlideSpeed);
+      else
+        ySpeed = Math.min(ySpeed, DriveConstants.kSwerveSlideSpeed);
+      if (rotateSpeed<0)
+        rotateSpeed = Math.max(rotateSpeed, -1*DriveConstants.kSwerveSlideSpeed);
+      else
+        rotateSpeed = Math.min(rotateSpeed, DriveConstants.kSwerveSlideSpeed);
     }
 
     swerveDriveTrain.drive(
                 -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(ySpeed, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
-                fieldOrientedDrive.getAsBoolean(),
+                true,
                 true);
   }
 

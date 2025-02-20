@@ -29,7 +29,9 @@ public class ElevatorDownCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if ((m_forceToP1) || (m_subsystem.getElevatorState()==ElevatorState.P2))
+    if ((m_forceToP1) || 
+        (m_subsystem.getElevatorState()==ElevatorState.P2) || 
+        (m_subsystem.getElevatorState()==ElevatorState.P1p5))
       m_ElevatorState=ElevatorState.P1;
     else {
       if (m_subsystem.getElevatorState()==ElevatorState.P3)

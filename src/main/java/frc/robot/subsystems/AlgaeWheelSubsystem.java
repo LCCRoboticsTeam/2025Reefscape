@@ -6,8 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeWheelState;
-import frc.robot.Constants.EndEffectorState;
-import frc.robot.Constants.AlgaeArmState;
 import frc.robot.Constants.AlgaeConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
