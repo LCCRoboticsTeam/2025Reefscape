@@ -65,7 +65,9 @@ public class AlgaeWheelAtGroundCommand extends Command {
     if (immediateFinish) {
       return true;
     }
-    else if (m_subsystem.getWheelActualVelocity()<AlgaeConstants.kAlgaeWheelAtGroundHoldingVelocityThreshhold) {
+    else if ((Math.abs(m_subsystem.getWheelActualVelocity())<
+             Math.abs(AlgaeConstants.kAlgaeWheelAtGroundHoldingVelocityThreshhold)) && 
+             (isFinishedDelayCountInMs>500)) {
       gotAlgae=true;
       return true;
     }

@@ -45,7 +45,7 @@ public class RobotContainer {
   private final AlgaeArmSubsystem algaeArmSubsystem = new AlgaeArmSubsystem();
   private final AlgaeWheelSubsystem algaeWheelSubsystem = new AlgaeWheelSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  private final LEDController ledController = new LEDController();
+  private final LEDController ledController;
 
   // The driver's controllers
   //private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
@@ -56,7 +56,7 @@ public class RobotContainer {
 
   // Dashboard - Choosers
   private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
-  // private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
@@ -74,8 +74,9 @@ public class RobotContainer {
     algaeArmSubsystem.setAlgaeArmState(AlgaeArmState.ARM_STOWED);
     // We always start at ALGAE_FREE
     algaeWheelSubsystem.setAlgaeWheelState(AlgaeWheelState.ALGAE_FREE);
-    // We always start with CLIMBER_DOWN
+    // We always start with CLIMBER_DOWN and the Ratchet disabled
     climberSubsystem.setClimberState(ClimberState.CLIMBER_DOWN);
+    climberSubsystem.setServoAngle(ClimberConstants.kServoAngleToDisableRatchet);
 
      // Register Named Commands
      NamedCommands.registerCommand("IntakeCoral", new IntakeCommand(endEffectorSubsystem));
@@ -107,6 +108,7 @@ public class RobotContainer {
                                                                                            new ElevatorDownCommand(elevatorSubsystem, true)));
      NamedCommands.registerCommand("GrabAlgaeFromGround", new SequentialCommandGroup(new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
                                                                                           new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_CATCH),
+                                                                                          new ElevatorDownCommand(elevatorSubsystem, true),
                                                                                           new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, false),
                                                                                           new ConditionalCommand(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_HOLD), 
                                                                                                                  new SequentialCommandGroup(new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
@@ -118,17 +120,22 @@ public class RobotContainer {
                                                                                              new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
                                                                                              new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
                                                                                              new ElevatorDownCommand(elevatorSubsystem, true)));
+     NamedCommands.registerCommand("LaunchAlgaeIntoBarge", new SequentialCommandGroup(new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, true),
+                                                                                           new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_LAUNCH), 
+                                                                                                                    new AlgaeWheelCommand(algaeWheelSubsystem)), 
+                                                                                           new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
+                                                                                           new ElevatorDownCommand(elevatorSubsystem, true)));
 
      // Configure the trigger bindings
     configureBindings();
 
     fieldRelativeChooser.setDefaultOption("Field Relative", true);
     fieldRelativeChooser.addOption("Robot Relative", false);
-    SmartDashboard.putData(fieldRelativeChooser);
-    // SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData("Field Relative Chooser", fieldRelativeChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
      
     // Commands launched from Dashboard (Example format below)
-    //SmartDashboard.putData("IntakeCoral", NamedCommands.getCommand("IntakeCoral"));
+    SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
 
     // Configure default commands
     driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,
@@ -163,7 +170,7 @@ public class RobotContainer {
     driverCommandXboxController.b().whileTrue(NamedCommands.getCommand("AutoReefAlignmentRight"));
     driverCommandXboxController.x().whileTrue(NamedCommands.getCommand("AutoReefAlignmentLeft"));
     driverCommandXboxController.y().onTrue(NamedCommands.getCommand("ElevatorUp"));
-    driverCommandXboxController.a().onTrue(NamedCommands.getCommand("ElevatorDown"));
+    driverCommandXboxController.a().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1)).onTrue(NamedCommands.getCommand("ElevatorDown"));
 
     // MANIPULATOR XBOX Controller
     //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralNotLoaded)).onTrue(NamedCommands.getCommand("IntakeCoral"));
@@ -174,16 +181,16 @@ public class RobotContainer {
     manipulatorCommandXboxController.b().onTrue(NamedCommands.getCommand("PlaceCoralRight"));
     manipulatorCommandXboxController.back().onTrue(NamedCommands.getCommand("ClimberUp"));
     manipulatorCommandXboxController.start().onTrue(NamedCommands.getCommand("ClimberDown"));
-    manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1)).
-                                                  whileTrue(NamedCommands.getCommand("GrabAlgaeFromReef"));
-    //manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).
-    //                                              whileTrue(NamedCommands.getCommand("GrabAlgaeFromGround"));
+    manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1orP1p5)).
+                                                  onTrue(NamedCommands.getCommand("GrabAlgaeFromReef"));
+    manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1orP1p5)).
+                                                  onTrue(NamedCommands.getCommand("GrabAlgaeFromGround"));
     manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).
                                                    and(new Trigger(algaeWheelSubsystem::isAlgaeLoadedFromReef)).
                                                    onTrue(NamedCommands.getCommand("ProcessAlgaeFromReef"));
-    //manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).
-    //                                               and(new Trigger(algaeWheelSubsystem::isAlgaeLoadedFromGround)).
-    //                                               onTrue(NamedCommands.getCommand("ProcessAlgaeFromGround"));
+    manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).
+                                                   and(new Trigger(algaeWheelSubsystem::isAlgaeLoadedFromGround)).
+                                                   onTrue(NamedCommands.getCommand("ProcessAlgaeFromGround"));
 
   }
 
@@ -195,7 +202,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // Start with a CORAL in the EndEffector to start
     endEffectorSubsystem.setEndEffectorState(EndEffectorState.CORAL_LOADED);
-    //return autoChooser.getSelected();
-    return null;
+    return autoChooser.getSelected();
+    //return null;
   }
 }

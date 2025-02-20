@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.AlgaeWheelState;
-import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.subsystems.AlgaeWheelSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -65,16 +64,20 @@ public class AlgaeWheelAtReefCommand extends Command {
     if (immediateFinish) {
       return true;
     }
-    else if (m_subsystem.getWheelActualVelocity()<AlgaeConstants.kAlgaeWheelAtReefHoldingVelocityThreshhold) {
-      gotAlgae=true;
-      return true;
-    }
-    else if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtReefCommandMaxRuntimeInMs) {
-      abortCommand=true;
-      return true;
-    }
     else {
-      return false;
+      if (m_subsystem.getWheelActualVelocity()<AlgaeConstants.kAlgaeWheelAtReefHoldingVelocityThreshhold) {
+        gotAlgae=true;
+        return true;
+        }
+      else {
+        if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtReefCommandMaxRuntimeInMs) {
+          abortCommand=true;
+          return true;
+        }
+        else {
+          return false;
+        } 
+      }
     }
   }
 }

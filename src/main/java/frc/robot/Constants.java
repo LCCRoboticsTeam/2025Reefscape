@@ -126,10 +126,13 @@ public final class Constants {
     public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
 
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -1200;
-    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 500;
+    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 1200;
 
-    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 5000; 
+    public static final double kAlgaeWheelLunchTargetVelocity = -2500;
+
+    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 7000; 
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
+    public static final int kAlgaeWheelCommandMaxRuntimeInMs = 3000; 
 
     public static final boolean kArmTargetPositionFromDashboard = false;
     public static final boolean kWheelTargetVelocityFromDashboard = false;
@@ -140,9 +143,10 @@ public final class Constants {
     ARM_DOWN(0), // was 5, 3
     ARM_REEF_ALGAE_HOLD(15), // Was 20, FIXME: Need to test if works with robot touching reef
     ARM_REEF_ALGAE_RELEASE(18),// was 14
-    ARM_GROUND_ALGAE_HOLD(35),
-    ARM_GROUND_ALGAE_CATCH(30),
-    ARM_GROUND_ALGAE_RELEASE(40);
+    ARM_REEF_ALGAE_LAUNCH(30),
+    ARM_GROUND_ALGAE_HOLD(38),
+    ARM_GROUND_ALGAE_CATCH(28),
+    ARM_GROUND_ALGAE_RELEASE(60);
 
     private double algaeArmPosition;
     AlgaeArmState(double algaeArmPosition) {
@@ -171,10 +175,10 @@ public final class Constants {
     public static final double kminOutRange = -0.5;
 
     public static final double kServoAngleToEnableRatchet = 0.0;   // FIXME: Need to test to determine correct value.
-    public static final double kServoAngleToDisableRatchet = 0.0;  // FIXME: Need to test to determine correct value.
+    public static final double kServoAngleToDisableRatchet = 15.0;  // FIXME: Need to test to determine correct value.
 
     public static final boolean kTargetPositionFromDashboard = false;
-    public static final boolean kServoAngleFromDashboard = true;
+    public static final boolean kServoAngleFromDashboard = false;
   }
   public enum ClimberState {
     UNKNOWN,

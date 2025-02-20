@@ -134,8 +134,20 @@ public class ElevatorSubsystem extends SubsystemBase {
     else
       return false;
   }
+  public boolean isElevatorAtP1orP1p5() {
+    if ((this.elevatorState==ElevatorState.P1) || (this.elevatorState==ElevatorState.P1p5))
+      return true;
+    else
+      return false;
+  }
   public boolean isElevatorNotAtP1() {
     if (this.elevatorState!=ElevatorState.P1)
+      return true;
+    else
+      return false;
+  }
+  public boolean isElevatorNotAtP1orP1p5() {
+    if ((this.elevatorState!=ElevatorState.P1) && (this.elevatorState!=ElevatorState.P1p5))
       return true;
     else
       return false;
