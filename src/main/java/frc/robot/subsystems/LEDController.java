@@ -5,39 +5,39 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.LEDConstants;
-import frc.robot.Constants.LEDColorState;
+import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDController extends SubsystemBase {
 
-  private double m_Color = LEDConstants.SOLID_BLUE;
   private Spark m_ledController = new Spark(LEDConstants.PWM_PORT);
+  private double m_color = LEDConstants.COLOR_WAVES_OCEAN_PALETTE;
 
-  public LEDController() {
+  private BooleanSupplier m_isRobotEnabled;
+  private BooleanSupplier m_isCoralLoaded;
+  private BooleanSupplier m_isAlgaeLoaded;
+
+  public LEDController(BooleanSupplier isRobotEnabled, BooleanSupplier isCoralLoaded, BooleanSupplier isAlgaeLoaded) {
+    m_isRobotEnabled = isRobotEnabled;
+    m_isCoralLoaded = isCoralLoaded;
+    m_isAlgaeLoaded = isAlgaeLoaded;
+
+    m_ledController.set(m_color);
   }
 
   @Override
   public void periodic() {
-    //m_Color = SmartDashboard.getNumber("LEDController/color", m_Color);
-    m_ledController.set(m_Color);
-  }
+    if (m_isCoralLoaded.getAsBoolean()) 
+      m_color=LEDConstants.SOLID_AQUA_BLUE;
+    else if (m_isAlgaeLoaded.getAsBoolean())
+      m_color = LEDConstants.SOLID_GREEN;
+    else if (m_isRobotEnabled.getAsBoolean())
+      m_color = LEDConstants.BEATS_PER_MIN_OCEAN_PALETTE;
+    else
+      m_color = LEDConstants.COLOR_WAVES_OCEAN_PALETTE;
 
-  public void setColor(LEDColorState color) {
-    switch(color) {
-      case NOTE_LESS:
-        m_Color = LEDConstants.SOLID_BLUE;
-        break;
-      case NOTE_DETECTED:
-        m_Color = LEDConstants.SOLID_GREEN;
-        break;
-      case SHOOTING:
-        m_Color = LEDConstants.FIXED_PALETTE_PATTERN_FIRE_LARGE;
-        break;
-      default:
-        m_Color = LEDConstants.SOLID_BLUE;
-    }
+    m_ledController.set(m_color);
   }
 
 }

@@ -160,7 +160,7 @@ public class DriveSubsystem extends SubsystemBase {
         });
 
     SmartDashboard.putData("Field", m_field);  
-    SmartDashboard.putNumber("Gyro Heading: ", getHeading()); 
+    //SmartDashboard.putNumber("Gyro Heading: ", getHeading()); 
     SmartDashboard.putNumber("Gyro Yaw: ", ((DriveConstants.kGyroReversed ? -1.0 : 1.0)*m_gyro.getYaw())); 
     SmartDashboard.putNumber("Gyro Angle: ", ((DriveConstants.kGyroReversed ? -1.0 : 1.0)*m_gyro.getAngle())); 
  

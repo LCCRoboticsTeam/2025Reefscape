@@ -6,12 +6,16 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ElevatorState;
 import frc.robot.subsystems.ElevatorSubsystem;
+
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class ElevatorUpCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ElevatorSubsystem m_subsystem;
+  private final BooleanSupplier m_isCoralLoaded;
   private boolean m_forceToP1p5;
 
   ElevatorState m_elevatorState = ElevatorState.P1;
@@ -20,9 +24,10 @@ public class ElevatorUpCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ElevatorUpCommand(ElevatorSubsystem subsystem, boolean forceToP1p5) {
+  public ElevatorUpCommand(ElevatorSubsystem subsystem, boolean forceToP1p5, BooleanSupplier isCoralLoaded) {
     m_subsystem = subsystem;
     m_forceToP1p5 = forceToP1p5;
+    m_isCoralLoaded = isCoralLoaded;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -39,8 +44,12 @@ public class ElevatorUpCommand extends Command {
       else {
         if (m_subsystem.getElevatorState()==ElevatorState.P2)
           m_elevatorState=ElevatorState.P3;
-        else
-          m_elevatorState=ElevatorState.P4; 
+        else {
+          if (m_isCoralLoaded.getAsBoolean())
+            m_elevatorState=ElevatorState.P4; 
+          else
+            m_elevatorState=ElevatorState.P3p5;
+        }
       }
     }
   }

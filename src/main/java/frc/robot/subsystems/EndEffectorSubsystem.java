@@ -105,15 +105,15 @@ public class EndEffectorSubsystem extends SubsystemBase {
     LCReefside = new LaserCan(EndEffectorConstants.kLCReefsideCanID);
     try {
         LCReefside.setRangingMode(LaserCan.RangingMode.SHORT);
-        LCReefside.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
-        LCReefside.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+        LCReefside.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 14, 4, 4)); // 8, 8, 16, 16
+        LCReefside.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_20MS);
       } catch (ConfigurationFailedException e) {
         System.out.println("Configuration failed! " + e);
       }
     LCHopperside = new LaserCan(EndEffectorConstants.kLCHoppersideCanID);
     try {
         LCHopperside.setRangingMode(LaserCan.RangingMode.SHORT);
-        LCHopperside.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
+        LCHopperside.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 4, 4));
         LCHopperside.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
       } catch (ConfigurationFailedException e) {
         System.out.println("Configuration failed! " + e);
@@ -150,10 +150,6 @@ public class EndEffectorSubsystem extends SubsystemBase {
     this.rightTargetVelocity=rightTargetVelocity;
   }
 
-  public boolean reefDetected() {
-    return false;
-  }
-
   public int getReefsideDistanceMM() {
     LaserCan.Measurement lcReefsideMeasurement = LCReefside.getMeasurement();
     return lcReefsideMeasurement.distance_mm;
@@ -186,6 +182,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
       return false;
   }
 
+  public boolean isReefDetected() {
+    if (getReefsideDistanceMM()<EndEffectorConstants.kReeflDetectedDistance)
+      return true;
+    else
+      return false;
+  }
+
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
@@ -211,9 +214,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ENDE Right Actual Vel", rightEncoder.getVelocity());
 
     SmartDashboard.putNumber("ENDE LCReefside Dist (mm)", getReefsideDistanceMM());
-
     SmartDashboard.putNumber("ENDE LCHopperside Dist (mm)", getHoppersideDistanceMM());
 
+    SmartDashboard.putBoolean("ENDE Is Reef Detected", isReefDetected());
     SmartDashboard.putBoolean("ENDE Coral Loaded", isCoralLoaded());
     SmartDashboard.putBoolean("ENDE Coral NOT Loaded", isCoralNotLoaded());
 
