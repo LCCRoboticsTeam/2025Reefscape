@@ -5,6 +5,7 @@
 package frc.robot;
 
 import au.grapplerobotics.CanBridge;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,6 +29,8 @@ public class Robot extends TimedRobot {
   public Robot() {
     // Need for Grapple Hook hardware client for LaserCAN
     CanBridge.runTCP();
+
+    PortForwarder.add(5800, "photonvision.local", 5800);
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.

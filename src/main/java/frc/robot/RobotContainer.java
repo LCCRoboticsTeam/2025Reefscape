@@ -115,8 +115,8 @@ public class RobotContainer {
                                                                                                                                             new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
                                                                                                                                             new ElevatorDownCommand(elevatorSubsystem, true)),
                                                                                                                  algaeWheelSubsystem::isAlgaeLoadedFromGround)));
-     NamedCommands.registerCommand("ProcessAlgaeFromGround", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_RELEASE), 
-                                                                                                                      algaeArmSubsystem.setArmMotorIdleModeToCoastCommand(),
+     NamedCommands.registerCommand("ProcessAlgaeFromGround", new SequentialCommandGroup(algaeArmSubsystem.setArmMotorIdleModeToCoastCommand(),
+                                                                                             new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_RELEASE), 
                                                                                                                       new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, false)), 
                                                                                              algaeArmSubsystem.setArmMotorIdleModeToBrakeCommand(),
                                                                                              new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
@@ -145,6 +145,7 @@ public class RobotContainer {
 
     // Camera settings
     //reefsideUsbCamera.setResolution(640, 480);
+    //climbersideUsbCamera.setResolution(320, 280);
 
   }
 
