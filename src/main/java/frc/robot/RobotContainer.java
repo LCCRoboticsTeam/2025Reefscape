@@ -12,6 +12,7 @@ import frc.robot.commands.*;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 
+import org.opencv.photo.Photo;
 import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -48,7 +49,7 @@ public class RobotContainer {
   private final LEDController ledController;
 
   // The driver's controllers
-  //private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
+  private final XboxController driverXboxController = new XboxController(OIConstants.kDriverControllerPort); 
   private final CommandXboxController driverCommandXboxController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   //private final XboxController manipulatorXboxController = new XboxController(OIConstants.kManipulatorControllerPort); 
@@ -131,9 +132,6 @@ public class RobotContainer {
      // Configure the trigger bindings
     configureBindings();
 
-    //fieldRelativeChooser.setDefaultOption("Field Relative", true);
-    //fieldRelativeChooser.addOption("Robot Relative", false);
-    //SmartDashboard.putData("Field Relative Chooser", fieldRelativeChooser);
     SmartDashboard.putData("Auto Chooser", autoChooser);
      
     // Commands launched from Dashboard (Example format below)
@@ -141,7 +139,8 @@ public class RobotContainer {
 
     // Configure default commands
     driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,
-      driverCommandXboxController::getLeftY, driverCommandXboxController::getRightX, climberSubsystem::isClimberUp));
+      driverCommandXboxController::getLeftY, driverCommandXboxController::getRightX, climberSubsystem::isClimberUp, 
+      driverXboxController::getLeftStickButton, frontsidePhotonCamera));
 
     // Camera settings
     //reefsideUsbCamera.setResolution(640, 480);
@@ -176,9 +175,7 @@ public class RobotContainer {
     driverCommandXboxController.a().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1)).onTrue(NamedCommands.getCommand("ElevatorDown"));
 
     // MANIPULATOR XBOX Controller
-    //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralNotLoaded)).onTrue(NamedCommands.getCommand("IntakeCoral"));
     manipulatorCommandXboxController.a().onTrue(NamedCommands.getCommand("IntakeCoral"));
-    //manipulatorCommandXboxController.a().and(new Trigger(endEffectorSubsystem::isCoralLoaded)).onTrue(NamedCommands.getCommand("PlaceCoral"));
     manipulatorCommandXboxController.x().onTrue(NamedCommands.getCommand("PlaceCoralLeft"));
     manipulatorCommandXboxController.y().onTrue(NamedCommands.getCommand("PlaceCoralStraight"));
     manipulatorCommandXboxController.b().onTrue(NamedCommands.getCommand("PlaceCoralRight"));
