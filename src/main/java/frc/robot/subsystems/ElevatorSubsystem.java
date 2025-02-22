@@ -93,20 +93,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
   public void setTargetPosition(double targetPosition) {
     this.targetPosition=targetPosition;
   }
@@ -158,13 +144,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     else
       return false;
   }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  
+ 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

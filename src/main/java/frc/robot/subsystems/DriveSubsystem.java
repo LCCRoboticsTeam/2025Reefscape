@@ -51,7 +51,7 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.studica.frc.AHRS;
 
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Robot;
+//import frc.robot.Robot;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -179,10 +179,10 @@ public class DriveSubsystem extends SubsystemBase {
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) -> m_field.getObject("path").setPoses(poses));
 
-    //Cam mounted facing forward and to right side, 22.75" (0.58m) from robot center in X and Y dir, and ?7"? (0.18m) Up from ground
-    robotToFrontsidePhotonCamera = new Transform3d(new Translation3d(0.58, 0.58, 0.18), new Rotation3d(0,0,0));
-    //Cam mounted facing backwardand to left side, 22.75" (0.58m) from robot center in X and Y dir, and ?7"? (0.18m) Up from ground
-    robotToBacksidePhotonCamera = new Transform3d(new Translation3d(-0.58, -0.58, 0.18), new Rotation3d(0,0,0));
+    //Cam mounted facing forward and to right side, 22.75" (0.58m) from robot center in X and Y dir, and 8.5" (0.22m) Up from ground
+    robotToFrontsidePhotonCamera = new Transform3d(new Translation3d(0.58, 0.58, 0.22), new Rotation3d(0,0,0));
+    //Cam mounted facing backwardand to left side, 22.75" (0.58m) from robot center in X and Y dir, and 8.5" (0.22m) Up from ground
+    robotToBacksidePhotonCamera = new Transform3d(new Translation3d(-0.58, -0.58, 0.22), new Rotation3d(0,0,0));
 
     // Construct PhotonPoseEstimator
     photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToFrontsidePhotonCamera);

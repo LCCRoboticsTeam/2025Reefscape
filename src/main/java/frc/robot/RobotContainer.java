@@ -74,7 +74,7 @@ public class RobotContainer {
     elevatorSubsystem.setElevatorState(ElevatorState.P1);
     // We always start at ARM_STOWED
     algaeArmSubsystem.setAlgaeArmState(AlgaeArmState.ARM_STOWED);
-    // We always start at ALGAE_FREE
+    // We always start at ALGAE_FREE 
     algaeWheelSubsystem.setAlgaeWheelState(AlgaeWheelState.ALGAE_FREE);
     // We always start with CLIMBER_DOWN and the Ratchet disabled
     climberSubsystem.setClimberState(ClimberState.CLIMBER_DOWN);

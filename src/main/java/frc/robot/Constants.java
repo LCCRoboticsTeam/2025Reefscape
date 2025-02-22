@@ -52,11 +52,11 @@ public final class Constants {
     public static final double kLeftMotorPlaceCoralRightTargetVelocity = 5400;
     public static final double kRightMotorPlaceCoralRightTargetVelocity = -1500;
 
-    public static final int kCoralDetectedDistance = 60; //Was 50
+    public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 40;
-    public static final int kPlaceCoralCommandRuntimeInMs = 750; //Was 1500
+    public static final int kPlaceCoralCommandRuntimeInMs = 750;
 
-    public static final int kReeflDetectedDistance = 380; // ~15.2 inches
+    public static final int kReeflDetectedDistance = 380; // FIXME: ~14.9 inches (Too much?)
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -91,10 +91,10 @@ public final class Constants {
     UNKNOWN,
     P1(1.0),
     P1p5(6),   // This is level that allows AlgaeArm to go down
-    P2(10),    // Was 11
-    P3(27.0), // was 28
-    P3p5(43.5),  // Was 36, 42 , FIXME: Need to test, this is level that allows grab of higher reef algae
-    P4(55.0);  // was 57
+    P2(10),
+    P3(27.0),
+    P3p5(43.5),
+    P4(55.0);
 
     private double elevatorPosition;
     ElevatorState(double elevatorPosition) {
@@ -118,17 +118,17 @@ public final class Constants {
     public static final double kAlgaeWheelMinOutRange = -0.8;
 
     // At Reef
-    public static final double kAlgaeWheelAtReefTargetVelocity = 800; // Was 500
-    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 400; // Was 150
+    public static final double kAlgaeWheelAtReefTargetVelocity = 800;
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 400;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 4000; // Was 7000
+    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 4000;
     // At Ground
-    public static final double kAlgaeWheelAtGroundTargetVelocity = -800; // Was -500
+    public static final double kAlgaeWheelAtGroundTargetVelocity = -800;
     public static final double kAlgaeWheelAtGroundHoldingVelocityThreshold = -500;
     public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
-    public static final int kAlgaeWheelAtGroundCommandMaxRuntimeInMs = 6000; // Was 7000
+    public static final int kAlgaeWheelAtGroundCommandMaxRuntimeInMs = 6000;
     // Processor
-    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2000; // was 1200
+    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2000;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2000;
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
 
@@ -143,12 +143,12 @@ public final class Constants {
     UNKNOWN,
     ARM_STOWED(0),
     ARM_DOWN(0),
-    ARM_REEF_ALGAE_HOLD(15), // Was 20, FIXME: Need to test if works with robot touching reef
+    ARM_REEF_ALGAE_HOLD(15),
     ARM_REEF_ALGAE_RELEASE(18),
     ARM_REEF_ALGAE_LAUNCH(30),
     ARM_GROUND_ALGAE_HOLD(38),
-    ARM_GROUND_ALGAE_CATCH(35), // was 28
-    ARM_GROUND_ALGAE_RELEASE(38); // was 60
+    ARM_GROUND_ALGAE_CATCH(35),
+    ARM_GROUND_ALGAE_RELEASE(38);
 
     private double algaeArmPosition;
     AlgaeArmState(double algaeArmPosition) {
@@ -170,8 +170,8 @@ public final class Constants {
   // -------------------- CLIMBER --------------------
   public final class ClimberConstants {
     public static final int kClimberCanID = 19;
-    public static final int kClimberPositionUp = 68; // Ideally 68
-    public static final int kClimberPositionDown = 0;
+    public static final int kClimberPositionUp = 68; // 68 is the absolute max
+    public static final int kClimberPositionDown = -1; // -2 is the absolute lowest 
 
     public static final double kmaxOutRange = 0.5;
     public static final double kminOutRange = -0.5;
@@ -260,7 +260,7 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     public static final double kSwerveSlideSpeed = 0.15;
-    public static final double kSwerveBackupSpeed = 0.3; //was .25;
+    public static final double kSwerveBackupSpeed = 0.3;
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
 
     public static final boolean usePhotonPoseEstimator = false;
