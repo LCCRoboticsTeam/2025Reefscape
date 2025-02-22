@@ -99,9 +99,10 @@ public class RobotContainer {
                                                                                         new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true),
                                                                                         new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
                                                                                         new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false),
-                                                                                        new ConditionalCommand(new ParallelCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
-                                                                                                                                        new ElevatorDownCommand(elevatorSubsystem, true)), 
-                                                                                                               new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
+                                                                                        new ConditionalCommand(new SequentialCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+                                                                                                                                          new ElevatorDownCommand(elevatorSubsystem, true)), 
+                                                                                                               new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
+                                                                                                                                          new ElevatorDownCommand(elevatorSubsystem, true)),
                                                                                                                algaeWheelSubsystem::isAlgaeLoadedFromReef)));
      NamedCommands.registerCommand("ProcessAlgaeFromReef", new SequentialCommandGroup(new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_RELEASE), 
                                                                                                                     new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, true)), 
@@ -205,5 +206,9 @@ public class RobotContainer {
     endEffectorSubsystem.setEndEffectorState(EndEffectorState.CORAL_LOADED);
     return autoChooser.getSelected();
     //return null;
+  }
+
+  public void zeroHeading() {
+    driveSubsystem.zeroHeading();
   }
 }

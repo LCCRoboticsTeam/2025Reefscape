@@ -71,7 +71,7 @@ public class AlgaeWheelAtGroundCommand extends Command {
              // This is a little bit of a hack, as there needs to be some delay before checking 
              // the Threshold value since it seem like it take a bit longer to spinup wheel
              // when Velocity is in the negative direction
-             (isFinishedDelayCountInMs>500)) {
+             (isFinishedDelayCountInMs>400)) {
       gotAlgae=true;
       return true;
     }
