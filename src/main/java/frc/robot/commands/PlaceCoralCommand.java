@@ -44,9 +44,9 @@ public class PlaceCoralCommand extends Command {
     else if (placeCoralDirection==PlaceCoralDirection.PLACE_CORAL_LEFT)
       m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralLeftTargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralLeftTargetVelocity);
     else if (isElevatorAtP4.getAsBoolean())
-      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralL4TargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralL4TargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralL4TargetVelocity);
     else
-      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralL4TargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
+      m_subsystem.setTargetVelocity(EndEffectorConstants.kLeftMotorPlaceCoralTargetVelocity, EndEffectorConstants.kRightMotorPlaceCoralTargetVelocity);
 
     isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }
