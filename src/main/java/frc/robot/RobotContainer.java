@@ -57,7 +57,7 @@ public class RobotContainer {
 
   // Dashboard - Choosers
   //private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
-  private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  private final SendableChooser<Command> autoChooser;
 
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
@@ -134,6 +134,10 @@ public class RobotContainer {
      // Configure the trigger bindings
     configureBindings();
 
+    // Build an auto chooser. This will use Commands.none() as the default option.
+    //autoChooser = AutoBuilder.buildAutoChooser();
+    // Another option that allows you to specify the default auto by its name
+    autoChooser = AutoBuilder.buildAutoChooser("MoveOutCenterReefPath");
     SmartDashboard.putData("Auto Chooser", autoChooser);
      
     // Commands launched from Dashboard (Example format below)
