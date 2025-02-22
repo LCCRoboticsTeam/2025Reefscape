@@ -46,11 +46,11 @@ public final class Constants {
     public static final double kLeftMotorPlaceCoralL4TargetVelocity = 3500;
     public static final double kRightMotorPlaceCoralL4TargetVelocity = -3500;
     // PLACE LEFT
-    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 2800;
-    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -4300;
+    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 1500;
+    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -5400;
     // PLACE RIGHT
-    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 4300;
-    public static final double kRightMotorPlaceCoralRightTargetVelocity = -2800;
+    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 5400;
+    public static final double kRightMotorPlaceCoralRightTargetVelocity = -1500;
 
     public static final int kCoralDetectedDistance = 60; //Was 50
     public static final int kCoralDetectedCountThreshold = 40;
@@ -92,8 +92,8 @@ public final class Constants {
     P1(1.0),
     P1p5(6),   // This is level that allows AlgaeArm to go down
     P2(10),    // Was 11
-    P3(28.0),
-    P3p5(36),  // FIXME: Need to test, this is level that allows grab of higher reef algae
+    P3(27.0), // was 28
+    P3p5(43.5),  // Was 36, 42 , FIXME: Need to test, this is level that allows grab of higher reef algae
     P4(55.0);  // was 57
 
     private double elevatorPosition;
@@ -119,17 +119,17 @@ public final class Constants {
 
     // At Reef
     public static final double kAlgaeWheelAtReefTargetVelocity = 800; // Was 500
-    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 150;
-    public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 50;
-    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 6000; // Was 7000
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 400; // Was 150
+    public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
+    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 4000; // Was 7000
     // At Ground
     public static final double kAlgaeWheelAtGroundTargetVelocity = -800; // Was -500
-    public static final double kAlgaeWheelAtGroundHoldingVelocityThreshold = -150;
+    public static final double kAlgaeWheelAtGroundHoldingVelocityThreshold = -500;
     public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
     public static final int kAlgaeWheelAtGroundCommandMaxRuntimeInMs = 6000; // Was 7000
     // Processor
-    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -1200;
-    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 1200;
+    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2000; // was 1200
+    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2000;
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
 
     // These are for AlgaeArmCommand which is currently not being used.
@@ -147,8 +147,8 @@ public final class Constants {
     ARM_REEF_ALGAE_RELEASE(18),
     ARM_REEF_ALGAE_LAUNCH(30),
     ARM_GROUND_ALGAE_HOLD(38),
-    ARM_GROUND_ALGAE_CATCH(28),
-    ARM_GROUND_ALGAE_RELEASE(60);
+    ARM_GROUND_ALGAE_CATCH(35), // was 28
+    ARM_GROUND_ALGAE_RELEASE(38); // was 60
 
     private double algaeArmPosition;
     AlgaeArmState(double algaeArmPosition) {
@@ -260,7 +260,7 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     public static final double kSwerveSlideSpeed = 0.15;
-    public static final double kSwerveBackupSpeed = 0.25;
+    public static final double kSwerveBackupSpeed = 0.3; //was .25;
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
   }
 
