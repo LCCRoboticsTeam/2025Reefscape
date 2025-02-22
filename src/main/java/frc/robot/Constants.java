@@ -262,6 +262,8 @@ public final class Constants {
     public static final double kSwerveSlideSpeed = 0.15;
     public static final double kSwerveBackupSpeed = 0.25;
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
+
+    public static final boolean usePhotonPoseEstimator = false;
   }
 
   public static final class ModuleConstants {

@@ -40,7 +40,7 @@ import java.util.function.BooleanSupplier;
  */
 public class RobotContainer {
   // Subsystems defined here...
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final DriveSubsystem driveSubsystem;
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
   private final AlgaeArmSubsystem algaeArmSubsystem = new AlgaeArmSubsystem();
@@ -67,6 +67,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(BooleanSupplier isRobotEnabled) {
+    driveSubsystem = new DriveSubsystem(frontsidePhotonCamera, backsidePhotonCamera);
     ledController = new LEDController(isRobotEnabled, endEffectorSubsystem::isCoralLoaded, algaeWheelSubsystem::isAlgaeLoaded);
 
     // We always start at P1 level

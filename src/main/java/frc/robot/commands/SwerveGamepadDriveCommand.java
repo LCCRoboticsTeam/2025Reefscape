@@ -22,7 +22,7 @@ public class SwerveGamepadDriveCommand extends Command {
   private final BooleanSupplier slowMode;
   private final BooleanSupplier getLeftStickButton;
   private final PhotonCamera frontsidePhotonCamera;
-  //private PhotonCamera backsidePhotonCamera;
+  //private final PhotonCamera backsidePhotonCamera;
 
   private final double VISION_TURN_kP = 0.01;
 
@@ -87,7 +87,6 @@ public class SwerveGamepadDriveCommand extends Command {
                     (target.getFiducialId() != 4) && (target.getFiducialId() != 5) &&
                     (target.getFiducialId() != 12) && (target.getFiducialId() != 13) &&
                     (target.getFiducialId() != 14) && (target.getFiducialId() != 15)) {
-                    // Found Tag 7, record its information
                     targetYaw = target.getYaw();
                     targetVisible = true;
                 }
