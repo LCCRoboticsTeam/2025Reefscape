@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.AlgaeWheelState;
 import frc.robot.subsystems.AlgaeWheelSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -48,6 +49,7 @@ public class AlgaeWheelAtProcessorCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_subsystem.setWheelTargetVelocity(0);
+    m_subsystem.setAlgaeWheelState(AlgaeWheelState.ALGAE_FREE);
   }
 
   // Returns true when the command should end.

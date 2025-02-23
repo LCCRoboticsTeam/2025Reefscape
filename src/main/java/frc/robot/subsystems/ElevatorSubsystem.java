@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLimitSwitch;
+//import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -29,8 +29,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   private SparkMaxConfig leftMotorConfig;
   private SparkClosedLoopController leftClosedLoopController;
   private RelativeEncoder leftEncoder;
-  private SparkLimitSwitch m_forwardLimit;
-  private SparkLimitSwitch m_reverseLimit;
+  //private SparkLimitSwitch m_forwardLimit;
+  //private SparkLimitSwitch m_reverseLimit;
 
   private SparkMax rightMotor;
 
@@ -58,8 +58,8 @@ public class ElevatorSubsystem extends SubsystemBase {
       .positionConversionFactor(1)
       .velocityConversionFactor(1);  
 
-    m_forwardLimit = leftMotor.getForwardLimitSwitch();
-    m_reverseLimit = leftMotor.getReverseLimitSwitch();
+    //m_forwardLimit = leftMotor.getForwardLimitSwitch();
+    //m_reverseLimit = leftMotor.getReverseLimitSwitch();
 
     //m_forwardLimit. enableLimitSwitch(false);
     //m_reverseLimit.enableLimitSwitch(false);
@@ -134,8 +134,26 @@ public class ElevatorSubsystem extends SubsystemBase {
     else
       return false;
   }
+  public boolean isElevatorAtP1orP1p5() {
+    if ((this.elevatorState==ElevatorState.P1) || (this.elevatorState==ElevatorState.P1p5))
+      return true;
+    else
+      return false;
+  }
   public boolean isElevatorNotAtP1() {
     if (this.elevatorState!=ElevatorState.P1)
+      return true;
+    else
+      return false;
+  }
+  public boolean isElevatorNotAtP1orP1p5() {
+    if ((this.elevatorState!=ElevatorState.P1) && (this.elevatorState!=ElevatorState.P1p5))
+      return true;
+    else
+      return false;
+  }
+  public boolean isElevatorAtP4() {
+    if (this.elevatorState==ElevatorState.P4)
       return true;
     else
       return false;
@@ -165,10 +183,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ELEV Right Amps", rightMotor.getOutputCurrent());
     SmartDashboard.putNumber("ELEV Left DutyCycle", leftMotor.getAppliedOutput());
     SmartDashboard.putNumber("ELEV Right DutyCycle", rightMotor.getAppliedOutput());
-    SparkLimitSwitch forwardLimitSwitch = leftMotor.getForwardLimitSwitch();
-    SmartDashboard.putBoolean("ELEV Left Limit FWD", forwardLimitSwitch.isPressed());
-    SparkLimitSwitch reverseLimitSwitch = leftMotor.getForwardLimitSwitch();
-    SmartDashboard.putBoolean("ELEV Left Limit REV", reverseLimitSwitch.isPressed());
+    //SparkLimitSwitch forwardLimitSwitch = leftMotor.getForwardLimitSwitch();
+    //SmartDashboard.putBoolean("ELEV Left Limit FWD", forwardLimitSwitch.isPressed());
+    //SparkLimitSwitch reverseLimitSwitch = leftMotor.getForwardLimitSwitch();
+    //SmartDashboard.putBoolean("ELEV Left Limit REV", reverseLimitSwitch.isPressed());
 
   }
 

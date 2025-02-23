@@ -4,21 +4,23 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.ClimberState;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.AlgaeWheelState;
+import frc.robot.subsystems.AlgaeWheelSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class MoveClimberDownCommand extends Command {
+public class AlgaeWheelCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ClimberSubsystem m_subsystem;
+  private final AlgaeWheelSubsystem m_subsystem;
+  private int isFinishedDelayCountInMs;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveClimberDownCommand(ClimberSubsystem subsystem) {
+  public AlgaeWheelCommand(AlgaeWheelSubsystem subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -27,28 +29,32 @@ public class MoveClimberDownCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.setServoAngle(ClimberConstants.kServoAngleToEnableRatchet);
+    isFinishedDelayCountInMs=0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_subsystem.setTargetPosition(ClimberConstants.kClimberPositionDown);
+    m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelLunchTargetVelocity);  
+      
+    isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!interrupted)
-      m_subsystem.setClimberState(ClimberState.CLIMBER_DOWN);
+    m_subsystem.setWheelTargetVelocity(0);
+    m_subsystem.setAlgaeWheelState(AlgaeWheelState.ALGAE_FREE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_subsystem.getActualPosition()==ClimberConstants.kClimberPositionDown)
+if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelCommandMaxRuntimeInMs) {
       return true;
-    else
+    }
+    else {
       return false;
+    }
   }
 }

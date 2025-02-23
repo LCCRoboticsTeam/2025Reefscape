@@ -21,6 +21,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import edu.wpi.first.wpilibj.Servo;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
@@ -32,6 +33,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private double targetPosition;
 
   private ClimberState climberState;
+
+  private Servo servo;
 
   public ClimberSubsystem() {
     motor = new SparkMax(ClimberConstants.kClimberCanID, MotorType.kBrushless);
@@ -86,6 +89,9 @@ public class ClimberSubsystem extends SubsystemBase {
      */
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
+    servo = new Servo(0);
+    SmartDashboard.setDefaultNumber("CLMB Servo Tgt Angle",0);
+
     // Initialize dashboard values
     SmartDashboard.setDefaultNumber("CLMB Target Pos", 0);
   }
@@ -135,6 +141,20 @@ public class ClimberSubsystem extends SubsystemBase {
     this.climberState =  climberState;
   }
 
+    public boolean isClimberUp() {
+    if (this.climberState==ClimberState.CLIMBER_UP)
+      return true;
+    else
+      return false;
+  }
+
+  public void setServoAngle (double angle) {
+    servo.setAngle(angle);
+  }
+  public double getServoAngle () {
+    return servo.getAngle();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -155,6 +175,11 @@ public class ClimberSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("CLMB Actual Pos", encoder.getPosition());
       SmartDashboard.putNumber("CLMB Amps", motor.getOutputCurrent());
       SmartDashboard.putNumber("CLMB DutyCycle", motor.getAppliedOutput());
+
+      if (ClimberConstants.kServoAngleFromDashboard) 
+        setServoAngle(SmartDashboard.getNumber("CLMB Servo Tgt Angle", 0));
+      SmartDashboard.putNumber("CLMB Servo Act Angle", getServoAngle());
+
   }
 
   @Override

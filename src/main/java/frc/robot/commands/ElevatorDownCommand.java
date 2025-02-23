@@ -13,7 +13,7 @@ public class ElevatorDownCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ElevatorSubsystem m_subsystem;
   ElevatorState m_ElevatorState = ElevatorState.P1;
-  boolean m_ForceToP1;
+  boolean m_forceToP1;
   /**
    * Creates a new ExampleCommand.
    *
@@ -21,7 +21,7 @@ public class ElevatorDownCommand extends Command {
    */
   public ElevatorDownCommand(ElevatorSubsystem subsystem, boolean forceToP1) {
     m_subsystem = subsystem;
-    m_ForceToP1 = forceToP1;
+    m_forceToP1 = forceToP1;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -29,12 +29,14 @@ public class ElevatorDownCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if ((m_ForceToP1) || (m_subsystem.getElevatorState()==ElevatorState.P2))
+    if ((m_forceToP1) || 
+        (m_subsystem.getElevatorState()==ElevatorState.P2) || 
+        (m_subsystem.getElevatorState()==ElevatorState.P1p5))
       m_ElevatorState=ElevatorState.P1;
     else {
       if (m_subsystem.getElevatorState()==ElevatorState.P3)
         m_ElevatorState=ElevatorState.P2;
-      else // At P4
+      else // At P4 or P3p5
         m_ElevatorState=ElevatorState.P3; 
     }
 

@@ -4,33 +4,22 @@
 
 package frc.robot.commands;
 
-import java.util.function.IntSupplier;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.EndEffectorConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class SwerveSlideCommand extends Command {
+public class SwerveBackupCommand extends Command {
 
   private final DriveSubsystem swerveDriveTrain;
-  boolean rightDirection;
-  double ySpeed;
-  boolean automateReefAlignment;
-  IntSupplier reefDistanceSupplier;
-  
+  private int isFinishedDelayCountInMs;
+  double xSpeed;
 
   /** Creates a new SwerveControllerDrive. */
-  public SwerveSlideCommand(DriveSubsystem swerveDriveTrain, boolean rightDirection, double ySpeed, boolean automateReefAlignment, IntSupplier reefDistanceSupplier) {
-    this.swerveDriveTrain = swerveDriveTrain;
-    this.rightDirection = rightDirection;
-    this.automateReefAlignment = automateReefAlignment;
-    this.reefDistanceSupplier = reefDistanceSupplier;
-    if (rightDirection)
-      this.ySpeed=ySpeed;
-    else
-      this.ySpeed=-ySpeed;
+  public SwerveBackupCommand(DriveSubsystem swerveDriveTrain, double xSpeed) {
+    this.swerveDriveTrain=swerveDriveTrain;
+    this.xSpeed=xSpeed;
       
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.swerveDriveTrain);
@@ -39,18 +28,20 @@ public class SwerveSlideCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    isFinishedDelayCountInMs=0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     swerveDriveTrain.drive(
+                -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
                 0,
-                -MathUtil.applyDeadband(ySpeed, OIConstants.kDriveDeadband),
                 0,
                 false, 
                 true);
+
+     isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }
 
   // Called once the command ends or is interrupted.
@@ -62,7 +53,7 @@ public class SwerveSlideCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((automateReefAlignment) && (reefDistanceSupplier.getAsInt()<EndEffectorConstants.kReeflDetectedDistance))
+    if (isFinishedDelayCountInMs>DriveConstants.kSwerveBackupCommandRuntimeInMs)
       return true;
     else
       return false;

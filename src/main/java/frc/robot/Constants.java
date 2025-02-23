@@ -22,6 +22,203 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+  // -------------------- ENDEFFECTOR --------------------
+  public static final class EndEffectorConstants {
+    public static final int kRightEndEfMotorCanID = 5;
+    public static final int kLeftEndEfMotorCanID = 6;
+    public static final int kLCHoppersideCanID = 7;
+    public static final int kLCReefsideCanID = 8;
+
+    public static final double kMaxOutRange = 0.8;
+    public static final double kMinOutRange = -0.8;
+
+    // NOTE: For intaking and placing coral, Motor direction MUST BE:
+    //         LeftMotor -> Positive
+    //         RightMotor -> Negative
+    public static final double kLeftMotorIntakeTargetVelocity = 2000;
+    public static final double kRightMotorIntakeTargetVelocity = -2000;
+    public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 1200;
+    public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -1200;
+    // PLACE STRAIGHT
+    public static final double kLeftMotorPlaceCoralTargetVelocity = 3500;
+    public static final double kRightMotorPlaceCoralTargetVelocity = -3500;
+    // PLACE L4
+    public static final double kLeftMotorPlaceCoralL4TargetVelocity = 3500;
+    public static final double kRightMotorPlaceCoralL4TargetVelocity = -3500;
+    // PLACE LEFT
+    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 2800;
+    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -4300;
+    // PLACE RIGHT
+    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 4300;
+    public static final double kRightMotorPlaceCoralRightTargetVelocity = -2800;
+
+    public static final int kCoralDetectedDistance = 60; //Was 50
+    public static final int kCoralDetectedCountThreshold = 40;
+    public static final int kPlaceCoralCommandRuntimeInMs = 750; //Was 1500
+
+    public static final int kReeflDetectedDistance = 380; // ~15.2 inches
+
+    public static final boolean kLeftTargetVelocityFromDashboard = false;
+    public static final boolean kRightTargetVelocityFromDashboard = false;
+  }
+  public enum EndEffectorState {
+    UNKNOWN,
+    CORAL_FREE,
+    CORAL_LOADED;
+  }
+  public enum PlaceCoralDirection {
+    PLACE_CORAL_STRAIGHT,
+    PLACE_CORAL_RIGHT,
+    PLACE_CORAL_LEFT;
+  }
+  // ---------------------------------------------
+
+  // -------------------- ELEVATOR ---------------------
+  public static final class ElevatorConstants {
+    public static final int kLeftElevatorCanId = 3;
+    public static final int kRightElevatorCanId = 4;
+    public static final double kMaxOutRange = 0.4;
+    public static final double kMinOutRange = -0.4;
+
+    public static final boolean kTargetPositionFromDashboard = false;
+  }
+  // From REEFSCAPE Game Manual
+  //   L1 = Trough, 1 ft. 6 in. (~46 cm) off the carpet
+  //   L2 = 2 ft. 7-7/8 in. (~81 cm) from the carpet
+  //   L3 = 3 ft. 11-5/8 in. (~121 cm) from the carpet
+  //   L4 = 6 ft. (~183 cm) from the carpet
+  public enum ElevatorState{
+    UNKNOWN,
+    P1(1.0),
+    P1p5(6),   // This is level that allows AlgaeArm to go down
+    P2(10),    // Was 11
+    P3(28.0),
+    P3p5(36),  // FIXME: Need to test, this is level that allows grab of higher reef algae
+    P4(55.0);  // was 57
+
+    private double elevatorPosition;
+    ElevatorState(double elevatorPosition) {
+      this.elevatorPosition = elevatorPosition;
+    }
+    ElevatorState() {}
+    public double getPosition() {
+      return elevatorPosition;
+    }
+  }
+  // ---------------------------------------------
+
+  // -------------------- ALGAE --------------------
+  public static final class AlgaeConstants {
+    public static final int kArmAlgaeMotorCanID = 9;
+    public static final int kWheelAlgaeMotorCanID = 10;
+    public static final double kAlgaeArmMaxOutRange = 0.4;
+    public static final double kAlgaeArmMinOutRange = -0.4;
+
+    public static final double kAlgaeWheelMaxOutRange = 0.8;
+    public static final double kAlgaeWheelMinOutRange = -0.8;
+
+    // At Reef
+    public static final double kAlgaeWheelAtReefTargetVelocity = 800; // Was 500
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 150;
+    public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 50;
+    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 6000; // Was 7000
+    // At Ground
+    public static final double kAlgaeWheelAtGroundTargetVelocity = -800; // Was -500
+    public static final double kAlgaeWheelAtGroundHoldingVelocityThreshold = -150;
+    public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
+    public static final int kAlgaeWheelAtGroundCommandMaxRuntimeInMs = 6000; // Was 7000
+    // Processor
+    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -1200;
+    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 1200;
+    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
+
+    // These are for AlgaeArmCommand which is currently not being used.
+    public static final double kAlgaeWheelLunchTargetVelocity = -2500;
+    public static final int kAlgaeWheelCommandMaxRuntimeInMs = 3000; 
+
+    public static final boolean kArmTargetPositionFromDashboard = false;
+    public static final boolean kWheelTargetVelocityFromDashboard = false;
+  }
+  public enum AlgaeArmState {
+    UNKNOWN,
+    ARM_STOWED(0),
+    ARM_DOWN(0),
+    ARM_REEF_ALGAE_HOLD(15), // Was 20, FIXME: Need to test if works with robot touching reef
+    ARM_REEF_ALGAE_RELEASE(18),
+    ARM_REEF_ALGAE_LAUNCH(30),
+    ARM_GROUND_ALGAE_HOLD(38),
+    ARM_GROUND_ALGAE_CATCH(28),
+    ARM_GROUND_ALGAE_RELEASE(60);
+
+    private double algaeArmPosition;
+    AlgaeArmState(double algaeArmPosition) {
+      this.algaeArmPosition = algaeArmPosition;
+    }
+    AlgaeArmState() {}
+    public double getPosition() {
+      return algaeArmPosition;
+    }
+  }
+  public enum AlgaeWheelState {
+    UNKNOWN,
+    ALGAE_FREE,
+    ALGAE_LOADED_FROM_REEF,
+    ALGAE_LOADED_FROM_GROUND;
+  }
+  // ---------------------------------------------
+
+  // -------------------- CLIMBER --------------------
+  public final class ClimberConstants {
+    public static final int kClimberCanID = 19;
+    public static final int kClimberPositionUp = 68; // Ideally 68
+    public static final int kClimberPositionDown = 0;
+
+    public static final double kmaxOutRange = 0.5;
+    public static final double kminOutRange = -0.5;
+
+    public static final double kServoAngleToEnableRatchet = 0.0;
+    public static final double kServoAngleToDisableRatchet = 15.0;
+
+    public static final boolean kTargetPositionFromDashboard = false;
+    public static final boolean kServoAngleFromDashboard = false;
+  }
+  public enum ClimberState {
+    UNKNOWN,
+    CLIMBER_UP,
+    CLIMBER_DOWN
+  }
+  // ---------------------------------------------
+
+  // -------------------- LED --------------------
+  public static final class LEDConstants {
+    public static final int PWM_PORT = 1;
+    // You can find full list of LED color support at: 
+    //   https://1166281274-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-ME3KPEhFI6-MDoP9nZD%2Fuploads%2FMOYJvZmWgxCVKJhcV5fn%2FREV-11-1105-LED-Patterns.pdf?alt=media&token=e8227890-6dd3-498d-834a-752fa43413fe 
+    
+    public static final double SOLID_LAWN_GREEN = 0.71;
+    public static final double SOLID_LIME_GREEN = 0.73;
+
+    public static final double SOLID_DARK_GREEN = 0.75;
+    public static final double SOLID_GREEN = 0.77;
+    public static final double SOLID_BLUE_GREEN = 0.79;
+    public static final double SOLID_AQUA_BLUE = 0.81;
+    public static final double SOLID_SKY_BLUE = 0.83;
+    public static final double SOLID_BLUE = 0.85;
+    public static final double SOLID_DARK_BLUE = 0.87;
+    public static final double SOLID_BLUE_VIOLET = 0.89;
+    public static final double SOLID_WHITE = 0.93;
+
+    public static final double COLOR_WAVES_OCEAN_PALETTE = -0.41;
+    public static final double TWINKLE_OCEAN_PALETTE = -0.51;
+    public static final double BEATS_PER_MIN_OCEAN_PALETTE = -0.65;
+    public static final double SINELON_OCEAN_PALETTE = -0.75;
+    public static final double RAINBOW_OCEAN_PALETTE = -0.95;
+
+    public static final double FIXED_PALETTE_PATTERN_FIRE_MEDIUM = -0.59;
+    public static final double FIXED_PALETTE_PATTERN_FIRE_LARGE = -0.57;
+  }
+  // ---------------------------------------------
+
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
@@ -63,96 +260,8 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     public static final double kSwerveSlideSpeed = 0.15;
-
-  }
-
-  public static final class EndEffectorConstants {
-    public static final int kRightEndEfMotorCanID = 5;
-    public static final int kLeftEndEfMotorCanID = 6;
-
-    public static final int kLCHoppersideCanID = 7;
-    public static final int kLCReefsideCanID = 8;
-
-    public static final double kMaxOutRange = 0.8;
-    public static final double kMinOutRange = -0.8;
-
-    // NOTE: For intaking and placing coral, Motor direction MUST BE:
-    //         LeftMotor -> Positive
-    //         RightMotor -> Negative
-    public static final double kLeftMotorIntakeTargetVelocity = 2000;
-    public static final double kRightMotorIntakeTargetVelocity = -2000;
-    public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 1200;
-    public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -1200;
-
-    public static final double kLeftMotorPlaceCoralTargetVelocity = 3500;
-    public static final double kRightMotorPlaceCoralTargetVelocity = -3500;
-
-    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 2500;
-    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -4500;
-
-    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 4500;
-    public static final double kRightMotorPlaceCoralRightTargetVelocity = -2500;
-
-    public static final int kCoralDetectedDistance = 40;
-    public static final int kCoralDetectedCountThreshold = 40;
-    public static final int kPlaceCoralCommandRuntimeInMs = 1500;
-
-    public static final int kReeflDetectedDistance = 150;
-
-    public static final boolean kLeftTargetVelocityFromDashboard = false;
-    public static final boolean kRightTargetVelocityFromDashboard = false;
-
-  }
-
-  public static final class ElevatorConstants {
-    public static final int kLeftElevatorCanId = 3;
-    public static final int kRightElevatorCanId = 4;
-    public static final double kMaxOutRange = 0.2;
-    public static final double kMinOutRange = -0.2;
-
-    public static final boolean kTargetPositionFromDashboard = false;
-
-  }
-
-  public static final class AlgaeConstants {
-    public static final int kArmAlgaeMotorCanID = 9;
-    public static final int kWheelAlgaeMotorCanID = 10;
-    public static final double kAlgaeArmMaxOutRange = 0.3;
-    public static final double kAlgaeArmMinOutRange = -0.3;
-
-    public static final double kAlgaeWheelMaxOutRange = 0.4;
-    public static final double kAlgaeWheelMinOutRange = -0.4;
-
-    public static final double kAlgaeWheelAtReefTargetVelocity = 400;
-    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -300;
-    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 300;
-    public static final double kAlgaeWheelAtGroundTargetVelocity = -300;
-
-    public static final double kAlgaeArmPositionUp = 10;
-    public static final double kAlgaeArmPositionDown = 1;
-
-    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
-
-    public static final boolean kArmTargetPositionFromDashboard = false;
-    public static final boolean kWheelTargetVelocityFromDashboard = false;
-  }
-
-  public static final class LEDConstants {
-    public static final int PWM_PORT = 0;
-    public static final double SOLID_DARK_GREEN = 0.75;
-    public static final double SOLID_GREEN = 0.77;
-    public static final double SOLID_SKY_BLUE = 0.83;
-    public static final double SOLID_BLUE = 0.85;
-    public static final double SOLID_DARK_BLUE = 0.87;
-    public static final double SOLID_BLUE_VIOLET = 0.89;
-    public static final double FIXED_PALETTE_PATTERN_FIRE_MEDIUM = -0.59;
-    public static final double FIXED_PALETTE_PATTERN_FIRE_LARGE = -0.57;
-  }
-
-  public enum LEDColorState {
-    NOTE_LESS,
-    NOTE_DETECTED,
-    SHOOTING;
+    public static final double kSwerveBackupSpeed = 0.25;
+    public static final int kSwerveBackupCommandRuntimeInMs = 700;
   }
 
   public static final class ModuleConstants {
@@ -171,91 +280,14 @@ public final class Constants {
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
   }
-
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kManipulatorControllerPort = 1;
     public static final double kDriveDeadband = 0.065;  // was 0.05, 2024Crescendo used 0.065
 
   }
-
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
-  }
-  public final class ClimberConstants {
-    public static final int kClimberCanID = 19;
-    public static final int kClimberPositionUp = 54; // Ideally 68
-    public static final int kClimberPositionDown = -2;
-
-    public static final double kmaxOutRange = 0.5;
-    public static final double kminOutRange = -0.5;
-
-    public static final boolean kTargetPositionFromDashboard = true;
-  }
-
-  public enum PlaceCoralDirection {
-    PLACE_CORAL_STRAIGHT,
-    PLACE_CORAL_RIGHT,
-    PLACE_CORAL_LEFT;
-  }
-  public enum EndEffectorState {
-    UNKNOWN,
-    CORAL_FREE,
-    CORAL_LOADED;
-  }
-  public enum ClimberState {
-    UNKNOWN,
-    CLIMBER_UP,
-    CLIMBER_DOWN
-  }
-  public enum AlgaeArmState {
-    UNKNOWN,
-    ARM_STOWED(0),
-    ARM_DOWN(5),
-    ARM_REEF_ALGAE_HOLD(20),
-    ARM_REEF_ALGAE_RELEASE(14),
-    ARM_GROUND_ALGAE_HOLD(35),
-    ARM_GROUND_ALGAE_CATCH(33),
-    ARM_GROUND_ALGAE_RELEASE(40);
-
-    private double algaeArmPosition;
-    AlgaeArmState(double algaeArmPosition) {
-      this.algaeArmPosition = algaeArmPosition;
-    }
-
-    AlgaeArmState() {
-    }
-
-    public double getPosition() {
-      return algaeArmPosition;
-    }
-
-  }
-
-
-  // From REEFSCAPE Game Manual
-  //   L1 = Trough
-  //   L2 = 2 ft. 7-7/8 in. (~81 cm) from the carpet
-  //   L3 = 3 ft. 11-5/8 in. (~121 cm) from the carpet
-  //   L4 = 6 ft. (~183 cm) from the carpet
-  public enum ElevatorState{
-    UNKNOWN,
-    P1(1.0),
-    P2(11.0),
-    P3(28.0),
-    P4(55.0);  // was 57
-
-    private double elevatorPosition;
-    ElevatorState(double elevatorPosition) {
-      this.elevatorPosition = elevatorPosition;
-    }
-
-    ElevatorState() {
-    }
-
-    public double getPosition() {
-      return elevatorPosition;
-    }
   }
 
 }
