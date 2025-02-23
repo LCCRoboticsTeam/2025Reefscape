@@ -53,6 +53,7 @@ import com.studica.frc.AHRS;
 import frc.robot.Constants.DriveConstants;
 //import frc.robot.Robot;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -488,6 +489,14 @@ public class DriveSubsystem extends SubsystemBase {
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.reset();
+  }
+
+  public Command zeroHeadingCommand() {
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+          zeroHeading();
+        });
   }
 
   /**

@@ -140,6 +140,7 @@ public class RobotContainer {
      
     // Commands launched from Dashboard (Example format below)
     //SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
+    SmartDashboard.putData("Reset Gyro Heading", driveSubsystem.zeroHeadingCommand());
 
     // Configure default commands
     driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,
