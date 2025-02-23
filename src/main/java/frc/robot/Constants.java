@@ -37,14 +37,14 @@ public final class Constants {
     //         RightMotor -> Negative
     public static final double kLeftMotorIntakeTargetVelocity = 2000;
     public static final double kRightMotorIntakeTargetVelocity = -2000;
-    public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 1200;
-    public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -1200;
+    public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 700;
+    public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -700;
     // PLACE STRAIGHT
     public static final double kLeftMotorPlaceCoralTargetVelocity = 3500;
     public static final double kRightMotorPlaceCoralTargetVelocity = -3500;
     // PLACE L4
-    public static final double kLeftMotorPlaceCoralL4TargetVelocity = 3500;
-    public static final double kRightMotorPlaceCoralL4TargetVelocity = -3500;
+    public static final double kLeftMotorPlaceCoralL4TargetVelocity = 1500;
+    public static final double kRightMotorPlaceCoralL4TargetVelocity = -1500;
     // PLACE LEFT
     public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 1500;
     public static final double kRightMotorPlaceCoralLeftTargetVelocity = -5400;
@@ -94,7 +94,7 @@ public final class Constants {
     P2(10),
     P3(27.0),
     P3p5(43.5),
-    P4(55.0);
+    P4(55.5);
 
     private double elevatorPosition;
     ElevatorState(double elevatorPosition) {
