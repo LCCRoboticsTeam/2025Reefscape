@@ -124,7 +124,8 @@ public class DriveSubsystem extends SubsystemBase {
   // The field from AprilTagFields will be different depending on the game.
   // Note that kDefaultField is "Welded" which is what is expected at Regional and Champs
   private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-  private final PhotonPoseEstimator photonPoseEstimator;
+  private final PhotonPoseEstimator photonPoseEstimatorFrontsideCam;
+  private final PhotonPoseEstimator photonPoseEstimatorBacksideCam;
   private Matrix<N3, N1> curStdDevs;
   // The standard deviations of our vision estimated poses, which affect correction rate
   // (Fake values. Experiment and determine estimation noise on an actual robot.)
@@ -185,8 +186,10 @@ public class DriveSubsystem extends SubsystemBase {
     robotToBacksidePhotonCamera = new Transform3d(new Translation3d(-0.58, -0.58, 0.22), new Rotation3d(0,0,0));
 
     // Construct PhotonPoseEstimator
-    photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToFrontsidePhotonCamera);
-    photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    photonPoseEstimatorFrontsideCam = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToFrontsidePhotonCamera);
+    photonPoseEstimatorFrontsideCam.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    photonPoseEstimatorBacksideCam = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToFrontsidePhotonCamera);
+    photonPoseEstimatorBacksideCam.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
     SmartDashboard.putData("Field", m_field);
   }
@@ -201,10 +204,19 @@ public class DriveSubsystem extends SubsystemBase {
    * @return An {@link EstimatedRobotPose} with an estimated pose, estimate timestamp, and targets
    *     used for estimation.
    */
-  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(PhotonCamera camera) {
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPoseFrontsideCam() {
     Optional<EstimatedRobotPose> visionEst = Optional.empty();
-    for (var change : camera.getAllUnreadResults()) {
-        visionEst = photonPoseEstimator.update(change);
+    for (var change : frontsidePhotonCamera.getAllUnreadResults()) {
+        visionEst = photonPoseEstimatorFrontsideCam.update(change);
+        updateEstimationStdDevs(visionEst, change.getTargets());
+    }
+    return visionEst;
+  }
+
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPoseBacksideCam() {
+    Optional<EstimatedRobotPose> visionEst = Optional.empty();
+    for (var change : backsidePhotonCamera.getAllUnreadResults()) {
+        visionEst = photonPoseEstimatorFrontsideCam.update(change);
         updateEstimationStdDevs(visionEst, change.getTargets());
     }
     return visionEst;
@@ -232,7 +244,7 @@ public class DriveSubsystem extends SubsystemBase {
 
           // Precalculation - see how many tags we found, and calculate an average-distance metric
           for (var tgt : targets) {
-              var tagPose = photonPoseEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
+              var tagPose = photonPoseEstimatorFrontsideCam.getFieldTags().getTagPose(tgt.getFiducialId());
               if (tagPose.isEmpty()) continue;
               numTags++;
               avgDist +=
@@ -286,8 +298,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Correct pose estimate with vision measurements
     if (DriveConstants.usePhotonPoseEstimator) {
-      var frontsideVisionEst = getEstimatedGlobalPose(frontsidePhotonCamera);
-      var backsideVisionEst = getEstimatedGlobalPose(backsidePhotonCamera);
+      var frontsideVisionEst = getEstimatedGlobalPoseFrontsideCam();
+      var backsideVisionEst = getEstimatedGlobalPoseBacksideCam();
       frontsideVisionEst.ifPresent(
               est -> {
                   // Change our trust in the measurement based on the tags we can see

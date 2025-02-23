@@ -6,9 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ElevatorState;
 import frc.robot.subsystems.ElevatorSubsystem;
-
 import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */

@@ -31,7 +31,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.0
+            "waitTime": 1.2
           }
         },
         {
@@ -44,6 +44,36 @@
           "type": "named",
           "data": {
             "name": "PlaceCoralRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftReefToIntakeCoral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.2
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftIntakeToPlaceCoral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralLeft"
           }
         }
       ]

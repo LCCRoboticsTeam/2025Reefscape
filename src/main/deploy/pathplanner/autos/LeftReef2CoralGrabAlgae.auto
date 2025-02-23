@@ -45,6 +45,18 @@
           "data": {
             "name": "PlaceCoralRight"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GrabAlgaeFromReef"
+          }
         }
       ]
     }

@@ -54,7 +54,8 @@ public final class Constants {
 
     public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 40;
-    public static final int kPlaceCoralCommandRuntimeInMs = 750;
+    public static final int kPlaceCoralCommandRuntimeInMs = 500;
+    public static final int kPlaceCoralCommandStaightRuntimeInMs = 750; // FIXME: Could be shorter, but maybe not at P4
 
     public static final int kReeflDetectedDistance = 380; // FIXME: ~14.9 inches (Too much?)
 
@@ -171,7 +172,7 @@ public final class Constants {
   public final class ClimberConstants {
     public static final int kClimberCanID = 19;
     public static final int kClimberPositionUp = 68; // 68 is the absolute max
-    public static final int kClimberPositionDown = -1; // -2 is the absolute lowest 
+    public static final int kClimberPositionDown = -2; // -2 is the absolute lowest 
 
     public static final double kmaxOutRange = 0.5;
     public static final double kminOutRange = -0.5;
@@ -261,7 +262,11 @@ public final class Constants {
 
     public static final double kSwerveSlideSpeed = 0.15;
     public static final double kSwerveBackupSpeed = 0.3;
+    public static final double kSwerveRotateRightSpeed = -0.3;
+    public static final double kSwerveRotateLeftSpeed = 0.3;
+
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
+    public static final int kSwerveRotateCommandRuntimeInMs = 700;
 
     public static final boolean usePhotonPoseEstimator = false;
   }

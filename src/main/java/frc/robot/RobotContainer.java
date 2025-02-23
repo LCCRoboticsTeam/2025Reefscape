@@ -12,7 +12,6 @@ import frc.robot.commands.*;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 
-import org.opencv.photo.Photo;
 import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -56,7 +55,6 @@ public class RobotContainer {
   private final CommandXboxController manipulatorCommandXboxController = new CommandXboxController(OIConstants.kManipulatorControllerPort);
 
   // Dashboard - Choosers
-  //private final SendableChooser<Boolean> fieldRelativeChooser = new SendableChooser<>();
   private final SendableChooser<Command> autoChooser;
 
   // Cameras and Vision

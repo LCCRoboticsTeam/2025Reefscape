@@ -62,9 +62,14 @@ public class PlaceCoralCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (isFinishedDelayCountInMs>EndEffectorConstants.kPlaceCoralCommandRuntimeInMs)
+    if ((placeCoralDirection==PlaceCoralDirection.PLACE_CORAL_STRAIGHT) &&
+        (isFinishedDelayCountInMs>EndEffectorConstants.kPlaceCoralCommandStaightRuntimeInMs)) 
       return true;
-    else
-      return false;
+    else {
+      if (isFinishedDelayCountInMs>EndEffectorConstants.kPlaceCoralCommandRuntimeInMs)
+        return true;
+      else
+        return false;
+    }  
   }
 }
