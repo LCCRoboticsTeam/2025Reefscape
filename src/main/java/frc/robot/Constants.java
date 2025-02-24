@@ -37,27 +37,27 @@ public final class Constants {
     //         RightMotor -> Negative
     public static final double kLeftMotorIntakeTargetVelocity = 2000;
     public static final double kRightMotorIntakeTargetVelocity = -2000;
-    public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 700;
-    public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -700;
+    public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 1000;
+    public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -1000;
     // PLACE STRAIGHT
     public static final double kLeftMotorPlaceCoralTargetVelocity = 3500;
     public static final double kRightMotorPlaceCoralTargetVelocity = -3500;
     // PLACE L4
-    public static final double kLeftMotorPlaceCoralL4TargetVelocity = 1500;
-    public static final double kRightMotorPlaceCoralL4TargetVelocity = -1500;
+    public static final double kLeftMotorPlaceCoralL4TargetVelocity = 2000;
+    public static final double kRightMotorPlaceCoralL4TargetVelocity = -2000;
     // PLACE LEFT
-    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 1500;
-    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -5400;
+    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 1800;
+    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -6800;
     // PLACE RIGHT
-    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 5400;
-    public static final double kRightMotorPlaceCoralRightTargetVelocity = -1500;
+    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 6800;
+    public static final double kRightMotorPlaceCoralRightTargetVelocity = -1800;
 
     public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
     public static final int kPlaceCoralCommandStaightRuntimeInMs = 750; // FIXME: Could be shorter, but maybe not at P4
 
-    public static final int kReeflDetectedDistance = 380; // FIXME: ~14.9 inches (Too much?)
+    public static final int kReeflDetectedDistance 0; // FIXME: ~14.9 inches (Too much?)
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -120,7 +120,7 @@ public final class Constants {
 
     // At Reef
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
-    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 400;
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 4000;
     // At Ground

@@ -81,8 +81,13 @@ public class RobotContainer {
      // Register Named Commands
      NamedCommands.registerCommand("IntakeCoral", new IntakeCommand(endEffectorSubsystem));
      NamedCommands.registerCommand("PlaceCoralStraight", new SequentialCommandGroup(new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_STRAIGHT, elevatorSubsystem::isElevatorAtP4),
-                                                                                         new ParallelCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
-                                                                                                                  new ElevatorDownCommand(elevatorSubsystem, true))));
+     new ParallelCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+                              new ElevatorDownCommand(elevatorSubsystem, true))));
+     //NamedCommands.registerCommand("PlaceCoralStraight", new SequentialCommandGroup(new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_STRAIGHT, elevatorSubsystem::isElevatorAtP4),
+     //                                                                                    new ConditionalCommand(null, 
+     //                                                                                                           new ParallelCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+     //                                                                                                                                    new ElevatorDownCommand(elevatorSubsystem, true)),
+     //                                                                                                           elevatorSubsystem::isElevatorAtP1)));
      NamedCommands.registerCommand("PlaceCoralRight", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_RIGHT, elevatorSubsystem::isElevatorAtP4));
      NamedCommands.registerCommand("PlaceCoralLeft", new PlaceCoralCommand(endEffectorSubsystem, PlaceCoralDirection.PLACE_CORAL_LEFT, elevatorSubsystem::isElevatorAtP4));
      NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevatorSubsystem, false, endEffectorSubsystem::isCoralLoaded));
