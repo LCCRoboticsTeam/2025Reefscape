@@ -57,7 +57,7 @@ public final class Constants {
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
     public static final int kPlaceCoralCommandStaightRuntimeInMs = 750; // FIXME: Could be shorter, but maybe not at P4
 
-    public static final int kReeflDetectedDistance 0; // FIXME: ~14.9 inches (Too much?)
+    public static final int kReeflDetectedDistance = 280; // FIXME: Need to retest
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;

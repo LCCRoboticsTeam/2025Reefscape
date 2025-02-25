@@ -11,7 +11,6 @@ import frc.robot.commands.*;
 // Cameras and Vision
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-
 import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -140,12 +139,14 @@ public class RobotContainer {
     // Build an auto chooser. This will use Commands.none() as the default option.
     //autoChooser = AutoBuilder.buildAutoChooser();
     // Another option that allows you to specify the default auto by its name
-    autoChooser = AutoBuilder.buildAutoChooser("MoveOutCenterReefPath");
+    autoChooser = AutoBuilder.buildAutoChooser("LeftReef1Coral");
     SmartDashboard.putData("Auto Chooser", autoChooser);
      
     // Commands launched from Dashboard (Example format below)
     //SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
     SmartDashboard.putData("Reset Gyro Heading", driveSubsystem.zeroHeadingCommand());
+    SmartDashboard.putData("Rotate Right", new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed));
+    SmartDashboard.putData("Rotate Left", new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed));
 
     // Configure default commands
     driveSubsystem.setDefaultCommand(new SwerveGamepadDriveCommand(driveSubsystem, driverCommandXboxController::getLeftX,
