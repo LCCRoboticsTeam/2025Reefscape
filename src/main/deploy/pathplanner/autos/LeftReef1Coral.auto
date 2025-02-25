@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MoveOutCenterReefPath"
+            "pathName": "LeftReef1Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralLeft"
           }
         }
       ]

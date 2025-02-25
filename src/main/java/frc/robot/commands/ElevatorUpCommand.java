@@ -6,9 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ElevatorState;
 import frc.robot.subsystems.ElevatorSubsystem;
-
 import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -39,19 +37,24 @@ public class ElevatorUpCommand extends Command {
       m_elevatorState=ElevatorState.P1p5;
     }
     else {
-      if (m_subsystem.getElevatorState()==ElevatorState.P1)
-        m_elevatorState=ElevatorState.P2;
-      else {
-        if (m_subsystem.getElevatorState()==ElevatorState.P2)
-          m_elevatorState=ElevatorState.P3;
+      if (m_isCoralLoaded.getAsBoolean()) {
+        if (m_subsystem.getElevatorState()==ElevatorState.P1)
+          m_elevatorState=ElevatorState.P2;
         else {
-          if (m_isCoralLoaded.getAsBoolean())
-            m_elevatorState=ElevatorState.P4; 
-          else
-            m_elevatorState=ElevatorState.P3p5;
-        }
+          if (m_subsystem.getElevatorState()==ElevatorState.P2)
+            m_elevatorState=ElevatorState.P3;
+          else 
+            m_elevatorState=ElevatorState.P4;
+          }
+      }
+      else {
+        if (m_subsystem.getElevatorState()==ElevatorState.P1)
+          m_elevatorState=ElevatorState.P3;
+        else 
+          m_elevatorState=ElevatorState.P3p5;
       }
     }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.

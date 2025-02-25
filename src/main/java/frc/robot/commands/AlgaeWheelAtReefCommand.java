@@ -53,8 +53,8 @@ public class AlgaeWheelAtReefCommand extends Command {
       m_subsystem.setWheelTargetVelocity(0);
     }
     else if (gotAlgae) {
-      m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefHoldingTargetVelocity);
       m_subsystem.setAlgaeWheelState(AlgaeWheelState.ALGAE_LOADED_FROM_REEF);
+      m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefHoldingTargetVelocity);
     }
   }
 

@@ -4,12 +4,19 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -17,11 +24,23 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 //import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -32,7 +51,9 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.studica.frc.AHRS;
 
 import frc.robot.Constants.DriveConstants;
+//import frc.robot.Robot;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -101,8 +122,26 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final Field2d m_field = new Field2d();
 
+  // The field from AprilTagFields will be different depending on the game.
+  // Note that kDefaultField is "Welded" which is what is expected at Regional and Champs
+  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+  private final PhotonPoseEstimator photonPoseEstimatorFrontsideCam;
+  private final PhotonPoseEstimator photonPoseEstimatorBacksideCam;
+  private Matrix<N3, N1> curStdDevs;
+  // The standard deviations of our vision estimated poses, which affect correction rate
+  // (Fake values. Experiment and determine estimation noise on an actual robot.)
+  public final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+  public final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+  private final Transform3d robotToFrontsidePhotonCamera;
+  private final Transform3d robotToBacksidePhotonCamera;
+  private final PhotonCamera frontsidePhotonCamera;
+  private final PhotonCamera backsidePhotonCamera;
+
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
+  public DriveSubsystem(PhotonCamera frontsidePhotonCamera, PhotonCamera backsidePhotonCamera) {
+    this.frontsidePhotonCamera=frontsidePhotonCamera;
+    this.backsidePhotonCamera=backsidePhotonCamera;
+
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
 
@@ -142,7 +181,106 @@ public class DriveSubsystem extends SubsystemBase {
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) -> m_field.getObject("path").setPoses(poses));
 
+    //Cam mounted facing forward and to right side, 22.75" (0.58m) from robot center in X and Y dir, and 8.5" (0.22m) Up from ground
+    robotToFrontsidePhotonCamera = new Transform3d(new Translation3d(0.58, 0.58, 0.22), new Rotation3d(0,0,0));
+    //Cam mounted facing backwardand to left side, 22.75" (0.58m) from robot center in X and Y dir, and 8.5" (0.22m) Up from ground
+    robotToBacksidePhotonCamera = new Transform3d(new Translation3d(-0.58, -0.58, 0.22), new Rotation3d(0,0,0));
+
+    // Construct PhotonPoseEstimator
+    photonPoseEstimatorFrontsideCam = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToFrontsidePhotonCamera);
+    photonPoseEstimatorFrontsideCam.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    photonPoseEstimatorBacksideCam = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToFrontsidePhotonCamera);
+    photonPoseEstimatorBacksideCam.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
     SmartDashboard.putData("Field", m_field);
+  }
+
+  /**
+   * The latest estimated robot pose on the field from vision data. This may be empty. This should
+   * only be called once per loop.
+   *
+   * <p>Also includes updates for the standard deviations, which can (optionally) be retrieved with
+   * {@link getEstimationStdDevs}
+   *
+   * @return An {@link EstimatedRobotPose} with an estimated pose, estimate timestamp, and targets
+   *     used for estimation.
+   */
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPoseFrontsideCam() {
+    Optional<EstimatedRobotPose> visionEst = Optional.empty();
+    for (var change : frontsidePhotonCamera.getAllUnreadResults()) {
+        visionEst = photonPoseEstimatorFrontsideCam.update(change);
+        updateEstimationStdDevs(visionEst, change.getTargets());
+    }
+    return visionEst;
+  }
+
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPoseBacksideCam() {
+    Optional<EstimatedRobotPose> visionEst = Optional.empty();
+    for (var change : backsidePhotonCamera.getAllUnreadResults()) {
+        visionEst = photonPoseEstimatorFrontsideCam.update(change);
+        updateEstimationStdDevs(visionEst, change.getTargets());
+    }
+    return visionEst;
+  }
+
+  /**
+   * Calculates new standard deviations This algorithm is a heuristic that creates dynamic standard
+   * deviations based on number of tags, estimation strategy, and distance from the tags.
+   *
+   * @param estimatedPose The estimated pose to guess standard deviations for.
+   * @param targets All targets in this camera frame
+   */
+  private void updateEstimationStdDevs(
+          Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
+
+      if (estimatedPose.isEmpty()) {
+          // No pose input. Default to single-tag std devs
+          curStdDevs = kSingleTagStdDevs;
+
+      } else {
+          // Pose present. Start running Heuristic
+          var estStdDevs = kSingleTagStdDevs;
+          int numTags = 0;
+          double avgDist = 0;
+
+          // Precalculation - see how many tags we found, and calculate an average-distance metric
+          for (var tgt : targets) {
+              var tagPose = photonPoseEstimatorFrontsideCam.getFieldTags().getTagPose(tgt.getFiducialId());
+              if (tagPose.isEmpty()) continue;
+              numTags++;
+              avgDist +=
+                      tagPose
+                              .get()
+                              .toPose2d()
+                              .getTranslation()
+                              .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+          }
+
+          if (numTags == 0) {
+              // No tags visible. Default to single-tag std devs
+              curStdDevs = kSingleTagStdDevs;
+          } else {
+              // One or more tags visible, run the full heuristic.
+              avgDist /= numTags;
+              // Decrease std devs if multiple targets are visible
+              if (numTags > 1) estStdDevs = kMultiTagStdDevs;
+              // Increase std devs based on (average) distance
+              if (numTags == 1 && avgDist > 4)
+                  estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+              else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
+              curStdDevs = estStdDevs;
+          }
+      }
+  }
+
+  /**
+   * Returns the latest standard deviations of the estimated pose from {@link
+   * #getEstimatedGlobalPose()}, for use with {@link
+   * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator SwerveDrivePoseEstimator}. This should
+   * only be used when there are targets visible.
+   */
+  public Matrix<N3, N1> getEstimationStdDevs() {
+      return curStdDevs;
   }
 
   @Override
@@ -158,6 +296,26 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    // Correct pose estimate with vision measurements
+    if (DriveConstants.usePhotonPoseEstimator) {
+      var frontsideVisionEst = getEstimatedGlobalPoseFrontsideCam();
+      var backsideVisionEst = getEstimatedGlobalPoseBacksideCam();
+      frontsideVisionEst.ifPresent(
+              est -> {
+                  // Change our trust in the measurement based on the tags we can see
+                  var estStdDevs = getEstimationStdDevs();
+                  m_poseEstimator.addVisionMeasurement(
+                          est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+              });
+      backsideVisionEst.ifPresent(
+              est -> {
+                  // Change our trust in the measurement based on the tags we can see
+                  var estStdDevs = getEstimationStdDevs();
+                  m_poseEstimator.addVisionMeasurement(
+                          est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                });
+      }
 
     SmartDashboard.putData("Field", m_field);  
     //SmartDashboard.putNumber("Gyro Heading: ", getHeading()); 
@@ -331,6 +489,14 @@ public class DriveSubsystem extends SubsystemBase {
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.reset();
+  }
+
+  public Command zeroHeadingCommand() {
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+          zeroHeading();
+        });
   }
 
   /**

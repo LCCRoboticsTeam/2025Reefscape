@@ -96,30 +96,6 @@ public class ClimberSubsystem extends SubsystemBase {
     SmartDashboard.setDefaultNumber("CLMB Target Pos", 0);
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
-
   public void setTargetPosition(double targetPosition) {
     this.targetPosition=targetPosition;
   }
@@ -138,10 +114,10 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void setClimberState(ClimberState climberState) {
-    this.climberState =  climberState;
+    this.climberState = climberState;
   }
 
-    public boolean isClimberUp() {
+  public boolean isClimberUp() {
     if (this.climberState==ClimberState.CLIMBER_UP)
       return true;
     else

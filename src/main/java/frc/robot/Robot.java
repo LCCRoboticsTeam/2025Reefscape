@@ -6,7 +6,9 @@ package frc.robot;
 
 import au.grapplerobotics.CanBridge;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -32,13 +34,17 @@ public class Robot extends TimedRobot {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
+    // FIXME: Potental code to clear old entries from SmartDashboard
+    SmartDashboard.getKeys().stream().map(SmartDashboard::getEntry).peek(NetworkTableEntry::clearPersistent)
+        .forEach(NetworkTableEntry::close);
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer(this::isEnabled);
 
     FollowPathCommand.warmupCommand().schedule();
 
-    enableLiveWindowInTest(true);
+    //enableLiveWindowInTest(true);
   }
 
   /**
@@ -95,6 +101,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    //m_robotContainer.zeroHeading();
   }
 
   /** This function is called periodically during operator control. */
