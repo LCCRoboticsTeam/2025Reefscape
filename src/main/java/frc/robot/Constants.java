@@ -262,8 +262,8 @@ public final class Constants {
 
     public static final double kSwerveSlideSpeed = 0.15;
     public static final double kSwerveBackupSpeed = 0.3;
-    public static final double kSwerveRotateRightSpeed = -0.3;
-    public static final double kSwerveRotateLeftSpeed = 0.3;
+    public static final double kSwerveRotateRightSpeed = 0.45;
+    public static final double kSwerveRotateLeftSpeed = -0.45;
 
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
     public static final int kSwerveRotateCommandRuntimeInMs = 700;
