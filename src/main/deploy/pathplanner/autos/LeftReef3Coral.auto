@@ -38,7 +38,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.2
+            "waitTime": 1.25
           }
         },
         {
@@ -75,7 +75,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.2
+            "waitTime": 1.25
           }
         },
         {
@@ -94,6 +94,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "LeftReefNearCoralStation",
   "choreoAuto": false
 }

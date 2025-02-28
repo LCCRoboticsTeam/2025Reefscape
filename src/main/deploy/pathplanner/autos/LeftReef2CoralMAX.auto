@@ -17,6 +17,18 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ElevatorUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TossRightAlgaeFromReef"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -50,25 +62,25 @@
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoralRight"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "ElevatorUp"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GrabAlgaeFromReef"
+            "name": "AutoReefAlignmentLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralStraight"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "LeftReefNearCoralStation",
   "choreoAuto": false
 }

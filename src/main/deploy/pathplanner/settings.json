@@ -3,9 +3,11 @@
   "robotLength": 0.95,
   "holonomicMode": true,
   "pathFolders": [
-    "New Folder"
+    "LeftReefNearCoralStation"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "LeftReefNearCoralStation"
+  ],
   "defaultMaxVel": 2.8,
   "defaultMaxAccel": 2.8,
   "defaultMaxAngVel": 540.0,

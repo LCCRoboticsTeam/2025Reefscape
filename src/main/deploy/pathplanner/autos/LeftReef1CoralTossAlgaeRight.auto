@@ -50,68 +50,13 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.2
+            "waitTime": 3.0
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "LeftIntakeToPlaceCoral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ElevatorUp"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoReefAlignmentLeft"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceCoralStraight"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeCoral"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "LeftReefLeftSideToIntakeCoral"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.2
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftIntakeToPlaceCoral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceCoralRight"
           }
         }
       ]

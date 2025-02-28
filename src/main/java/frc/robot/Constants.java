@@ -40,8 +40,8 @@ public final class Constants {
     public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 1000;
     public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -1000;
     // PLACE STRAIGHT
-    public static final double kLeftMotorPlaceCoralTargetVelocity = 3500;
-    public static final double kRightMotorPlaceCoralTargetVelocity = -3500;
+    public static final double kLeftMotorPlaceCoralTargetVelocity = 4000; // FIXME: was 3500
+    public static final double kRightMotorPlaceCoralTargetVelocity = -4000; // FIXME: was 3500
     // PLACE L4
     public static final double kLeftMotorPlaceCoralL4TargetVelocity = 2000;
     public static final double kRightMotorPlaceCoralL4TargetVelocity = -2000;
@@ -55,7 +55,7 @@ public final class Constants {
     public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
-    public static final int kPlaceCoralCommandStaightRuntimeInMs = 750; // FIXME: Could be shorter, but maybe not at P4
+    public static final int kPlaceCoralCommandStaightRuntimeInMs = 500; // FIXME: Was 750, Could be shorter, but maybe not at P4
 
     public static final int kReeflDetectedDistance = 280; // FIXME: Need to retest
 
@@ -130,8 +130,8 @@ public final class Constants {
     public static final int kAlgaeWheelAtGroundCommandMaxRuntimeInMs = 6000;
     // Processor
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2000;
-    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2000;
-    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1500;
+    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2000; 
+    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000; // FIXME: Was 1500, can go even less?
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;
