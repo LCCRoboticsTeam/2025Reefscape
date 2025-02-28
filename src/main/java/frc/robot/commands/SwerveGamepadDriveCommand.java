@@ -10,6 +10,7 @@ import java.util.function.DoubleSupplier;
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -74,12 +75,15 @@ public class SwerveGamepadDriveCommand extends Command {
     boolean targetVisible = false;
     double targetYaw = 0.0;
     var results = frontsidePhotonCamera.getAllUnreadResults();
+
     if (!results.isEmpty()) {
         // Camera processed a new frame since last
         // Get the last one in the list.
+        SmartDashboard.putBoolean("Is Tag Detected", true);
+
         var result = results.get(results.size() - 1);
         if (result.hasTargets()) {
-            // At least one AprilTag was seen by the camera
+            // At least one AprilTag was seen by the camera    
             for (var target : result.getTargets()) {
                 // ONLY looking for those at the REEF or PROCESSOR, so check 
                 // that it not one of the others (as documented in Game Manual
@@ -93,6 +97,12 @@ public class SwerveGamepadDriveCommand extends Command {
             }
         }
     }
+    else {
+      SmartDashboard.putBoolean("Is Tag Detected", false);
+    }
+
+
+    //SmartDashboard.putBoolean("Is Tag Detected", targetVisible);
 
     if (getLeftStickButton.getAsBoolean() && targetVisible) {
       //  Choosing 1/80 degrees max Yah gives 0.0125
