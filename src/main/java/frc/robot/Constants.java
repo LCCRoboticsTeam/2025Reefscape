@@ -122,7 +122,7 @@ public final class Constants {
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
     public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 4000;
+    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500; // FIXME: Was 4000, can go less than 2500?
     // At Ground
     public static final double kAlgaeWheelAtGroundTargetVelocity = -800;
     public static final double kAlgaeWheelAtGroundHoldingVelocityThreshold = -500;

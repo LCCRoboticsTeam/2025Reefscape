@@ -17,6 +17,18 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ElevatorUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TossRightAlgaeFromReef"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -50,7 +62,19 @@
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoralRight"
+            "name": "ElevatorUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoReefAlignmentLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralStraight"
           }
         },
         {
@@ -87,7 +111,19 @@
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoralLeft"
+            "name": "ElevatorUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoReefAlignmentRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralStraight"
           }
         }
       ]
