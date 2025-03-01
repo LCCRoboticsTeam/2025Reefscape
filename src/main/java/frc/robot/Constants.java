@@ -57,7 +57,7 @@ public final class Constants {
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
     public static final int kPlaceCoralCommandStaightRuntimeInMs = 500; // FIXME: Was 750, Could be shorter, but maybe not at P4
 
-    public static final int kReeflDetectedDistance = 280; // FIXME: Need to retest
+    public static final int kReeflDetectedDistance = 260; // FIXME: Need to retest
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -268,7 +268,7 @@ public final class Constants {
     public static final double kSwerveRotateLeftSpeed = -0.45;
 
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
-    public static final int kSwerveRotateCommandRuntimeInMs = 700;
+    public static final int kSwerveRotateCommandRuntimeInMs = 40; // was 700
 
     public static final boolean usePhotonPoseEstimator = false;
   }

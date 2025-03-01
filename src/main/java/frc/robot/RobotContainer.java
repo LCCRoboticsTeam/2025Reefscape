@@ -134,8 +134,8 @@ public class RobotContainer {
                                                                                             new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false, true),
                                                                                             new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
                                                                                             new ParallelCommandGroup(new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed),
-                                                                                                                     new ElevatorDownCommand(elevatorSubsystem, true),
-                                                                                                                     NamedCommands.getCommand("ProcessAlgaeFromReef")),
+                                                                                                                     new ElevatorDownCommand(elevatorSubsystem, true)),
+                                                                                            NamedCommands.getCommand("ProcessAlgaeFromReef"),
                                                                                             new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed))); 
     NamedCommands.registerCommand("TossLeftAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
                                                                                             new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true, false),
@@ -143,9 +143,10 @@ public class RobotContainer {
                                                                                             new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false, true),
                                                                                             new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
                                                                                             new ParallelCommandGroup(new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed),
-                                                                                                                     new ElevatorDownCommand(elevatorSubsystem, true),
-                                                                                                                     NamedCommands.getCommand("ProcessAlgaeFromReef")),
+                                                                                                                     new ElevatorDownCommand(elevatorSubsystem, true)),
+                                                                                            NamedCommands.getCommand("ProcessAlgaeFromReef"),
                                                                                             new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed))); 
+ 
 /*
     NamedCommands.registerCommand("TossRightAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
                                                                                             new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true, false),
@@ -178,8 +179,7 @@ public class RobotContainer {
     //                                                                                      new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
     //                                                                                      new ElevatorDownCommand(elevatorSubsystem, true)));
 
-     // Configure the trigger bindings
-    configureBindings();
+    
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     //autoChooser = AutoBuilder.buildAutoChooser();
@@ -191,6 +191,10 @@ public class RobotContainer {
     reefAlgaeChooser.setDefaultOption("TossRightAlgaeFromReef", NamedCommands.getCommand("TossRightAlgaeFromReef"));
     reefAlgaeChooser.addOption("TossLeftAlgaeFromReef", NamedCommands.getCommand("TossLeftAlgaeFromReef"));
     reefAlgaeChooser.addOption("GrabAlgaeFromReef", NamedCommands.getCommand("GrabAlgaeFromReef"));
+    SmartDashboard.putData("Reef Algae Chooser", reefAlgaeChooser);
+
+    // Configure the trigger bindings
+    configureBindings();
      
     // Commands launched from Dashboard (Example format below)
     //SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
@@ -243,7 +247,9 @@ public class RobotContainer {
     manipulatorCommandXboxController.back().onTrue(NamedCommands.getCommand("ClimberUp"));
     manipulatorCommandXboxController.start().onTrue(NamedCommands.getCommand("ClimberDown"));
     manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1orP1p5)).
-                                                  onTrue(NamedCommands.getCommand("GrabAlgaeFromReef"));
+                                                  //onTrue(NamedCommands.getCommand("GrabAlgaeFromReef"));
+                                                  onTrue(reefAlgaeChooser.getSelected());
+
     manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1orP1p5)).
                                                   onTrue(NamedCommands.getCommand("GrabAlgaeFromGround"));
     manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).
@@ -264,7 +270,7 @@ public class RobotContainer {
     // Start with a CORAL in the EndEffector to start
     endEffectorSubsystem.setEndEffectorState(EndEffectorState.CORAL_LOADED);
     // All autos start with robot facing the Drive Station
-    driveSubsystem.robotFacingDriveStation();
+    //driveSubsystem.robotFacingDriveStation();
 
     return autoChooser.getSelected();
     //return null;
