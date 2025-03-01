@@ -122,15 +122,17 @@ public final class Constants {
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
     public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000; // FIXME: New, does this need adjustment?
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500; // FIXME: Was 4000, can go less than 2500?
+
     // At Ground
     public static final double kAlgaeWheelAtGroundTargetVelocity = -800;
     public static final double kAlgaeWheelAtGroundHoldingVelocityThreshold = -500;
     public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
     public static final int kAlgaeWheelAtGroundCommandMaxRuntimeInMs = 6000;
     // Processor
-    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2000;
-    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2000; 
+    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2500; // FIXME: Was -2000
+    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2500; // FIXME: Was 2000
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000; // FIXME: Was 1500, can go even less?
 
     // These are for AlgaeArmCommand which is currently not being used.

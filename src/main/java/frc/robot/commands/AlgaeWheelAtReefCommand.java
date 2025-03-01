@@ -14,6 +14,7 @@ public class AlgaeWheelAtReefCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final AlgaeWheelSubsystem m_subsystem;
   private boolean immediateFinish;
+  private boolean quickFinish;
   private boolean abortCommand;
   private boolean gotAlgae;
   private int isFinishedDelayCountInMs;
@@ -23,9 +24,10 @@ public class AlgaeWheelAtReefCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AlgaeWheelAtReefCommand(AlgaeWheelSubsystem subsystem, boolean immediateFinish) {
+  public AlgaeWheelAtReefCommand(AlgaeWheelSubsystem subsystem, boolean immediateFinish, boolean quickFinish) {
     m_subsystem = subsystem;
     this.immediateFinish = immediateFinish;
+    this.quickFinish = quickFinish;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -76,7 +78,14 @@ public class AlgaeWheelAtReefCommand extends Command {
           return true;
         }
         else {
-          return false;
+          // For a quickFinish we are assuming we have the algae so that it algae wheel keep holding it
+          if (quickFinish && (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtReefCommandQuickRuntimeInMs)) {
+            gotAlgae=true;
+            return true;
+          }
+          else {
+            return false;
+          }
         } 
       }
     }

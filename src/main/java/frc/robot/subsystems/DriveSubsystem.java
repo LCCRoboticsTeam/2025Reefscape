@@ -519,4 +519,10 @@ public class DriveSubsystem extends SubsystemBase {
     //return m_gyro.getRate(IMUAxis.kZ) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+  /** Adjust heading of the robot such that it is facing the Drive Station. */
+   public void robotFacingDriveStation() {
+     m_gyro.setAngleAdjustment(180.0);
+   }
+
 }

@@ -17,40 +17,27 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeCoral"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "LeftReefToIntakeCoral"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftIntakeToPlaceCoral"
+            "name": "ElevatorUp"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoralRight"
+            "name": "TossRightAlgaeFromReef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftReefToCenterReef"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorUp"
           }
         },
         {
@@ -63,6 +50,43 @@
           "type": "named",
           "data": {
             "name": "TossRightAlgaeFromReef"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterReefToIntakeCoral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftIntakeToPlaceCoral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralRight"
           }
         }
       ]

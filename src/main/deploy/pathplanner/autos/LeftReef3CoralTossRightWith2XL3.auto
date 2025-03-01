@@ -50,7 +50,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.2
+            "waitTime": 1.5
           }
         },
         {
@@ -99,7 +99,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.2
+            "waitTime": 1.5
           }
         },
         {
@@ -111,7 +111,19 @@
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoralRight"
+            "name": "ElevatorUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoReefAlignmentRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralStraight"
           }
         }
       ]
