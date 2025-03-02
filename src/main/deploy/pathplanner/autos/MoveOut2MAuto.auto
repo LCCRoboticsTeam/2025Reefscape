@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StartLeftToLeftReef"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceCoralLeft"
+            "pathName": "MoveOutLeftReef2MPath"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "LeftReefNearCoralStation",
+  "folder": null,
   "choreoAuto": false
 }

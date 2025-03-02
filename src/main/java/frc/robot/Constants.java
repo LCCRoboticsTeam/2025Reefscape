@@ -40,8 +40,8 @@ public final class Constants {
     public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 1000;
     public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -1000;
     // PLACE STRAIGHT
-    public static final double kLeftMotorPlaceCoralTargetVelocity = 4000; // FIXME: was 3500
-    public static final double kRightMotorPlaceCoralTargetVelocity = -4000; // FIXME: was 3500
+    public static final double kLeftMotorPlaceCoralTargetVelocity = 4000;
+    public static final double kRightMotorPlaceCoralTargetVelocity = -4000;
     // PLACE L4
     public static final double kLeftMotorPlaceCoralL4TargetVelocity = 2000;
     public static final double kRightMotorPlaceCoralL4TargetVelocity = -2000;
@@ -55,9 +55,9 @@ public final class Constants {
     public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 40;
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
-    public static final int kPlaceCoralCommandStaightRuntimeInMs = 500; // FIXME: Was 750, Could be shorter, but maybe not at P4
+    public static final int kPlaceCoralCommandStraightRuntimeInMs = 500;
 
-    public static final int kReeflDetectedDistance = 260; // FIXME: Need to retest
+    public static final int kReeflDetectedDistance = 260; // FIXME: May need to adjust after testing on REAL reef at Competition
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -91,10 +91,10 @@ public final class Constants {
   public enum ElevatorState{
     UNKNOWN,
     P1(1.0),
-    P1p5(6),   // This is level that allows AlgaeArm to go down
-    P2(10),
-    P3(27.0),
-    P3p5(43.5),
+    P1p5(6),    // This is level that allows AlgaeArm to go down
+    P2(10),     // FIXME: May need to adjust after testing on REAL reef at Competition
+    P3(27.0),   // FIXME: May need to adjust after testing on REAL reef at Competition
+    P3p5(43.5), // FIXME: May need to adjust after testing on REAL reef at Competition
     P4(55.5);
 
     private double elevatorPosition;
@@ -122,8 +122,8 @@ public final class Constants {
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
     public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000; // FIXME: New, does this need adjustment?
-    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500; // FIXME: Was 4000, can go less than 2500?
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000; // FIXME: Can we optimize this to a slightly lower value?
+    public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500;
 
     // At Ground
     public static final double kAlgaeWheelAtGroundTargetVelocity = -800;
@@ -131,9 +131,9 @@ public final class Constants {
     public static final double kAlgaeWheelAtGroundHoldingTargetVelocity = -50;
     public static final int kAlgaeWheelAtGroundCommandMaxRuntimeInMs = 6000;
     // Processor
-    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2500; // FIXME: Was -2000
-    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2500; // FIXME: Was 2000
-    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000; // FIXME: Was 1500, can go even less?
+    public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2500;
+    public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2500;
+    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000; // FIXME: Can we optimize this to a slightly lower value?
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;
@@ -146,7 +146,7 @@ public final class Constants {
     UNKNOWN,
     ARM_STOWED(0),
     ARM_DOWN(0),
-    ARM_REEF_ALGAE_HOLD(15),
+    ARM_REEF_ALGAE_HOLD(15),     // FIXME: May need to adjust after testing on REAL reef at Competition
     ARM_REEF_ALGAE_RELEASE(18),
     ARM_REEF_ALGAE_LAUNCH(30),
     ARM_GROUND_ALGAE_HOLD(38),

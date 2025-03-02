@@ -31,7 +31,8 @@ public class ElevatorDownCommand extends Command {
   public void initialize() {
     if ((m_forceToP1) || 
         (m_subsystem.getElevatorState()==ElevatorState.P2) || 
-        (m_subsystem.getElevatorState()==ElevatorState.P1p5))
+        (m_subsystem.getElevatorState()==ElevatorState.P1p5) ||
+        (m_subsystem.getElevatorState()==ElevatorState.P1))
       m_ElevatorState=ElevatorState.P1;
     else {
       if (m_subsystem.getElevatorState()==ElevatorState.P3)
@@ -39,7 +40,6 @@ public class ElevatorDownCommand extends Command {
       else // At P4 or P3p5
         m_ElevatorState=ElevatorState.P3; 
     }
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.

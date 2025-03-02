@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftReef1Coral"
+            "pathName": "StartLeftToLeftReef"
           }
         },
         {
@@ -53,6 +53,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "CenterReefToIntakeCoral"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -63,24 +69,25 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "CenterReefToIntakeCoral"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "LeftIntakeToPlaceCoral"
+                      }
+                    }
+                  ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftIntakeToPlaceCoral"
           }
         },
         {
