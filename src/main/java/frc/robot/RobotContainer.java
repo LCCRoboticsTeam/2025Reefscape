@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 //import java.util.List;
@@ -164,6 +163,7 @@ public class RobotContainer {
      
     // Commands launched from Dashboard (Example format below)
     SmartDashboard.putData("Reset Gyro Heading", driveSubsystem.zeroHeadingCommand());
+    SmartDashboard.putData("Reverse Intake", new ReverseIntakeCommand(endEffectorSubsystem));
     //SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
     //SmartDashboard.putData("Rotate Right", new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed));
     //SmartDashboard.putData("Rotate Left", new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed));

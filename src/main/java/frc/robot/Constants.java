@@ -52,11 +52,16 @@ public final class Constants {
     public static final double kLeftMotorPlaceCoralRightTargetVelocity = 6800;
     public static final double kRightMotorPlaceCoralRightTargetVelocity = -1800;
 
+    // REVERSE INTAKE
+    public static final double kLeftMotorReverseIntakeTargetVelocity = -1000;
+    public static final double kRightMotorReverseIntakeTargetVelocity = 1000;
+    
     public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 28; // was 40
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
     public static final int kPlaceCoralCommandStraightRuntimeInMs = 500;
     public static final int kPlaceCoralCommandL4StraightRuntimeInMs = 1500;
+    public static final int kReveseIntakeCommandRuntimeInMs = 1000;
 
     public static final int kReeflDetectedDistance = 260; // FIXME: May need to adjust after testing on REAL reef at Competition
 
@@ -123,7 +128,7 @@ public final class Constants {
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
     public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000; // FIXME: Can we optimize this to a slightly lower value?
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000;
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500;
 
     // At Ground
@@ -134,7 +139,7 @@ public final class Constants {
     // Processor
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2500;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2500;
-    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000; // FIXME: Can we optimize this to a slightly lower value?
+    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000;
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;

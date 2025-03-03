@@ -1,0 +1,75 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StartRightToRightReefFacingDS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralLeft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightReefToIntakeCoral"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "RightIntakeToPlaceCoral"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralRight"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightReefToIntakeCoral"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "RightReefNearCoralStation",
+  "choreoAuto": false
+}
