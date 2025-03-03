@@ -79,7 +79,7 @@ public class SwerveGamepadDriveCommand extends Command {
     if (!results.isEmpty()) {
         // Camera processed a new frame since last
         // Get the last one in the list.
-        SmartDashboard.putBoolean("Is Tag Detected", true);
+        
 
         var result = results.get(results.size() - 1);
         if (result.hasTargets()) {
@@ -93,6 +93,7 @@ public class SwerveGamepadDriveCommand extends Command {
                     (target.getFiducialId() != 14) && (target.getFiducialId() != 15)) {
                     targetYaw = target.getYaw();
                     targetVisible = true;
+                    SmartDashboard.putBoolean("Is Tag Detected", true);
                 }
             }
         }
@@ -100,7 +101,6 @@ public class SwerveGamepadDriveCommand extends Command {
     else {
       SmartDashboard.putBoolean("Is Tag Detected", false);
     }
-
 
     //SmartDashboard.putBoolean("Is Tag Detected", targetVisible);
 

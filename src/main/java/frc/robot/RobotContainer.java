@@ -59,8 +59,8 @@ public class RobotContainer {
   // Cameras and Vision
   UsbCamera reefsideUsbCamera = CameraServer.startAutomaticCapture(1);
   UsbCamera climbersideUsbCamera = CameraServer.startAutomaticCapture(0);
-  PhotonCamera frontsidePhotonCamera = new PhotonCamera("Frontside");
-  PhotonCamera backsidePhotonCamera = new PhotonCamera("Backside");
+  PhotonCamera frontsidePhotonCamera = new PhotonCamera("frontsidePhotonCam");
+  PhotonCamera backsidePhotonCamera = new PhotonCamera("backsidePhotonCam");
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(BooleanSupplier isRobotEnabled) {

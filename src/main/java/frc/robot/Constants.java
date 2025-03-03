@@ -53,8 +53,8 @@ public final class Constants {
     public static final double kRightMotorPlaceCoralRightTargetVelocity = -1800;
 
     // REVERSE INTAKE
-    public static final double kLeftMotorReverseIntakeTargetVelocity = -1000;
-    public static final double kRightMotorReverseIntakeTargetVelocity = 1000;
+    public static final double kLeftMotorReverseIntakeTargetVelocity = -1500;
+    public static final double kRightMotorReverseIntakeTargetVelocity = 1500;
     
     public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 28; // was 40
