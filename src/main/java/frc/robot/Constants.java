@@ -35,8 +35,8 @@ public final class Constants {
     // NOTE: For intaking and placing coral, Motor direction MUST BE:
     //         LeftMotor -> Positive
     //         RightMotor -> Negative
-    public static final double kLeftMotorIntakeTargetVelocity = 2000;
-    public static final double kRightMotorIntakeTargetVelocity = -2000;
+    public static final double kLeftMotorIntakeTargetVelocity = 3000;
+    public static final double kRightMotorIntakeTargetVelocity = -3000;
     public static final double kLeftMotorIntakeCoralDetectedTargetVelocity = 1000;
     public static final double kRightMotorIntakeCoralDetectedTargetVelocity = -1000;
     // PLACE STRAIGHT
@@ -53,9 +53,10 @@ public final class Constants {
     public static final double kRightMotorPlaceCoralRightTargetVelocity = -1800;
 
     public static final int kCoralDetectedDistance = 60;
-    public static final int kCoralDetectedCountThreshold = 40;
+    public static final int kCoralDetectedCountThreshold = 28; // was 40
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
     public static final int kPlaceCoralCommandStraightRuntimeInMs = 500;
+    public static final int kPlaceCoralCommandL4StraightRuntimeInMs = 1500;
 
     public static final int kReeflDetectedDistance = 260; // FIXME: May need to adjust after testing on REAL reef at Competition
 
@@ -281,7 +282,7 @@ public final class Constants {
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
-    public static final double kWheelDiameterMeters = 0.0700; // was 0.0762 for 2024 Crescendo (was 0.0762)
+    public static final double kWheelDiameterMeters = 0.0741; // was 0.0762 for 2024 Crescendo (was 0.0762)
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
     // teeth on the bevel pinion
