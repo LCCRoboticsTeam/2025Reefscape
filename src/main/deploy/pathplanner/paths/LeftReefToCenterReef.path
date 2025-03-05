@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5492288091379534,
-        "y": 1.778227563550122
+        "x": 2.127272727272727,
+        "y": 2.538758116883117
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.235,
-        "y": 1.00028409090909
+        "x": 2.8157873376623375,
+        "y": 4.034496753246753
       },
       "prevControl": {
-        "x": 1.439788011072248,
-        "y": 1.1436781999968528
+        "x": 2.5657873376623357,
+        "y": 4.034496753246753
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 54.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "LeftReefNearCoralStation",

@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftReef1Coral"
+            "pathName": "StartRightToRightReefFacingDS"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "PlaceCoralLeft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightReefToIntakeCoral"
           }
         },
         {
@@ -27,24 +33,25 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "LeftReefToIntakeCoral"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "RightIntakeToPlaceCoral"
+                      }
+                    }
+                  ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftIntakeToPlaceCoral"
           }
         },
         {
@@ -54,21 +61,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "ElevatorUp"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GrabAlgaeFromReef"
+            "pathName": "RightReefToIntakeCoral"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "RightReefNearCoralStation",
   "choreoAuto": false
 }

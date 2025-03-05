@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StartLeftToLeftReefFacingDS"
+            "pathName": "StartRightToRightReefFacingDS"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftReefToIntakeCoral"
+            "pathName": "RightReefToIntakeCoral"
           }
         },
         {
@@ -45,7 +45,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "LeftIntakeToPlaceCoral"
+                        "pathName": "RightIntakeToPlaceCoral"
                       }
                     }
                   ]
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftReefToIntakeCoral"
+            "pathName": "RightReefToIntakeCoral"
           }
         },
         {
@@ -89,7 +89,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "LeftIntakeToPlaceCoral"
+                        "pathName": "RightIntakeToPlaceCoral"
                       }
                     }
                   ]
@@ -103,11 +103,55 @@
           "data": {
             "name": "PlaceCoralLeft"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightReefToIntakeCoral"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "RightIntakeToPlaceCoral"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralRight"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "LeftReefNearCoralStation",
+  "folder": "RightReefNearCoralStation",
   "choreoAuto": false
 }

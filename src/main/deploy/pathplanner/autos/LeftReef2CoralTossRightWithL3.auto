@@ -17,6 +17,18 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ElevatorUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TossRightAlgaeFromReef"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "LeftReefToIntakeCoral"
@@ -57,51 +69,19 @@
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoralRight"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftReefToIntakeCoral"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeCoral"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "LeftIntakeToPlaceCoral"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "name": "ElevatorUp"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoralLeft"
+            "name": "AutoReefAlignmentLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralStraight"
           }
         }
       ]

@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftReef1Coral"
+            "pathName": "StartLeftToLeftReefFacingDS"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "PlaceCoralLeft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftReefToIntakeCoral"
           }
         },
         {
@@ -27,24 +33,25 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "LeftReefToIntakeCoral"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "LeftIntakeToPlaceCoral"
+                      }
+                    }
+                  ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftIntakeToPlaceCoral"
           }
         },
         {
@@ -57,6 +64,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "LeftReefNearCoralStation",
   "choreoAuto": false
 }
