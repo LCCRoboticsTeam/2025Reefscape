@@ -24,6 +24,7 @@ public class SwerveGamepadDriveCommand extends Command {
   private final BooleanSupplier getLeftStickButton;
   private final PhotonCamera frontsidePhotonCamera;
   //private final PhotonCamera backsidePhotonCamera;
+  private final boolean usePhotonCamera = false;
 
   private final double VISION_TURN_kP = 0.01;
 
@@ -74,40 +75,43 @@ public class SwerveGamepadDriveCommand extends Command {
     // Read in relevant data from the Camera
     boolean targetVisible = false;
     double targetYaw = 0.0;
-    var results = frontsidePhotonCamera.getAllUnreadResults();
 
-    if (!results.isEmpty()) {
+    if (usePhotonCamera) {
+      var results = frontsidePhotonCamera.getAllUnreadResults();
+
+      if (!results.isEmpty()) {
         // Camera processed a new frame since last
         // Get the last one in the list.
         
 
-        var result = results.get(results.size() - 1);
-        if (result.hasTargets()) {
-            // At least one AprilTag was seen by the camera    
-            for (var target : result.getTargets()) {
-                // ONLY looking for those at the REEF or PROCESSOR, so check 
-                // that it not one of the others (as documented in Game Manual
-                if ((target.getFiducialId() != 1) && (target.getFiducialId() != 2) &&
-                    (target.getFiducialId() != 4) && (target.getFiducialId() != 5) &&
-                    (target.getFiducialId() != 12) && (target.getFiducialId() != 13) &&
-                    (target.getFiducialId() != 14) && (target.getFiducialId() != 15)) {
-                    targetYaw = target.getYaw();
-                    targetVisible = true;
-                    SmartDashboard.putBoolean("Is Tag Detected", true);
-                }
-            }
-        }
-    }
-    else {
-      SmartDashboard.putBoolean("Is Tag Detected", false);
-    }
+          var result = results.get(results.size() - 1);
+          if (result.hasTargets()) {
+              // At least one AprilTag was seen by the camera    
+              for (var target : result.getTargets()) {
+                  // ONLY looking for those at the REEF or PROCESSOR, so check 
+                  // that it not one of the others (as documented in Game Manual
+                  if ((target.getFiducialId() != 1) && (target.getFiducialId() != 2) &&
+                      (target.getFiducialId() != 4) && (target.getFiducialId() != 5) &&
+                      (target.getFiducialId() != 12) && (target.getFiducialId() != 13) &&
+                      (target.getFiducialId() != 14) && (target.getFiducialId() != 15)) {
+                      targetYaw = target.getYaw();
+                      targetVisible = true;
+                      SmartDashboard.putBoolean("Is Tag Detected", true);
+                  }
+              }
+          }
+      }
+      else {
+        SmartDashboard.putBoolean("Is Tag Detected", false);
+      }
 
-    //SmartDashboard.putBoolean("Is Tag Detected", targetVisible);
+      //SmartDashboard.putBoolean("Is Tag Detected", targetVisible);
 
-    if (getLeftStickButton.getAsBoolean() && targetVisible) {
-      //  Choosing 1/80 degrees max Yah gives 0.0125
-      //rotateSpeed = -1.0 * targetYaw * 0.0125;
-      rotateSpeed = -1.0 * targetYaw * VISION_TURN_kP * DriveConstants.kMaxAngularSpeed;
+      if (getLeftStickButton.getAsBoolean() && targetVisible) {
+        //  Choosing 1/80 degrees max Yah gives 0.0125
+        //rotateSpeed = -1.0 * targetYaw * 0.0125;
+        rotateSpeed = -1.0 * targetYaw * VISION_TURN_kP * DriveConstants.kMaxAngularSpeed;
+       }
     }
 
     swerveDriveTrain.drive(
