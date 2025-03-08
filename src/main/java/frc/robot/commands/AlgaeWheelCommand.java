@@ -14,7 +14,7 @@ public class AlgaeWheelCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final AlgaeWheelSubsystem m_subsystem;
   private int isFinishedDelayCountInMs;
-
+  private boolean stopWheel=true; 
   /**
    * Creates a new ExampleCommand.
    *
@@ -35,7 +35,10 @@ public class AlgaeWheelCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelLunchTargetVelocity);  
+    if (stopWheel)
+      m_subsystem.setWheelTargetVelocity(0);
+    else
+      m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelLunchTargetVelocity);  
       
     isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }
@@ -50,7 +53,7 @@ public class AlgaeWheelCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelCommandMaxRuntimeInMs) {
+if ((isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelCommandMaxRuntimeInMs) || stopWheel) {
       return true;
     }
     else {
