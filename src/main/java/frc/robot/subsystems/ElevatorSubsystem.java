@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ElevatorState;
@@ -142,6 +143,14 @@ public class ElevatorSubsystem extends SubsystemBase {
       return true;
     else
       return false;
+  }
+
+  public Command resetPositionCommand() {
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+          resetPosition();
+        });
   }
  
   @Override

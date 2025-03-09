@@ -168,6 +168,7 @@ public class RobotContainer {
     SmartDashboard.putData("Reset Gyro Heading", driveSubsystem.zeroHeadingCommand());
     SmartDashboard.putData("Reverse Intake", new ReverseIntakeCommand(endEffectorSubsystem));
     SmartDashboard.putData("Reset Algae Subsystem", NamedCommands.getCommand("InitAlgaeSystem"));
+    SmartDashboard.putData("Reset Elevator Position", elevatorSubsystem.resetPositionCommand());
 
     //SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
     //SmartDashboard.putData("Rotate Right", new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed));
