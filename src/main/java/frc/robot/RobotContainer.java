@@ -203,8 +203,10 @@ public class RobotContainer {
 
     // DRIVER XBOX Controller
     //   Note: Right stick and Left stick already mapped via SwerveGamepadDriveCommand() in earlier code
-    driverCommandXboxController.rightBumper().whileTrue(NamedCommands.getCommand("SwerveSlideRight"));
-    driverCommandXboxController.leftBumper().whileTrue(NamedCommands.getCommand("SwerveSlideLeft"));
+    driverCommandXboxController.rightBumper().and(new Trigger(algaeArmSubsystem::isArmStowedOrDown)).
+    whileTrue(NamedCommands.getCommand("SwerveSlideRight"));
+    driverCommandXboxController.leftBumper().and(new Trigger(algaeArmSubsystem::isArmStowedOrDown)).
+    whileTrue(NamedCommands.getCommand("SwerveSlideLeft"));
     driverCommandXboxController.b().whileTrue(NamedCommands.getCommand("AutoReefAlignmentRight"));
     driverCommandXboxController.x().whileTrue(NamedCommands.getCommand("AutoReefAlignmentLeft"));
     driverCommandXboxController.y().onTrue(NamedCommands.getCommand("ElevatorUp"));
