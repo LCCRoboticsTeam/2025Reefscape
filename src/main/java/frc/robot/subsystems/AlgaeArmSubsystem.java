@@ -118,6 +118,14 @@ public class AlgaeArmSubsystem extends SubsystemBase {
     this.algaeArmState =  algaeArmState;
   }
 
+  public boolean isArmStowedOrDown(){
+    if((algaeArmState == AlgaeArmState.ARM_DOWN) || (algaeArmState == AlgaeArmState.ARM_STOWED)){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

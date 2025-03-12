@@ -133,6 +133,9 @@ public class RobotContainer {
                                                                                                                      new ElevatorDownCommand(elevatorSubsystem, true)),
                                                                                             NamedCommands.getCommand("ProcessAlgaeFromReef")));
                                                                                             //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed))); 
+    NamedCommands.registerCommand("InitAlgaeSystem", new SequentialCommandGroup(new AlgaeWheelCommand(algaeWheelSubsystem), 
+                                                                                            new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
+                                                                                            new ElevatorDownCommand(elevatorSubsystem, true)));                                                                                            
     NamedCommands.registerCommand("TossLeftAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
                                                                                            new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true, false),
                                                                                            new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
@@ -142,7 +145,7 @@ public class RobotContainer {
                                                                                                                     new ElevatorDownCommand(elevatorSubsystem, true)),
                                                                                            NamedCommands.getCommand("ProcessAlgaeFromReef")));
                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed))); 
-    //NamedCommands.registerCommand("LaunchAlgaeIntoBarge", new SequentialCommandGroup(new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, true),
+                                                                                           //NamedCommands.registerCommand("LaunchAlgaeIntoBarge", new SequentialCommandGroup(new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, true),
     //                                                                                      new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_LAUNCH), 
     //                                                                                                               new AlgaeWheelCommand(algaeWheelSubsystem)), 
     //                                                                                      new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
@@ -164,6 +167,9 @@ public class RobotContainer {
     // Commands launched from Dashboard (Example format below)
     SmartDashboard.putData("Reset Gyro Heading", driveSubsystem.zeroHeadingCommand());
     SmartDashboard.putData("Reverse Intake", new ReverseIntakeCommand(endEffectorSubsystem));
+    SmartDashboard.putData("Reset Algae Subsystem", NamedCommands.getCommand("InitAlgaeSystem"));
+    SmartDashboard.putData("Reset Elevator Position", elevatorSubsystem.resetPositionCommand());
+
     //SmartDashboard.putData("LaunchAlgaeIntoBarge", NamedCommands.getCommand("LaunchAlgaeIntoBarge"));
     //SmartDashboard.putData("Rotate Right", new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed));
     //SmartDashboard.putData("Rotate Left", new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed));
@@ -198,8 +204,10 @@ public class RobotContainer {
 
     // DRIVER XBOX Controller
     //   Note: Right stick and Left stick already mapped via SwerveGamepadDriveCommand() in earlier code
-    driverCommandXboxController.rightBumper().whileTrue(NamedCommands.getCommand("SwerveSlideRight"));
-    driverCommandXboxController.leftBumper().whileTrue(NamedCommands.getCommand("SwerveSlideLeft"));
+    driverCommandXboxController.rightBumper().and(new Trigger(algaeArmSubsystem::isArmStowedOrDown)).
+    whileTrue(NamedCommands.getCommand("SwerveSlideRight"));
+    driverCommandXboxController.leftBumper().and(new Trigger(algaeArmSubsystem::isArmStowedOrDown)).
+    whileTrue(NamedCommands.getCommand("SwerveSlideLeft"));
     driverCommandXboxController.b().whileTrue(NamedCommands.getCommand("AutoReefAlignmentRight"));
     driverCommandXboxController.x().whileTrue(NamedCommands.getCommand("AutoReefAlignmentLeft"));
     driverCommandXboxController.y().onTrue(NamedCommands.getCommand("ElevatorUp"));

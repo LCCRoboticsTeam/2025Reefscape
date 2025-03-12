@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.67,
-        "y": 5.47
+        "x": 3.884016393442623,
+        "y": 5.073924180327869
       },
       "prevControl": {
-        "x": 3.465211988927752,
-        "y": 5.6133941090877615
+        "x": 3.679228382370375,
+        "y": 5.217318289415631
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": -61.296150927954585
   },
   "reversed": false,
   "folder": "RightReefNearCoralStation",

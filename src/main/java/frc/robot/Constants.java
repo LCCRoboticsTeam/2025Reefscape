@@ -84,8 +84,8 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kLeftElevatorCanId = 3;
     public static final int kRightElevatorCanId = 4;
-    public static final double kMaxOutRange = 0.4;
-    public static final double kMinOutRange = -0.4;
+    public static final double kMaxOutRange = 0.5; // was 0.4
+    public static final double kMinOutRange = -0.5; //was -0.4
 
     public static final boolean kTargetPositionFromDashboard = false;
   }
@@ -118,8 +118,8 @@ public final class Constants {
   public static final class AlgaeConstants {
     public static final int kArmAlgaeMotorCanID = 9;
     public static final int kWheelAlgaeMotorCanID = 10;
-    public static final double kAlgaeArmMaxOutRange = 0.4;
-    public static final double kAlgaeArmMinOutRange = -0.4;
+    public static final double kAlgaeArmMaxOutRange = 0.45;
+    public static final double kAlgaeArmMinOutRange = -0.45;
 
     public static final double kAlgaeWheelMaxOutRange = 0.8;
     public static final double kAlgaeWheelMinOutRange = -0.8;
@@ -156,7 +156,7 @@ public final class Constants {
     ARM_REEF_ALGAE_RELEASE(18),
     ARM_REEF_ALGAE_LAUNCH(30),
     ARM_GROUND_ALGAE_HOLD(38),
-    ARM_GROUND_ALGAE_CATCH(35),
+    ARM_GROUND_ALGAE_CATCH(32), //was 35
     ARM_GROUND_ALGAE_RELEASE(38);
 
     private double algaeArmPosition;
@@ -270,7 +270,7 @@ public final class Constants {
 
     public static final double kSwerveSlideSpeed = 0.15;
     public static final double kSwerveBackupSpeed = 0.3;
-    public static final double kSwerveRotateRightSpeed = 0.45;
+    public static final double kSwerveRotateRightSpeed = 0.65; // was .45
     public static final double kSwerveRotateLeftSpeed = -0.45;
 
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
