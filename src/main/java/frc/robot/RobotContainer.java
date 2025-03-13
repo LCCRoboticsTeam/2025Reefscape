@@ -52,6 +52,8 @@ public class RobotContainer {
   //private final XboxController manipulatorXboxController = new XboxController(OIConstants.kManipulatorControllerPort); 
   private final CommandXboxController manipulatorCommandXboxController = new CommandXboxController(OIConstants.kManipulatorControllerPort);
 
+  //private final CommandLaunchpadController commandLaunchpad = new CommandLaunchpadController(OIConstants.kLaunchpadControllerPort);
+
   // Dashboard - Choosers
   private final SendableChooser<Command> autoChooser;
   private final SendableChooser<Command> reefAlgaeChooser;
@@ -92,8 +94,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("ClimberDown", new MoveClimberDownCommand(climberSubsystem));
     NamedCommands.registerCommand("SwerveSlideRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed, false, endEffectorSubsystem::getReefsideDistanceMM));
     NamedCommands.registerCommand("SwerveSlideLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, false, endEffectorSubsystem::getReefsideDistanceMM));
-    NamedCommands.registerCommand("AutoReefAlignmentRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
-    NamedCommands.registerCommand("AutoReefAlignmentLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
+    NamedCommands.registerCommand("AutoReefAlignmentRight", new SwerveSlideCommand(driveSubsystem, true, DriveConstants.kSwerveAutoAlignSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
+    NamedCommands.registerCommand("AutoReefAlignmentLeft", new SwerveSlideCommand(driveSubsystem, false, DriveConstants.kSwerveAutoAlignSlideSpeed, true, endEffectorSubsystem::getReefsideDistanceMM));
+    NamedCommands.registerCommand("SwerveToCenterReef", new SwerveToCenterReefCommand(driveSubsystem, frontsidePhotonCamera));
+    NamedCommands.registerCommand("SwerveToCenterCoralStation", new SwerveToCenterCoralStationCommand(driveSubsystem, backsidePhotonCamera));
     NamedCommands.registerCommand("GrabAlgaeFromReef", new SequentialCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN), 
                                                                                        new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true, false),
                                                                                        new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
@@ -145,11 +149,25 @@ public class RobotContainer {
                                                                                                                     new ElevatorDownCommand(elevatorSubsystem, true)),
                                                                                            NamedCommands.getCommand("ProcessAlgaeFromReef")));
                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed))); 
-                                                                                           //NamedCommands.registerCommand("LaunchAlgaeIntoBarge", new SequentialCommandGroup(new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, true),
+    //NamedCommands.registerCommand("LaunchAlgaeIntoBarge", new SequentialCommandGroup(new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, true),
     //                                                                                      new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_LAUNCH), 
     //                                                                                                               new AlgaeWheelCommand(algaeWheelSubsystem)), 
     //                                                                                      new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
     //                                                                                      new ElevatorDownCommand(elevatorSubsystem, true)));
+    NamedCommands.registerCommand("PlaceCoralOnLeftL2", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"),
+                                                                                        NamedCommands.getCommand("AutoReefAlignmentLeft"),
+                                                                                        NamedCommands.getCommand("PlaceCoralStraight")));
+    NamedCommands.registerCommand("PlaceCoralOnRightL2", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"),
+                                                                                         NamedCommands.getCommand("AutoReefAlignmentRight"),
+                                                                                         NamedCommands.getCommand("PlaceCoralStraight")));
+    NamedCommands.registerCommand("PlaceCoralOnLeftL3", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"), 
+                                                                                        NamedCommands.getCommand("ElevatorUp"),
+                                                                                        NamedCommands.getCommand("AutoReefAlignmentLeft"),
+                                                                                        NamedCommands.getCommand("PlaceCoralStraight")));
+    NamedCommands.registerCommand("PlaceCoralOnRightL3", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"), 
+                                                                                         NamedCommands.getCommand("ElevatorUp"),
+                                                                                         NamedCommands.getCommand("AutoReefAlignmentRight"),
+                                                                                         NamedCommands.getCommand("PlaceCoralStraight")));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser("LeftReef3Coral");
@@ -212,6 +230,8 @@ public class RobotContainer {
     driverCommandXboxController.x().whileTrue(NamedCommands.getCommand("AutoReefAlignmentLeft"));
     driverCommandXboxController.y().onTrue(NamedCommands.getCommand("ElevatorUp"));
     driverCommandXboxController.a().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1)).onTrue(NamedCommands.getCommand("ElevatorDown"));
+    driverCommandXboxController.rightTrigger().whileTrue(NamedCommands.getCommand("SwerveToCenterReef"));
+    driverCommandXboxController.leftTrigger().whileTrue(NamedCommands.getCommand("SwerveToCenterCoralStation"));
 
     // MANIPULATOR XBOX Controller
     manipulatorCommandXboxController.a().onTrue(NamedCommands.getCommand("IntakeCoral"));
@@ -230,6 +250,12 @@ public class RobotContainer {
     manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).
                                                    and(new Trigger(algaeWheelSubsystem::isAlgaeLoadedFromGround)).
                                                    onTrue(NamedCommands.getCommand("ProcessAlgaeFromGround"));
+
+    // Custom LAUNCHPAD Controller
+    //commandLaunchpad.l2Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL2"));
+    //commandLaunchpad.l2Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL2"));
+    //commandLaunchpad.l2Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL3"));
+    //commandLaunchpad.l2Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL3"));
 
   }
 
