@@ -129,7 +129,7 @@ public final class Constants {
     public static final double kAlgaeWheelAtReefQuickTargetVelocity = 800;    // FIXME: If we run faster, can we reduce QuickRuntime even more?
     public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000;  // FIXME: Will reducing this result in a quicker de-algea of reef?
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000;  // FIXME: Will reducing this result in a quicker de-algea of reef? May need able higher as well
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500;
 
     // At Ground
@@ -140,7 +140,7 @@ public final class Constants {
     // Processor
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2500;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2500;
-    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000;
+    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000;  // FIXME: How much can we reduce?
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;
