@@ -118,7 +118,7 @@ public final class Constants {
   public static final class AlgaeConstants {
     public static final int kArmAlgaeMotorCanID = 9;
     public static final int kWheelAlgaeMotorCanID = 10;
-    public static final double kAlgaeArmMaxOutRange = 0.45;
+    public static final double kAlgaeArmMaxOutRange = 0.85; // was 0.45
     public static final double kAlgaeArmMinOutRange = -0.45;
 
     public static final double kAlgaeWheelMaxOutRange = 0.8;
@@ -144,7 +144,7 @@ public final class Constants {
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;
-    public static final int kAlgaeWheelCommandMaxRuntimeInMs = 3000; 
+    public static final int kAlgaeWheelCommandMaxRuntimeInMs = 20; 
 
     public static final boolean kArmTargetPositionFromDashboard = false;
     public static final boolean kWheelTargetVelocityFromDashboard = false;
@@ -155,7 +155,7 @@ public final class Constants {
     ARM_DOWN(0),
     ARM_REEF_ALGAE_HOLD(15),
     ARM_REEF_ALGAE_RELEASE(18),
-    ARM_REEF_ALGAE_LAUNCH(30),
+    ARM_REEF_ALGAE_LAUNCH(55), //was 30
     ARM_GROUND_ALGAE_HOLD(38),
     ARM_GROUND_ALGAE_CATCH(32),
     ARM_GROUND_ALGAE_RELEASE(38);

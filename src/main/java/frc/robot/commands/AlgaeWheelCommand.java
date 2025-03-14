@@ -14,14 +14,15 @@ public class AlgaeWheelCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final AlgaeWheelSubsystem m_subsystem;
   private int isFinishedDelayCountInMs;
-  private boolean stopWheel=true; 
+  private boolean stopWheel; 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AlgaeWheelCommand(AlgaeWheelSubsystem subsystem) {
+  public AlgaeWheelCommand(AlgaeWheelSubsystem subsystem, boolean stopWheel) {
     m_subsystem = subsystem;
+    this.stopWheel=stopWheel;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -46,14 +47,14 @@ public class AlgaeWheelCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setWheelTargetVelocity(0);
-    m_subsystem.setAlgaeWheelState(AlgaeWheelState.ALGAE_FREE);
+    //m_subsystem.setWheelTargetVelocity(0);
+    //m_subsystem.setAlgaeWheelState(AlgaeWheelState.ALGAE_FREE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-if ((isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelCommandMaxRuntimeInMs) || stopWheel) {
+    if ((isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelCommandMaxRuntimeInMs) || stopWheel) {
       return true;
     }
     else {
