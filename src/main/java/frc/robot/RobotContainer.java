@@ -158,24 +158,30 @@ public class RobotContainer {
    //                                                                                       new AlgaeWheelCommand(algaeWheelSubsystem, true),
    //                                                                                       new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
    //                                                                                       new ElevatorDownCommand(elevatorSubsystem, true)));
-    NamedCommands.registerCommand("PlaceCoralOnLeftL2", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"),
-                                                                                       new WaitCommand(0.5),
-                                                                                        NamedCommands.getCommand("AutoReefAlignmentLeft"),
-                                                                                        NamedCommands.getCommand("PlaceCoralStraight")));
-    NamedCommands.registerCommand("PlaceCoralOnRightL2", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"),
+    NamedCommands.registerCommand("PlaceCoralOnLeftL2", new SequentialCommandGroup(elevatorSubsystem.elevateToP2(),
                                                                                         new WaitCommand(0.5),
+                                                                                        NamedCommands.getCommand("AutoReefAlignmentLeft"),
+                                                                                        new ConditionalCommand(NamedCommands.getCommand("PlaceCoralStraight"),
+                                                                                                               new WaitCommand(0.0),
+                                                                                                               endEffectorSubsystem::isReefDetected)));
+    NamedCommands.registerCommand("PlaceCoralOnRightL2", new SequentialCommandGroup(elevatorSubsystem.elevateToP2(),
+                                                                                         new WaitCommand(0.5),
                                                                                          NamedCommands.getCommand("AutoReefAlignmentRight"),
-                                                                                         NamedCommands.getCommand("PlaceCoralStraight")));
-    NamedCommands.registerCommand("PlaceCoralOnLeftL3", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"), 
-                                                                                        NamedCommands.getCommand("ElevatorUp"),
+                                                                                         new ConditionalCommand(NamedCommands.getCommand("PlaceCoralStraight"),
+                                                                                                                new WaitCommand(0.0),
+                                                                                                                endEffectorSubsystem::isReefDetected)));
+    NamedCommands.registerCommand("PlaceCoralOnLeftL3", new SequentialCommandGroup(elevatorSubsystem.elevateToP3(),
                                                                                         new WaitCommand(0.8),
                                                                                         NamedCommands.getCommand("AutoReefAlignmentLeft"),
-                                                                                        NamedCommands.getCommand("PlaceCoralStraight")));
-    NamedCommands.registerCommand("PlaceCoralOnRightL3", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"), 
-                                                                                         NamedCommands.getCommand("ElevatorUp"),
+                                                                                        new ConditionalCommand(NamedCommands.getCommand("PlaceCoralStraight"),
+                                                                                                               new WaitCommand(0.0),
+                                                                                                               endEffectorSubsystem::isReefDetected)));
+    NamedCommands.registerCommand("PlaceCoralOnRightL3", new SequentialCommandGroup(elevatorSubsystem.elevateToP3(),
                                                                                          new WaitCommand(0.8),
                                                                                          NamedCommands.getCommand("AutoReefAlignmentRight"),
-                                                                                         NamedCommands.getCommand("PlaceCoralStraight")));
+                                                                                         new ConditionalCommand(NamedCommands.getCommand("PlaceCoralStraight"),
+                                                                                                                new WaitCommand(0.0),
+                                                                                                                endEffectorSubsystem::isReefDetected)));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser("LeftReef3Coral");
@@ -261,10 +267,10 @@ public class RobotContainer {
                                                    onTrue(NamedCommands.getCommand("ProcessAlgaeFromGround"));
 
     // Custom LAUNCHPAD Controller
-   commandLaunchpad.l2Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL2"));
-   commandLaunchpad.l2Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL2"));
-   commandLaunchpad.l3Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL3"));
-   commandLaunchpad.l3Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL3"));
+    commandLaunchpad.l2Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL2"));
+    commandLaunchpad.l2Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL2"));
+    commandLaunchpad.l3Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL3"));
+    commandLaunchpad.l3Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL3"));
 
   }
 

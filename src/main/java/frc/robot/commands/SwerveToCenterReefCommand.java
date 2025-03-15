@@ -18,19 +18,24 @@ import frc.robot.subsystems.DriveSubsystem;
 public class SwerveToCenterReefCommand extends Command {
 
   private final DriveSubsystem swerveDriveTrain;
-  private double xSpeed;
-  private double rotateSpeed;
   private final PhotonCamera frontsidePhotonCamera;
-  private final boolean usePhotonCamera = true;
 
   private final double CAMERA_HEIGHT_IN_METERS = 0.22;  // FIXME: 8.5" (0.22m) Up from ground, need to confirm
   private final double TARGET_HEIGHT_IN_METERS = 0.235; 
   private final double CAMERA_PITCH_IN_DEGREES = 0.0;   // FIXME: Camera pitch in degrees, positive up, need to confirm
 
-  private final double VISION_DES_ANGLE_deg = 155.0; // FIXME: Based on testing, 155 degrees is when Tag is centered
-  private final double VISION_DES_RANGE_m = 0.5;     // FIXME: Based on testing, Tag is 0.5 meters away when at the reef.
-  private final double VISION_TURN_kP = 0.01;
-  private final double VISION_XSPEED_kP = 0.01;
+  private final double VISION_DESIRED_ANGLE_deg = 155.0; // FIXME: Based on testing, 155 degrees is when Tag is centered
+  private final double VISION_DESIRED_ANGLE_deg_tolerance = 5.0; 
+  private final double VISION_DESIRED_RANGE_m = 0.5;     // FIXME: Based on testing, Tag is 0.5 meters away when at the reef.
+  private final double VISION_TURN_kP = 0.065;
+  private final double VISION_XSPEED_kP = 0.25;
+
+  private final boolean usePhotonCamera = true;
+  private boolean targetVisible = false;
+  private double targetYaw = 0.0;
+  private double targetRange = 0.0;
+  private double xSpeed;
+  private double rotateSpeed;
 
   /** Creates a new SwerveControllerDrive. */
   public SwerveToCenterReefCommand(DriveSubsystem swerveDriveTrain, PhotonCamera frontsidePhotonCamera) {
@@ -44,70 +49,78 @@ public class SwerveToCenterReefCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    targetVisible = false;
+    targetYaw = 0.0;
+    targetRange = 0.0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double targetYawOffset;
 
-    // Read in relevant data from the Camera
-    boolean targetVisible = false;
-    double targetYaw = 0.0;
-    double targetRange = 0.0;
-
+    // By default the command will not move robot
     rotateSpeed=0.0;
     xSpeed=0.0;
 
     if (usePhotonCamera) {
+      // Read in relevant data from the Camera
       var results = frontsidePhotonCamera.getAllUnreadResults();
 
       if (!results.isEmpty()) {
         // Camera processed a new frame since last
         // Get the last one in the list.
+        var result = results.get(results.size() - 1);
+        if (result.hasTargets()) {
+            // At least one AprilTag was seen by the camera    
+            for (var target : result.getTargets()) {
+                // ONLY looking for those at the REEF, so check 
+                // that it not one of the others (as documented in Game Manual)
+                if ((target.getFiducialId() != 1) && (target.getFiducialId() != 2) && (target.getFiducialId() != 3) &&
+                    (target.getFiducialId() != 4) && (target.getFiducialId() != 5) &&
+                    (target.getFiducialId() != 12) && (target.getFiducialId() != 13) && (target.getFiducialId() != 14) && 
+                    (target.getFiducialId() != 15) && (target.getFiducialId() != 16)) {
 
-          var result = results.get(results.size() - 1);
-          if (result.hasTargets()) {
-              // At least one AprilTag was seen by the camera    
-              for (var target : result.getTargets()) {
-                  // ONLY looking for those at the REEF, so check 
-                  // that it not one of the others (as documented in Game Manual)
-                  if ((target.getFiducialId() != 1) && (target.getFiducialId() != 2) && (target.getFiducialId() != 3) &&
-                      (target.getFiducialId() != 4) && (target.getFiducialId() != 5) &&
-                      (target.getFiducialId() != 12) && (target.getFiducialId() != 13) && (target.getFiducialId() != 14) && 
-                      (target.getFiducialId() != 15) && (target.getFiducialId() != 16)) {
-                      targetYaw = target.getYaw();
+                    targetYaw = target.getYaw();
+                    targetRange = PhotonUtils.calculateDistanceToTargetMeters(
+                                    CAMERA_HEIGHT_IN_METERS,
+                                    TARGET_HEIGHT_IN_METERS, 
+                                    Units.degreesToRadians(CAMERA_PITCH_IN_DEGREES), // Camera pitch in degrees, positive up
+                                    Units.degreesToRadians(target.getPitch()));
 
-                      targetRange =
-                              PhotonUtils.calculateDistanceToTargetMeters(
-                                CAMERA_HEIGHT_IN_METERS,
-                                TARGET_HEIGHT_IN_METERS, 
-                                Units.degreesToRadians(CAMERA_PITCH_IN_DEGREES), // Camera pitch in degrees,positive up
-                                Units.degreesToRadians(target.getPitch()));
-
-                      targetVisible = true;
-                      SmartDashboard.putBoolean("Reef Tag Detected", true);
-                  }
-              }
-          }
+                    targetVisible = true;
+                    //SmartDashboard.putBoolean("Reef Tag Detected", true);
+                }
+            }
+        }
       }
       else {
-        SmartDashboard.putBoolean("Reef Tag Detected", false);
+        targetVisible = false;
+        //SmartDashboard.putBoolean("Reef Tag Detected", false);
       }
 
       if (targetVisible) {
-        // Based on testing, 155 degrees is when Tag is centered, so offset the targetYaw in formula below by
-        // that amount
-        rotateSpeed = -1.0 * (VISION_DES_ANGLE_deg-targetYaw) * VISION_TURN_kP * DriveConstants.kMaxAngularSpeed;
-        xSpeed = (VISION_DES_RANGE_m - targetRange) * VISION_XSPEED_kP * DriveConstants.kMaxSpeedMetersPerSecond;
+        targetYawOffset=Math.abs(VISION_DESIRED_ANGLE_deg-targetYaw);
+        if (targetYawOffset>VISION_DESIRED_ANGLE_deg_tolerance) {
+          rotateSpeed = targetYawOffset * VISION_TURN_kP;
+          if (targetYaw<0)
+            rotateSpeed = -1.0 * rotateSpeed;
+        }
+        if (targetRange>VISION_DESIRED_RANGE_m) {
+          xSpeed = -1.0 * (targetRange-VISION_DESIRED_RANGE_m) * VISION_XSPEED_kP;
+        }
+
+        swerveDriveTrain.drive(
+          -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
+          0,
+          -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
+          false, 
+          true);
+       }
+       else {
+         swerveDriveTrain.drive(0, 0, 0, true, true);
        }
     }
-
-    swerveDriveTrain.drive(
-                -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
-                0,
-                -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
-                false, 
-                true);
 
   }
 

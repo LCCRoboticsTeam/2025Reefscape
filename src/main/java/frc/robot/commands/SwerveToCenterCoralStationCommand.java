@@ -32,6 +32,9 @@ public class SwerveToCenterCoralStationCommand extends Command {
   private final double VISION_TURN_kP = 0.0000001; // was 0.1
   private final double VISION_XSPEED_kP = 0.01;
 
+  double targetYaw = 0.0;
+  double targetRange = 0.0;
+
   /** Creates a new SwerveControllerDrive. */
   public SwerveToCenterCoralStationCommand(DriveSubsystem swerveDriveTrain, PhotonCamera backsidePhotonCamera) {
     this.swerveDriveTrain=swerveDriveTrain;
@@ -45,6 +48,8 @@ public class SwerveToCenterCoralStationCommand extends Command {
   @Override
   public void initialize() {
     SmartDashboard.putBoolean("Coral Station Tag Detected", false);
+    SmartDashboard.putNumber("targetYaw", targetYaw);
+    SmartDashboard.putNumber("targetRange", targetRange);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,8 +58,6 @@ public class SwerveToCenterCoralStationCommand extends Command {
 
     // Read in relevant data from the Camera
     boolean targetVisible = false;
-    double targetYaw = 0.0;
-    double targetRange = 0.0;
 
     rotateSpeed=0.0;
     xSpeed=0.0;
@@ -95,12 +98,15 @@ public class SwerveToCenterCoralStationCommand extends Command {
       if (targetVisible) {
         // Based on testing, 155 degrees is when Tag is centered, so offset the targetYaw in formula below by
         // that amount
-        //rotateSpeed = 1.0 * Math.abs(VISION_DES_ANGLE_deg-targetYaw) * VISION_TURN_kP * DriveConstants.kMaxAngularSpeed;
+        rotateSpeed = 1.0 * Math.abs(VISION_DES_ANGLE_deg-targetYaw) * VISION_TURN_kP * DriveConstants.kMaxAngularSpeed;
         //if ((VISION_DES_ANGLE_deg-targetYaw) <0)
           //rotateSpeed=-1.0*rotateSpeed;
         xSpeed = Math.abs(targetRange - VISION_DES_RANGE_m) * VISION_XSPEED_kP * DriveConstants.kMaxSpeedMetersPerSecond;
        }
     }
+
+    SmartDashboard.putNumber("targetYaw", targetYaw);
+    SmartDashboard.putNumber("targetRange", targetRange);
 
     swerveDriveTrain.drive(
                 -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
