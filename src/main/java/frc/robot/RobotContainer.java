@@ -117,15 +117,15 @@ public class RobotContainer {
                                                                                          new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_CATCH),
                                                                                          new ElevatorDownCommand(elevatorSubsystem, true),
                                                                                          new AlgaeWheelAtGroundCommand(algaeWheelSubsystem, false),
-                                                                                         new ConditionalCommand(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_HOLD), 
+                                                                                         new ConditionalCommand(new WaitCommand(0.0), //new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_HOLD), 
                                                                                                                 new SequentialCommandGroup(new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
                                                                                                                                            new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
                                                                                                                                            new ElevatorDownCommand(elevatorSubsystem, true)),
                                                                                                                 algaeWheelSubsystem::isAlgaeLoadedFromGround)));
-    NamedCommands.registerCommand("ProcessAlgaeFromGround", new SequentialCommandGroup(algaeArmSubsystem.setArmMotorIdleModeToCoastCommand(),
+    NamedCommands.registerCommand("ProcessAlgaeFromGround", new SequentialCommandGroup(//algaeArmSubsystem.setArmMotorIdleModeToCoastCommand(),
                                                                                             new ParallelCommandGroup(new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_GROUND_ALGAE_RELEASE), 
                                                                                                                      new AlgaeWheelAtProcessorCommand(algaeWheelSubsystem, false)), 
-                                                                                            algaeArmSubsystem.setArmMotorIdleModeToBrakeCommand(),
+                                                                                            //algaeArmSubsystem.setArmMotorIdleModeToBrakeCommand(),
                                                                                             new ElevatorUpCommand(elevatorSubsystem, true, endEffectorSubsystem::isCoralLoaded),
                                                                                             new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
                                                                                             new ElevatorDownCommand(elevatorSubsystem, true)));

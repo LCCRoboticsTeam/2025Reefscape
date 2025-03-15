@@ -63,7 +63,7 @@ public final class Constants {
     public static final int kPlaceCoralCommandL4StraightRuntimeInMs = 1500;
     public static final int kReveseIntakeCommandRuntimeInMs = 1000;
 
-    public static final int kReeflDetectedDistance = 280; // was 260
+    public static final int kReeflDetectedDistance = 300; // was 260, 280
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -99,7 +99,7 @@ public final class Constants {
     P1(1.0),
     P1p5(6),    // This is level that allows AlgaeArm to go down
     P2(10),
-    P3(27.0),
+    P3(27.5),
     P3p5(43.5),
     P4(55.5);
 
@@ -126,10 +126,10 @@ public final class Constants {
 
     // At Reef
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
-    public static final double kAlgaeWheelAtReefQuickTargetVelocity = 900;
-    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
+    public static final double kAlgaeWheelAtReefQuickTargetVelocity = 650; //was 900
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 750; // was 425
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 400;
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 125; // was 400
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500;
 
     // At Ground
@@ -140,7 +140,7 @@ public final class Constants {
     // Processor
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2500;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2500;
-    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 500;
+    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000;
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;
@@ -153,12 +153,12 @@ public final class Constants {
     UNKNOWN,
     ARM_STOWED(0),
     ARM_DOWN(0),
-    ARM_REEF_ALGAE_HOLD(15),
+    ARM_REEF_ALGAE_HOLD(12), // was 15
     ARM_REEF_ALGAE_RELEASE(18),
     ARM_REEF_ALGAE_LAUNCH(55), //was 30
     ARM_GROUND_ALGAE_HOLD(38),
     ARM_GROUND_ALGAE_CATCH(32),
-    ARM_GROUND_ALGAE_RELEASE(38);
+    ARM_GROUND_ALGAE_RELEASE(35); // was 38
 
     private double algaeArmPosition;
     AlgaeArmState(double algaeArmPosition) {
@@ -278,7 +278,7 @@ public final class Constants {
 
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
     public static final int kSwerveRotateCommandRuntimeInMs = 40; // was 700
-    public static final int kSwerveSlideCommandRuntimeInMs = 1000; // FIXME: Test this to see if too long or not
+    public static final int kSwerveSlideCommandRuntimeInMs = 1400; // FIXME: Test this to see if too long or not
 
     public static final boolean usePhotonPoseEstimator = false;
   }
