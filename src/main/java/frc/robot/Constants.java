@@ -59,11 +59,11 @@ public final class Constants {
     public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 28;
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
-    public static final int kPlaceCoralCommandStraightRuntimeInMs = 500;    // FIXME: Can this go lower and it will still work?
+    public static final int kPlaceCoralCommandStraightRuntimeInMs = 300;    // was 250, 500 FIXME: Can this go lower and it will still work?
     public static final int kPlaceCoralCommandL4StraightRuntimeInMs = 1500;
     public static final int kReveseIntakeCommandRuntimeInMs = 1000;
 
-    public static final int kReeflDetectedDistance = 260;
+    public static final int kReeflDetectedDistance = 280; // was 260
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -126,10 +126,10 @@ public final class Constants {
 
     // At Reef
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
-    public static final double kAlgaeWheelAtReefQuickTargetVelocity = 800;    // FIXME: If we run faster, can we reduce QuickRuntime even more?
+    public static final double kAlgaeWheelAtReefQuickTargetVelocity = 900;    // was 1000, 800 FIXME: If we run faster, can we reduce QuickRuntime even more?
     public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000;  // FIXME: Will reducing this result in a quicker de-algea of reef? May need able higher as well
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 400;  // was 500, 1000 FIXME: Will reducing this result in a quicker de-algea of reef? May need able higher as well
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500;
 
     // At Ground
@@ -140,7 +140,7 @@ public final class Constants {
     // Processor
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2500;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2500;
-    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000;  // FIXME: How much can we reduce?
+    public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 500;  // was 1000 FIXME: How much can we reduce?
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;
@@ -270,7 +270,7 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     public static final double kSwerveSlideSpeed = 0.15;
-    public static final double kSwerveAutoAlignSlideSpeed = 0.15;  // FIXME: For automated alignment, can this be higher?
+    public static final double kSwerveAutoAlignSlideSpeed = 0.15;  // was 0.15 FIXME: For automated alignment, can this be higher?
 
     public static final double kSwerveBackupSpeed = 0.3;
     public static final double kSwerveRotateRightSpeed = 0.65;

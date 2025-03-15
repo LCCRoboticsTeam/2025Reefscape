@@ -53,7 +53,7 @@ public class RobotContainer {
   //private final XboxController manipulatorXboxController = new XboxController(OIConstants.kManipulatorControllerPort); 
   private final CommandXboxController manipulatorCommandXboxController = new CommandXboxController(OIConstants.kManipulatorControllerPort);
 
-  //private final CommandLaunchpadController commandLaunchpad = new CommandLaunchpadController(OIConstants.kLaunchpadControllerPort);
+  private final CommandLaunchpadController commandLaunchpad = new CommandLaunchpadController(OIConstants.kLaunchpadControllerPort);
 
   // Dashboard - Choosers
   private final SendableChooser<Command> autoChooser;
@@ -159,17 +159,21 @@ public class RobotContainer {
    //                                                                                       new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
    //                                                                                       new ElevatorDownCommand(elevatorSubsystem, true)));
     NamedCommands.registerCommand("PlaceCoralOnLeftL2", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"),
+                                                                                       new WaitCommand(0.5),
                                                                                         NamedCommands.getCommand("AutoReefAlignmentLeft"),
                                                                                         NamedCommands.getCommand("PlaceCoralStraight")));
     NamedCommands.registerCommand("PlaceCoralOnRightL2", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"),
+                                                                                        new WaitCommand(0.5),
                                                                                          NamedCommands.getCommand("AutoReefAlignmentRight"),
                                                                                          NamedCommands.getCommand("PlaceCoralStraight")));
     NamedCommands.registerCommand("PlaceCoralOnLeftL3", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"), 
                                                                                         NamedCommands.getCommand("ElevatorUp"),
+                                                                                        new WaitCommand(0.8),
                                                                                         NamedCommands.getCommand("AutoReefAlignmentLeft"),
                                                                                         NamedCommands.getCommand("PlaceCoralStraight")));
     NamedCommands.registerCommand("PlaceCoralOnRightL3", new SequentialCommandGroup(NamedCommands.getCommand("ElevatorUp"), 
                                                                                          NamedCommands.getCommand("ElevatorUp"),
+                                                                                         new WaitCommand(0.8),
                                                                                          NamedCommands.getCommand("AutoReefAlignmentRight"),
                                                                                          NamedCommands.getCommand("PlaceCoralStraight")));
 
@@ -257,10 +261,10 @@ public class RobotContainer {
                                                    onTrue(NamedCommands.getCommand("ProcessAlgaeFromGround"));
 
     // Custom LAUNCHPAD Controller
-    //commandLaunchpad.l2Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL2"));
-    //commandLaunchpad.l2Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL2"));
-    //commandLaunchpad.l2Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL3"));
-    //commandLaunchpad.l2Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL3"));
+   commandLaunchpad.l2Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL2"));
+   commandLaunchpad.l2Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL2"));
+   commandLaunchpad.l3Left().onTrue(NamedCommands.getCommand("PlaceCoralOnLeftL3"));
+   commandLaunchpad.l3Right().onTrue(NamedCommands.getCommand("PlaceCoralOnRightL3"));
 
   }
 

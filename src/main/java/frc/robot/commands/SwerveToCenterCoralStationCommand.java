@@ -29,7 +29,7 @@ public class SwerveToCenterCoralStationCommand extends Command {
 
   private final double VISION_DES_ANGLE_deg = 155.0; // FIXME: Need to update based on testing
   private final double VISION_DES_RANGE_m = 0.5;     // FIXME: Need to update based on testing
-  private final double VISION_TURN_kP = 0.01;
+  private final double VISION_TURN_kP = 0.0000001; // was 0.1
   private final double VISION_XSPEED_kP = 0.01;
 
   /** Creates a new SwerveControllerDrive. */
@@ -44,6 +44,7 @@ public class SwerveToCenterCoralStationCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.putBoolean("Coral Station Tag Detected", false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -94,8 +95,10 @@ public class SwerveToCenterCoralStationCommand extends Command {
       if (targetVisible) {
         // Based on testing, 155 degrees is when Tag is centered, so offset the targetYaw in formula below by
         // that amount
-        rotateSpeed = -1.0 * (VISION_DES_ANGLE_deg-targetYaw) * VISION_TURN_kP * DriveConstants.kMaxAngularSpeed;
-        xSpeed = (VISION_DES_RANGE_m - targetRange) * VISION_XSPEED_kP * DriveConstants.kMaxSpeedMetersPerSecond;
+        //rotateSpeed = 1.0 * Math.abs(VISION_DES_ANGLE_deg-targetYaw) * VISION_TURN_kP * DriveConstants.kMaxAngularSpeed;
+        //if ((VISION_DES_ANGLE_deg-targetYaw) <0)
+          //rotateSpeed=-1.0*rotateSpeed;
+        xSpeed = Math.abs(targetRange - VISION_DES_RANGE_m) * VISION_XSPEED_kP * DriveConstants.kMaxSpeedMetersPerSecond;
        }
     }
 
