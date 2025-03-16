@@ -153,12 +153,12 @@ public final class Constants {
     UNKNOWN,
     ARM_STOWED(0),
     ARM_DOWN(0),
-    ARM_REEF_ALGAE_HOLD(12), // was 15
+    ARM_REEF_ALGAE_HOLD(12),
     ARM_REEF_ALGAE_RELEASE(18),
-    ARM_REEF_ALGAE_LAUNCH(55), //was 30
+    ARM_REEF_ALGAE_LAUNCH(55),
     ARM_GROUND_ALGAE_HOLD(38),
     ARM_GROUND_ALGAE_CATCH(32),
-    ARM_GROUND_ALGAE_RELEASE(35); // was 38
+    ARM_GROUND_ALGAE_RELEASE(35);
 
     private double algaeArmPosition;
     AlgaeArmState(double algaeArmPosition) {
@@ -278,7 +278,7 @@ public final class Constants {
 
     public static final int kSwerveBackupCommandRuntimeInMs = 700;
     public static final int kSwerveRotateCommandRuntimeInMs = 40; // was 700
-    public static final int kSwerveSlideCommandRuntimeInMs = 1400; // FIXME: Test this to see if too long or not
+    public static final int kSwerveSlideCommandRuntimeInMs = 1400;
 
     public static final boolean usePhotonPoseEstimator = false;
   }

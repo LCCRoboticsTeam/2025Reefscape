@@ -18,22 +18,27 @@ import frc.robot.subsystems.DriveSubsystem;
 public class SwerveToCenterCoralStationCommand extends Command {
 
   private final DriveSubsystem swerveDriveTrain;
-  private double xSpeed;
-  private double rotateSpeed;
   private final PhotonCamera backsidePhotonCamera;
-  private final boolean usePhotonCamera = true;
 
   private final double CAMERA_HEIGHT_IN_METERS = 0.22;  // FIXME: 8.5" (0.22m) Up from ground, need to confirm
   private final double TARGET_HEIGHT_IN_METERS = 0.235; 
-  private final double CAMERA_PITCH_IN_DEGREES = 0.0;   // FIXME: Camera pitch in degrees, positive up, need to confirm
+  private final double CAMERA_PITCH_IN_DEGREES = 20;   // FIXME: Camera pitch in degrees, positive up, need to confirm
 
-  private final double VISION_DES_ANGLE_deg = 155.0; // FIXME: Need to update based on testing
-  private final double VISION_DES_RANGE_m = 0.5;     // FIXME: Need to update based on testing
-  private final double VISION_TURN_kP = 0.0000001; // was 0.1
-  private final double VISION_XSPEED_kP = 0.01;
+  private final double VISION_DESIRED_ANGLE_deg = 155.0; // FIXME: Based on testing, 155 degrees is when Tag is centered
+  private final double VISION_DESIRED_ANGLE_deg_tolerance = 5.0; 
+  private final double VISION_DESIRED_RANGE_m = 0.5;     // FIXME: Based on testing, Tag is 0.5 meters away when at the reef.
+  private final double VISION_TURN_kP = 0.065;
+  private final double VISION_XSPEED_kP = 0.25;
+  private final double FIXED_XSPEED = 0.3;  // FIXME: Could potentially be higher
 
-  double targetYaw = 0.0;
-  double targetRange = 0.0;
+  private final boolean usePhotonCamera = true;
+  private boolean targetVisible = false;
+  private double targetYaw = 0.0;
+  private double targetRange = 0.0;
+  private double xSpeed;
+  private double rotateSpeed;
+  private boolean useFixedxSpeed = true;
+
 
   /** Creates a new SwerveControllerDrive. */
   public SwerveToCenterCoralStationCommand(DriveSubsystem swerveDriveTrain, PhotonCamera backsidePhotonCamera) {
@@ -47,74 +52,84 @@ public class SwerveToCenterCoralStationCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putBoolean("Coral Station Tag Detected", false);
-    SmartDashboard.putNumber("targetYaw", targetYaw);
-    SmartDashboard.putNumber("targetRange", targetRange);
+    targetVisible = false;
+    targetYaw = 0.0;
+    targetRange = 0.0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double targetYawOffset;
 
-    // Read in relevant data from the Camera
-    boolean targetVisible = false;
-
+    // By default the command will not move robot
+    targetVisible = false;
     rotateSpeed=0.0;
     xSpeed=0.0;
 
     if (usePhotonCamera) {
+      // Read in relevant data from the Camera
       var results = backsidePhotonCamera.getAllUnreadResults();
 
       if (!results.isEmpty()) {
         // Camera processed a new frame since last
         // Get the last one in the list.
+        var result = results.get(results.size() - 1);
+        if (result.hasTargets()) {
+            // At least one AprilTag was seen by the camera    
+            for (var target : result.getTargets()) {
+                // ONLY looking for those at the Coral Stations (as documented in Game Manual)
+                if ((target.getFiducialId() == 1) || (target.getFiducialId() == 2) ||  
+                    (target.getFiducialId() == 12) || (target.getFiducialId() == 13)) {
 
-          var result = results.get(results.size() - 1);
-          if (result.hasTargets()) {
-              // At least one AprilTag was seen by the camera    
-              for (var target : result.getTargets()) {
-                  // ONLY looking for those at the Coral Stations (as documented in Game Manual)
-                  if ((target.getFiducialId() == 1) || (target.getFiducialId() == 2) && 
-                      (target.getFiducialId() == 12) && (target.getFiducialId() == 13)) {
-                      targetYaw = target.getYaw();
+                    targetYaw = target.getYaw();
+                    targetRange =
+                            PhotonUtils.calculateDistanceToTargetMeters(
+                              CAMERA_HEIGHT_IN_METERS,
+                              TARGET_HEIGHT_IN_METERS, 
+                              Units.degreesToRadians(CAMERA_PITCH_IN_DEGREES), // Camera pitch in degrees,positive up
+                              Units.degreesToRadians(target.getPitch()));
 
-                      targetRange =
-                              PhotonUtils.calculateDistanceToTargetMeters(
-                                CAMERA_HEIGHT_IN_METERS,
-                                TARGET_HEIGHT_IN_METERS, 
-                                Units.degreesToRadians(CAMERA_PITCH_IN_DEGREES), // Camera pitch in degrees,positive up
-                                Units.degreesToRadians(target.getPitch()));
-
-                      targetVisible = true;
-                      SmartDashboard.putBoolean("Coral Station Tag Detected", true);
-                  }
-              }
-          }
+                    targetVisible = true;
+                    //SmartDashboard.putBoolean("Coral Station Tag Detected", true);
+                }
+            }
+        }
       }
       else {
-        SmartDashboard.putBoolean("Coral Station Tag Detected", false);
+        targetVisible = false;
+        //SmartDashboard.putBoolean("Coral Station Tag Detected", false);
       }
 
       if (targetVisible) {
-        // Based on testing, 155 degrees is when Tag is centered, so offset the targetYaw in formula below by
-        // that amount
-        rotateSpeed = 1.0 * Math.abs(VISION_DES_ANGLE_deg-targetYaw) * VISION_TURN_kP * DriveConstants.kMaxAngularSpeed;
-        //if ((VISION_DES_ANGLE_deg-targetYaw) <0)
-          //rotateSpeed=-1.0*rotateSpeed;
-        xSpeed = Math.abs(targetRange - VISION_DES_RANGE_m) * VISION_XSPEED_kP * DriveConstants.kMaxSpeedMetersPerSecond;
+        targetYawOffset=Math.abs(VISION_DESIRED_ANGLE_deg-targetYaw);
+        if (targetYawOffset>VISION_DESIRED_ANGLE_deg_tolerance) {
+          rotateSpeed = targetYawOffset * VISION_TURN_kP;
+          if (targetYaw<0)
+            rotateSpeed = -1.0 * rotateSpeed;
+        }
+        
+        if (useFixedxSpeed) {
+          xSpeed = -1.0 * FIXED_XSPEED;
+          }
+        else {
+          if (targetRange>VISION_DESIRED_RANGE_m) {
+            xSpeed = -1.0 * (targetRange-VISION_DESIRED_RANGE_m) * VISION_XSPEED_kP;
+          }
+        }
+
+        swerveDriveTrain.drive(
+          -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
+          0,
+          -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
+          false, 
+          true);
+       }
+       else {
+         swerveDriveTrain.drive(0, 0, 0, true, true);
        }
     }
-
-    SmartDashboard.putNumber("targetYaw", targetYaw);
-    SmartDashboard.putNumber("targetRange", targetRange);
-
-    swerveDriveTrain.drive(
-                -MathUtil.applyDeadband(xSpeed, OIConstants.kDriveDeadband),
-                0,
-                -MathUtil.applyDeadband(rotateSpeed, OIConstants.kDriveDeadband),
-                false, 
-                true);
-
+  
   }
 
   // Called once the command ends or is interrupted.
