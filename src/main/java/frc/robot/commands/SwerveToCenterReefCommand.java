@@ -29,7 +29,7 @@ public class SwerveToCenterReefCommand extends Command {
   private final double VISION_DESIRED_RANGE_m = 0.5;     // FIXME: Based on testing, Tag is 0.5 meters away when at the reef.
   private final double VISION_TURN_kP = 0.065;
   private final double VISION_XSPEED_kP = 0.25;
-  private final double FIXED_XSPEED = 0.3;  // FIXME: Could potentially be higher
+  private final double FIXED_XSPEED = 0.2;  // FIXME: Could potentially be higher
 
   private final boolean usePhotonCamera = true;
   private boolean targetVisible = false;

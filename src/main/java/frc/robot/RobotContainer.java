@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -133,9 +134,19 @@ public class RobotContainer {
                                                                                             new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true, false),
                                                                                             new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
                                                                                             new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false, true),
-                                                                                            new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+                                                                                            new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed*1.4),
+                                                                                            new SwerveBackupCommand(driveSubsystem, 0),
                                                                                             new ParallelCommandGroup(new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed),
                                                                                                                      new ElevatorDownCommand(elevatorSubsystem, true)),
+                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed),
+                                                                                            //new ParallelRaceGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+                                                                                            //                                                 new ElevatorDownCommand(elevatorSubsystem, true)),
+                                                                                            //                                                 new WaitCommand(0.3),
+
+                                                                                            //NamedCommands.getCommand("ProcessAlgaeFromReef")));
+                                                                                            //new SwerveBackupCommand(driveSubsystem, 0),
+                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed),
+                                                                                            new WaitCommand(0.1),
                                                                                             NamedCommands.getCommand("ProcessAlgaeFromReef")));
                                                                                             //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed))); 
     NamedCommands.registerCommand("InitAlgaeSystem", new SequentialCommandGroup(new AlgaeWheelCommand(algaeWheelSubsystem, true), 
@@ -145,8 +156,9 @@ public class RobotContainer {
                                                                                            new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true, false),
                                                                                            new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
                                                                                            new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false, true),
-                                                                                           new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
-                                                                                           new ParallelCommandGroup(new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed),
+                                                                                           //new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+                                                                                           new ParallelCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
+                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed),
                                                                                                                     new ElevatorDownCommand(elevatorSubsystem, true)),
                                                                                            NamedCommands.getCommand("ProcessAlgaeFromReef")));
                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed))); 
@@ -256,7 +268,7 @@ public class RobotContainer {
     manipulatorCommandXboxController.back().onTrue(NamedCommands.getCommand("ClimberUp"));
     manipulatorCommandXboxController.start().onTrue(NamedCommands.getCommand("ClimberDown"));
     manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorNotAtP1orP1p5)).
-                                                  onTrue(reefAlgaeChooser.getSelected());
+                                                  onTrue(NamedCommands.getCommand("TossRightAlgaeFromReef"));
     manipulatorCommandXboxController.leftBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1orP1p5)).
                                                   onTrue(NamedCommands.getCommand("GrabAlgaeFromGround"));
     manipulatorCommandXboxController.rightBumper().and(new Trigger(elevatorSubsystem::isElevatorAtP1)).
