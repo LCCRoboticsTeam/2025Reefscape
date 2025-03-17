@@ -57,13 +57,13 @@ public final class Constants {
     public static final double kRightMotorReverseIntakeTargetVelocity = 1500;
     
     public static final int kCoralDetectedDistance = 60;
-    public static final int kCoralDetectedCountThreshold = 28; // was 40
+    public static final int kCoralDetectedCountThreshold = 28;
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
-    public static final int kPlaceCoralCommandStraightRuntimeInMs = 500;
+    public static final int kPlaceCoralCommandStraightRuntimeInMs = 320;  // Was 300
     public static final int kPlaceCoralCommandL4StraightRuntimeInMs = 1500;
     public static final int kReveseIntakeCommandRuntimeInMs = 1000;
 
-    public static final int kReeflDetectedDistance = 260; // FIXME: May need to adjust after testing on REAL reef at Competition
+    public static final int kReeflDetectedDistance = 300; // was 260, 280
 
     public static final boolean kLeftTargetVelocityFromDashboard = false;
     public static final boolean kRightTargetVelocityFromDashboard = false;
@@ -84,8 +84,8 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kLeftElevatorCanId = 3;
     public static final int kRightElevatorCanId = 4;
-    public static final double kMaxOutRange = 0.5; // was 0.4
-    public static final double kMinOutRange = -0.5; //was -0.4
+    public static final double kMaxOutRange = 0.5;  // FIXME: Maybe we can increase this slightly for going up?
+    public static final double kMinOutRange = -0.5;
 
     public static final boolean kTargetPositionFromDashboard = false;
   }
@@ -98,9 +98,9 @@ public final class Constants {
     UNKNOWN,
     P1(1.0),
     P1p5(6),    // This is level that allows AlgaeArm to go down
-    P2(10),     // FIXME: May need to adjust after testing on REAL reef at Competition
-    P3(27.0),   // FIXME: May need to adjust after testing on REAL reef at Competition
-    P3p5(43.5), // FIXME: May need to adjust after testing on REAL reef at Competition
+    P2(10),
+    P3(27.5),
+    P3p5(43.5),
     P4(55.5);
 
     private double elevatorPosition;
@@ -118,17 +118,18 @@ public final class Constants {
   public static final class AlgaeConstants {
     public static final int kArmAlgaeMotorCanID = 9;
     public static final int kWheelAlgaeMotorCanID = 10;
-    public static final double kAlgaeArmMaxOutRange = 0.45;
-    public static final double kAlgaeArmMinOutRange = -0.45;
+    public static final double kAlgaeArmMaxOutRange = 0.85;
+    public static final double kAlgaeArmMinOutRange = -0.45;  // Maybe we can increase slightly, but still less than upward (positive)
 
     public static final double kAlgaeWheelMaxOutRange = 0.8;
     public static final double kAlgaeWheelMinOutRange = -0.8;
 
     // At Reef
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
-    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 425;
+    public static final double kAlgaeWheelAtReefQuickTargetVelocity = 450;
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 750;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 1000;
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 125;
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500;
 
     // At Ground
@@ -143,7 +144,7 @@ public final class Constants {
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;
-    public static final int kAlgaeWheelCommandMaxRuntimeInMs = 3000; 
+    public static final int kAlgaeWheelCommandMaxRuntimeInMs = 20; 
 
     public static final boolean kArmTargetPositionFromDashboard = false;
     public static final boolean kWheelTargetVelocityFromDashboard = false;
@@ -152,12 +153,12 @@ public final class Constants {
     UNKNOWN,
     ARM_STOWED(0),
     ARM_DOWN(0),
-    ARM_REEF_ALGAE_HOLD(15),     // FIXME: May need to adjust after testing on REAL reef at Competition
+    ARM_REEF_ALGAE_HOLD(12),
     ARM_REEF_ALGAE_RELEASE(18),
-    ARM_REEF_ALGAE_LAUNCH(30),
+    ARM_REEF_ALGAE_LAUNCH(55),
     ARM_GROUND_ALGAE_HOLD(38),
-    ARM_GROUND_ALGAE_CATCH(32), //was 35
-    ARM_GROUND_ALGAE_RELEASE(38);
+    ARM_GROUND_ALGAE_CATCH(32),
+    ARM_GROUND_ALGAE_RELEASE(35);
 
     private double algaeArmPosition;
     AlgaeArmState(double algaeArmPosition) {
@@ -269,12 +270,15 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     public static final double kSwerveSlideSpeed = 0.15;
-    public static final double kSwerveBackupSpeed = 0.3;
-    public static final double kSwerveRotateRightSpeed = 0.65; // was .45
-    public static final double kSwerveRotateLeftSpeed = -0.45;
+    public static final double kSwerveAutoAlignSlideSpeed = 0.15;  // Not as reliable if faster
 
-    public static final int kSwerveBackupCommandRuntimeInMs = 700;
-    public static final int kSwerveRotateCommandRuntimeInMs = 40; // was 700
+    public static final double kSwerveBackupSpeed = 0.4;
+    public static final double kSwerveRotateRightSpeed = 0.75;
+    public static final double kSwerveRotateLeftSpeed = -0.75;
+
+    public static final int kSwerveBackupCommandRuntimeInMs = 400;
+    public static final int kSwerveRotateCommandRuntimeInMs = 50;
+    public static final int kSwerveSlideCommandRuntimeInMs = 1400;
 
     public static final boolean usePhotonPoseEstimator = false;
   }
@@ -298,6 +302,7 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kManipulatorControllerPort = 1;
+    public static final int kLaunchpadControllerPort = 2;
     public static final double kDriveDeadband = 0.065;  // was 0.05, 2024Crescendo used 0.065
 
   }

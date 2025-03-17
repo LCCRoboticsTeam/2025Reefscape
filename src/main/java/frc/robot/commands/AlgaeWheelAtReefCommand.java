@@ -43,7 +43,10 @@ public class AlgaeWheelAtReefCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefTargetVelocity);  
+    if (quickFinish)
+      m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefQuickTargetVelocity);
+    else
+      m_subsystem.setWheelTargetVelocity(AlgaeConstants.kAlgaeWheelAtReefTargetVelocity);  
       
     isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
   }
@@ -68,12 +71,12 @@ public class AlgaeWheelAtReefCommand extends Command {
     }
     else {
       // Detect that we have Algae if wheel velocity slows down below a threshold
-      if (m_subsystem.getWheelActualVelocity()<AlgaeConstants.kAlgaeWheelAtReefHoldingVelocityThreshold) {
+      if (!quickFinish && m_subsystem.getWheelActualVelocity()<AlgaeConstants.kAlgaeWheelAtReefHoldingVelocityThreshold) {
         gotAlgae=true;
         return true;
         }
       else {
-        if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtReefCommandMaxRuntimeInMs) {
+        if (!quickFinish && (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtReefCommandMaxRuntimeInMs)) {
           abortCommand=true;
           return true;
         }

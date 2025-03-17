@@ -9,12 +9,14 @@ import java.util.function.IntSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class SwerveSlideCommand extends Command {
 
   private final DriveSubsystem swerveDriveTrain;
+  private int isFinishedDelayCountInMs;
   boolean rightDirection;
   double ySpeed;
   boolean automateReefAlignment;
@@ -39,7 +41,7 @@ public class SwerveSlideCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    isFinishedDelayCountInMs=0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,6 +53,9 @@ public class SwerveSlideCommand extends Command {
                 0,
                 false, 
                 true);
+
+    isFinishedDelayCountInMs+=20; // Adding 20ms which is how often execute() is called.
+
   }
 
   // Called once the command ends or is interrupted.
@@ -64,8 +69,12 @@ public class SwerveSlideCommand extends Command {
   public boolean isFinished() {
     if ((automateReefAlignment) && (reefDistanceSupplier.getAsInt()<EndEffectorConstants.kReeflDetectedDistance))
       return true;
-    else
-      return false;
+    else {
+      if (isFinishedDelayCountInMs>DriveConstants.kSwerveSlideCommandRuntimeInMs) 
+        return true;
+      else
+        return false;
+    }
   }
 
 }

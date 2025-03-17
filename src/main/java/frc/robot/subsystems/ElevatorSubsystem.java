@@ -152,6 +152,22 @@ public class ElevatorSubsystem extends SubsystemBase {
           resetPosition();
         });
   }
+
+  public Command elevateToP2() {
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+          setTargetPosition(ElevatorState.P2.getPosition()); setElevatorState(ElevatorState.P2);
+        });
+  }
+
+  public Command elevateToP3() {
+    return runOnce(
+      () -> {
+        /* one-time action goes here */
+        setTargetPosition(ElevatorState.P3.getPosition()); setElevatorState(ElevatorState.P3);
+      });
+  }
  
   @Override
   public void periodic() {
