@@ -31,7 +31,7 @@ public class SwerveToCenterReefCommand extends Command {
   private final double VISION_XSPEED_kP = 0.25;
   private final double FIXED_XSPEED = 0.2;  // FIXME: Could potentially be higher
 
-  private final boolean usePhotonCamera = true;
+  private final boolean usePhotonCamera = false;
   private boolean targetVisible = false;
   private double targetYaw = 0.0;
   private double targetRange = 0.0;

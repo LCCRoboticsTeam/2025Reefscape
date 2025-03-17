@@ -59,7 +59,7 @@ public final class Constants {
     public static final int kCoralDetectedDistance = 60;
     public static final int kCoralDetectedCountThreshold = 28;
     public static final int kPlaceCoralCommandRuntimeInMs = 500;
-    public static final int kPlaceCoralCommandStraightRuntimeInMs = 300;
+    public static final int kPlaceCoralCommandStraightRuntimeInMs = 320;  // Was 300
     public static final int kPlaceCoralCommandL4StraightRuntimeInMs = 1500;
     public static final int kReveseIntakeCommandRuntimeInMs = 1000;
 
@@ -126,10 +126,10 @@ public final class Constants {
 
     // At Reef
     public static final double kAlgaeWheelAtReefTargetVelocity = 800;
-    public static final double kAlgaeWheelAtReefQuickTargetVelocity = 450; //was 650, 900
-    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 750; // was 425
+    public static final double kAlgaeWheelAtReefQuickTargetVelocity = 450;
+    public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 750;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 125; // was 400
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 125;
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500;
 
     // At Ground
@@ -272,12 +272,12 @@ public final class Constants {
     public static final double kSwerveSlideSpeed = 0.15;
     public static final double kSwerveAutoAlignSlideSpeed = 0.15;  // Not as reliable if faster
 
-    public static final double kSwerveBackupSpeed = 0.4; //was 0.3
-    public static final double kSwerveRotateRightSpeed = 0.75; // was 0.65
-    public static final double kSwerveRotateLeftSpeed = -0.65;
+    public static final double kSwerveBackupSpeed = 0.4;
+    public static final double kSwerveRotateRightSpeed = 0.75;
+    public static final double kSwerveRotateLeftSpeed = -0.75;
 
-    public static final int kSwerveBackupCommandRuntimeInMs = 400; // was 350,700
-    public static final int kSwerveRotateCommandRuntimeInMs = 50; // was 30, 40 700
+    public static final int kSwerveBackupCommandRuntimeInMs = 400;
+    public static final int kSwerveRotateCommandRuntimeInMs = 50;
     public static final int kSwerveSlideCommandRuntimeInMs = 1400;
 
     public static final boolean usePhotonPoseEstimator = false;

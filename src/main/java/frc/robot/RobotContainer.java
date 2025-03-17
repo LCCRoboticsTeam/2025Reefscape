@@ -134,21 +134,12 @@ public class RobotContainer {
                                                                                             new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true, false),
                                                                                             new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
                                                                                             new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false, true),
-                                                                                            new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed*1.4),
+                                                                                            new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed*1.4), // NOTE: Faster backup when tossing Algae
                                                                                             new SwerveBackupCommand(driveSubsystem, 0),
                                                                                             new ParallelCommandGroup(new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed),
                                                                                                                      new ElevatorDownCommand(elevatorSubsystem, true)),
-                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed),
-                                                                                            //new ParallelRaceGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
-                                                                                            //                                                 new ElevatorDownCommand(elevatorSubsystem, true)),
-                                                                                            //                                                 new WaitCommand(0.3),
-
-                                                                                            //NamedCommands.getCommand("ProcessAlgaeFromReef")));
-                                                                                            //new SwerveBackupCommand(driveSubsystem, 0),
-                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed),
                                                                                             new WaitCommand(0.1),
                                                                                             NamedCommands.getCommand("ProcessAlgaeFromReef")));
-                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed))); 
     NamedCommands.registerCommand("InitAlgaeSystem", new SequentialCommandGroup(new AlgaeWheelCommand(algaeWheelSubsystem, true), 
                                                                                             new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_DOWN),
                                                                                             new ElevatorDownCommand(elevatorSubsystem, true)));                                                                                            
@@ -156,12 +147,12 @@ public class RobotContainer {
                                                                                            new AlgaeWheelAtReefCommand(algaeWheelSubsystem, true, false),
                                                                                            new AlgaeArmCommand(algaeArmSubsystem, AlgaeArmState.ARM_REEF_ALGAE_HOLD), 
                                                                                            new AlgaeWheelAtReefCommand(algaeWheelSubsystem, false, true),
-                                                                                           //new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
-                                                                                           new ParallelCommandGroup(new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed),
-                                                                                            //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed),
+                                                                                           new SwerveBackupCommand(driveSubsystem, DriveConstants.kSwerveBackupSpeed*1.4), // NOTE: Faster backup when tossing Algae
+                                                                                           new SwerveBackupCommand(driveSubsystem, 0),
+                                                                                           new ParallelCommandGroup(new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateLeftSpeed),
                                                                                                                     new ElevatorDownCommand(elevatorSubsystem, true)),
-                                                                                           NamedCommands.getCommand("ProcessAlgaeFromReef")));
-                                                                                           //new SwerveRotateCommand(driveSubsystem, DriveConstants.kSwerveRotateRightSpeed))); 
+                                                                                           new WaitCommand(0.1),
+                                                                                           NamedCommands.getCommand("ProcessAlgaeFromReef"))); 
    // NamedCommands.registerCommand("LaunchAlgaeIntoBarge", new SequentialCommandGroup(new ElevatorUpCommand(elevatorSubsystem, false, endEffectorSubsystem::isCoralLoaded),
    //                                                                                       new ElevatorUpCommand(elevatorSubsystem, false, endEffectorSubsystem::isCoralLoaded),
    //                                                                                       new WaitCommand(0.5),
