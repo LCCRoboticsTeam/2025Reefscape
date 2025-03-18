@@ -102,10 +102,18 @@ public class SwerveToCenterCoralStationCommand extends Command {
       }
 
       if (targetVisible) {
-        targetYawOffset=Math.abs(VISION_DESIRED_ANGLE_deg-targetYaw);
+        // First calculate the angle difference between what is measured by PhotonVision and the 
+        // angle we want, taking into account the measured angle may be negative.
+        if (targetYaw<0)
+          targetYawOffset=(180-Math.abs(targetYaw))+(180-VISION_DESIRED_ANGLE_deg);
+        else {
+          targetYawOffset=Math.abs(VISION_DESIRED_ANGLE_deg-targetYaw);
+        }
+
+        // Determine of turning right (pos value for rotateSpeed) or left (neg value for rotateSpeed)
         if (targetYawOffset>VISION_DESIRED_ANGLE_deg_tolerance) {
           rotateSpeed = targetYawOffset * VISION_TURN_kP;
-          if (targetYaw<0)
+          if (!((targetYaw>0) && (targetYaw<VISION_DESIRED_ANGLE_deg)))
             rotateSpeed = -1.0 * rotateSpeed;
         }
         
