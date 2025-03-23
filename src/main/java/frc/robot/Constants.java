@@ -46,11 +46,11 @@ public final class Constants {
     public static final double kLeftMotorPlaceCoralL4TargetVelocity = 2000;
     public static final double kRightMotorPlaceCoralL4TargetVelocity = -2000;
     // PLACE LEFT
-    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 1800;
-    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -6800;
+    public static final double kLeftMotorPlaceCoralLeftTargetVelocity = 1400;
+    public static final double kRightMotorPlaceCoralLeftTargetVelocity = -7800;
     // PLACE RIGHT
-    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 6800;
-    public static final double kRightMotorPlaceCoralRightTargetVelocity = -1800;
+    public static final double kLeftMotorPlaceCoralRightTargetVelocity = 6400;
+    public static final double kRightMotorPlaceCoralRightTargetVelocity = -1600;
 
     // REVERSE INTAKE
     public static final double kLeftMotorReverseIntakeTargetVelocity = -1500;

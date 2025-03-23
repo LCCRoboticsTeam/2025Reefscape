@@ -13,50 +13,6 @@
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoralLeft"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftReefToIntakeCoral"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeCoral"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "LeftIntakeToPlaceCoral"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "PlaceCoralRight"
           }
         },
@@ -102,6 +58,50 @@
           "type": "named",
           "data": {
             "name": "PlaceCoralLeft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftReefToIntakeCoral"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "LeftIntakeToPlaceCoral"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralRight"
           }
         }
       ]

@@ -73,6 +73,7 @@ public class RobotContainer {
 
     // We always start at P1 level
     elevatorSubsystem.setElevatorState(ElevatorState.P1);
+    elevatorSubsystem.setTargetPosition(ElevatorState.P1.getPosition());
     // We always start at ARM_STOWED
     algaeArmSubsystem.setAlgaeArmState(AlgaeArmState.ARM_STOWED);
     // We always start at ALGAE_FREE 
