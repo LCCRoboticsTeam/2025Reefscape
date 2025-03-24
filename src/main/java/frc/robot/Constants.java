@@ -85,7 +85,7 @@ public final class Constants {
     public static final int kLeftElevatorCanId = 3;
     public static final int kRightElevatorCanId = 4;
     public static final double kMaxOutRange = 0.5;  // FIXME: Maybe we can increase this slightly for going up?
-    public static final double kMinOutRange = -0.5;
+    public static final double kMinOutRange = -0.4; // was -0.5
 
     public static final boolean kTargetPositionFromDashboard = false;
   }
@@ -129,7 +129,7 @@ public final class Constants {
     public static final double kAlgaeWheelAtReefQuickTargetVelocity = 450;
     public static final double kAlgaeWheelAtReefHoldingVelocityThreshold = 750;
     public static final double kAlgaeWheelAtReefHoldingTargetVelocity = 120;
-    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 125;
+    public static final int kAlgaeWheelAtReefCommandQuickRuntimeInMs = 240; // Was 125
     public static final int kAlgaeWheelAtReefCommandMaxRuntimeInMs = 2500;
 
     // At Ground
@@ -141,6 +141,8 @@ public final class Constants {
     public static final double kAlgaeWheelAtProcessorReefAlgaeTargetVelocity = -2500;
     public static final double kAlgaeWheelAtProcessorGroundAlgaeTargetVelocity = 2500;
     public static final int kAlgaeWheelAtProcessorCommandRuntimeInMs = 1000;
+    public static final int kAlgaeWheelAtProcessorQuickCommandRuntimeInMs = 500;
+
 
     // These are for AlgaeArmCommand which is currently not being used.
     public static final double kAlgaeWheelLunchTargetVelocity = -2500;

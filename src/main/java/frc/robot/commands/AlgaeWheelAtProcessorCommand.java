@@ -55,9 +55,17 @@ public class AlgaeWheelAtProcessorCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtProcessorCommandRuntimeInMs)
-      return true;
-    else
-      return false;
+    if (m_algaeFromReef) { 
+      if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtProcessorQuickCommandRuntimeInMs)
+        return true;
+      else
+        return false;    
+      }
+    else {
+      if (isFinishedDelayCountInMs>AlgaeConstants.kAlgaeWheelAtProcessorCommandRuntimeInMs)
+        return true;
+      else
+        return false;
+    }
   }
 }
