@@ -99,7 +99,7 @@ public final class Constants {
     P1(1.0),
     P1p5(6),    // This is level that allows AlgaeArm to go down
     P2(10),
-    P3(27.5),
+    P3(27.0),
     P3p5(43.5),
     P4(55.5);
 
